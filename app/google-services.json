@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "633180098456",
+    "firebase_url": "https://curiosity-73edb.firebaseio.com",
+    "project_id": "curiosity-73edb",
+    "storage_bucket": "curiosity-73edb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:633180098456:android:964c9fc6063a313dc1a5ed",
+        "android_client_info": {
+          "package_name": "com.example.curiosity"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "633180098456-mf6uaigvlqdo8f53ae5u0m7u6nblm9h8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.curiosity",
+            "certificate_hash": "2f630b33dd385855d76265b8425eac49668efb59"
+          }
+        },
+        {
+          "client_id": "633180098456-8sino6485ucttrd52cbpuiadpjhl6k8m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA9q1v6lbdyiLmqUYYXuR1bz1BGDoJ94lQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "633180098456-8sino6485ucttrd52cbpuiadpjhl6k8m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
