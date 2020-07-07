@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.nsd.NsdManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,12 +16,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -37,20 +40,24 @@ public class RegisterUser extends AppCompatActivity {
     private EditText userName, userEmail,password,confirmPass;
     private Button registerButton;
 
+    private FirebaseAuth mAuth;
     private FirebaseFirestore db;
-    FirebaseAuth mFirebaseAuth;
+    //FirebaseAuth mFirebaseAuth;
 
     String userId;
     ProgressDialog progressDialog;
-    DocumentReference documentReference;
 
+    DocumentReference documentReference;
+    //final Context mcontext = new Context(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Initialize Firebase Auth
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
+        mAuth = FirebaseAuth.getInstance();
         //Directs user back to login page on clicking 'Login'
         loginText= (TextView) findViewById(R.id.loginText);
         loginText.setOnClickListener(new View.OnClickListener(){
@@ -61,6 +68,8 @@ public class RegisterUser extends AppCompatActivity {
             }
         });
 
+
+
         //Getting variable values using their IDs
         userName = (EditText)findViewById(R.id.userName);
         userEmail = (EditText)findViewById(R.id.userEmail);
@@ -68,10 +77,16 @@ public class RegisterUser extends AppCompatActivity {
         confirmPass = (EditText) findViewById(R.id.confirmPass);
         registerButton = (Button) findViewById(R.id.registerButton);
 
+
+
+
         registerButton.setOnClickListener(new View.OnClickListener(){
+
             @SuppressLint("ShowToast")
             @Override
             public void onClick(View view){
+
+
 
                 String user=userName.getText().toString();
                 String email = userEmail.getText().toString();
@@ -80,69 +95,87 @@ public class RegisterUser extends AppCompatActivity {
 
                 if(email.isEmpty()){
                     userEmail.setError("Please enter your email");
-                    userEmail.requestFocus();
-                }else if(userPassword.isEmpty()){
+                    userEmail.requestFocus(); }
+                else if(userPassword.isEmpty()){
                     password.setError("Please enter your password");
                     password.requestFocus();}
+                else if(userPassword.length()<7){
+                    password.setError("Password must be more than 6 characters");
+                    password.requestFocus();
+                }
                 else if(user.isEmpty()){
                     userName.setError("Please enter your username");
-                    userName.requestFocus();
-                }else if(confirmPassword.isEmpty()){
+                    userName.requestFocus(); }
+                else if(confirmPassword.isEmpty()){
                     confirmPass.setError("Please enter your password");
-                    confirmPass.requestFocus();
-                }else if(!(user.isEmpty() && email.isEmpty() && userPassword.isEmpty() && confirmPassword.isEmpty())){
-                    progressDialog.setMessage("Creating account...");
-                    progressDialog.show();
+                    confirmPass.requestFocus(); }
+                else if(!user.matches("") && !email.matches("") && !userPassword.matches("") && !confirmPassword.matches("")){
+                    System.out.println("Creating account....");
+
                     if(userPassword.equals(confirmPassword)){
-                        mFirebaseAuth.createUserWithEmailAndPassword(email, userPassword).addOnCompleteListener(RegisterUser.this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                progressDialog.dismiss();
-                                if(!task.isSuccessful()){
-                                    password.setError("Password must have more than 6 characters");
-                                }else{
-                                    Toast.makeText(RegisterUser.this, "Register Successful", Toast.LENGTH_LONG);
 
-                                    //Put user Email in fireStore
-                                    userId = mFirebaseAuth.getCurrentUser().getUid();
-                                    documentReference = db.collection("Users").document(userId);
+                        mAuth.createUserWithEmailAndPassword(email, userPassword)
+                                .addOnCompleteListener(RegisterUser.this, new OnCompleteListener<AuthResult>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<AuthResult> task) {
+                                        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+                                        if (task.isSuccessful()) {
+                                            // Sign in success, update UI with the signed-in user's information
+                                            Log.d(TAG, "createUserWithEmail:success");
+                                            FirebaseUser user = mAuth.getCurrentUser();
 
-                                    Calendar setCalendar = Calendar.getInstance();
-                                    setCalendar.set(1900,0,1);
+                                            //updateUI(user);
+                                        } else {
+                                            // If sign in fails, display a message to the user.
 
-                                    Map<String, Object> user = new HashMap<>();
-                                    user.put("Email", userEmail.getText().toString());
-                                    user.put("Birthdate", setCalendar.getTime());
+                                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                                            Toast.makeText(RegisterUser.this, "Authentication failed.",
+                                                    Toast.LENGTH_SHORT).show();
 
-                                    documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void aVoid) {
-                                            Log.d(TAG, "User Created" );
-
+                                            //updateUI(null);
                                         }
-                                    }).addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Log.d(TAG, "onFailure" + e.getMessage());
+
+                                        // ...
+                                    }
+                                });
+
+
+                        mAuth.signInWithEmailAndPassword(email, userPassword)
+                                .addOnCompleteListener(RegisterUser.this, new OnCompleteListener<AuthResult>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<AuthResult> task) {
+                                        if (task.isSuccessful()) {
+                                            // Sign in success, update UI with the signed-in user's information
+                                            Log.d(TAG, "signInWithEmail:success");
+                                            FirebaseUser user = mAuth.getCurrentUser();
+                                            //updateUI(user);
+                                        } else {
+                                            // If sign in fails, display a message to the user.
+                                            Log.w(TAG, "signInWithEmail:failure", task.getException());
+                                            Toast.makeText(RegisterUser.this, "Authentication failed.",
+                                                    Toast.LENGTH_SHORT).show();
+                                            //updateUI(null);
                                         }
-                                    });
 
-                                }
-                            }
+                                        // ...
+                                    }
+                                });
 
-                        });
-                    }else{
-                        progressDialog.dismiss();
-                        password.setError("Password does not match.");
                     }
                 }else{
-                    progressDialog.dismiss();
-                    Toast.makeText(RegisterUser.this, "Error occurred", Toast.LENGTH_SHORT);
+                    password.setError("Password does not match.");
+                    password.requestFocus();
+
                 }
+
+
             }
         });
 
+
     }
+
+
 
 
 

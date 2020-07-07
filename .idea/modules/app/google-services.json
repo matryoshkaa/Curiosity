@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "337811781176",
+    "firebase_url": "https://curiosity-361f3.firebaseio.com",
+    "project_id": "curiosity-361f3",
+    "storage_bucket": "curiosity-361f3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:337811781176:android:377e7792150db2dfb718cd",
+        "android_client_info": {
+          "package_name": "com.example.curiosity"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "337811781176-flij1uqk21iositbcab4k571vl2ajhsq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.curiosity",
+            "certificate_hash": "bc1e95b134e5845cd33422b926e6c250b785cd93"
+          }
+        },
+        {
+          "client_id": "337811781176-3gh2nhuht54aj30urc4ltq3ef8odl72t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWsA0RCCSVAgvGmCizTZbhrEzLbLysC3w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "337811781176-3gh2nhuht54aj30urc4ltq3ef8odl72t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
