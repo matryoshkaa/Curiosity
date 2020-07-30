@@ -12,6 +12,7 @@ public class Login extends AppCompatActivity {
 
     TextView registerText;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,6 +26,8 @@ public class Login extends AppCompatActivity {
             public void onClick(View v){
                 Intent intent=new Intent(Login.this,RegisterUser.class);
                 startActivity(intent);
+
+
             }
         });
 
@@ -33,5 +36,6 @@ public class Login extends AppCompatActivity {
 
 
     }
+
 
 }
