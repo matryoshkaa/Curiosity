@@ -11,20 +11,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MonitorAppetite"></activity>
+        <activity android:name=".Dashboard"></activity>
+        <activity android:name=".MonitorAppetite" />
         <activity android:name=".ActivityLevel" />
         <activity android:name=".TrackWeight" />
-        <activity android:name=".HealthWeight" >
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
+        <activity android:name=".HealthWeight">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
-    </activity>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".CheckupRecords" />
         <activity android:name=".VaccinationRecords" />
         <activity android:name=".Settings" />
-        <activity android:name=".HealthRecords"/>
+        <activity android:name=".HealthRecords" />
         <activity android:name=".Login" />
         <activity android:name=".SplashScreen">
             <intent-filter>

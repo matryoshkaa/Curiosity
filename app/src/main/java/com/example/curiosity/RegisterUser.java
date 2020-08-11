@@ -40,15 +40,12 @@ public class RegisterUser extends AppCompatActivity {
     private EditText userName, userEmail,password,confirmPass;
     private Button registerButton;
 
+    ProgressDialog progressDialog;
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
-    //FirebaseAuth mFirebaseAuth;
+    DocumentReference documentReference;
 
     String userId;
-    ProgressDialog progressDialog;
-
-    DocumentReference documentReference;
-    //final Context mcontext = new Context(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +54,12 @@ public class RegisterUser extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        progressDialog = new ProgressDialog(this);
         mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+
+
         //Directs user back to login page on clicking 'Login'
         loginText= (TextView) findViewById(R.id.loginText);
         loginText.setOnClickListener(new View.OnClickListener(){
@@ -78,15 +80,10 @@ public class RegisterUser extends AppCompatActivity {
         registerButton = (Button) findViewById(R.id.registerButton);
 
 
-
-
         registerButton.setOnClickListener(new View.OnClickListener(){
 
-            @SuppressLint("ShowToast")
             @Override
             public void onClick(View view){
-
-
 
                 String user=userName.getText().toString();
                 String email = userEmail.getText().toString();
@@ -109,75 +106,61 @@ public class RegisterUser extends AppCompatActivity {
                 else if(confirmPassword.isEmpty()){
                     confirmPass.setError("Please enter your password");
                     confirmPass.requestFocus(); }
-                else if(!user.matches("") && !email.matches("") && !userPassword.matches("") && !confirmPassword.matches("")){
-                    System.out.println("Creating account....");
-
+                else if(!(email.isEmpty() && userPassword.isEmpty() && confirmPassword.isEmpty() && user.isEmpty())){
+                    //CHECK IF PASSWORD IS >= 6 characters
+                    progressDialog.setMessage("Creating account...");
+                    progressDialog.show();
                     if(userPassword.equals(confirmPassword)){
 
                         mAuth.createUserWithEmailAndPassword(email, userPassword)
                                 .addOnCompleteListener(RegisterUser.this, new OnCompleteListener<AuthResult>() {
                                     @Override
                                     public void onComplete(@NonNull Task<AuthResult> task) {
-                                        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-                                        if (task.isSuccessful()) {
-                                            // Sign in success, update UI with the signed-in user's information
-                                            Log.d(TAG, "createUserWithEmail:success");
-                                            FirebaseUser user = mAuth.getCurrentUser();
+                                        progressDialog.dismiss();
 
-                                            //updateUI(user);
-                                        } else {
-                                            // If sign in fails, display a message to the user.
+                                        if (!task.isSuccessful()) {
+                                            password.setError("Password must have more than 6 characters");
+                                        }else {
+                                            Toast.makeText(RegisterUser.this, "Register Successful", Toast.LENGTH_LONG);
 
-                                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                                            Toast.makeText(RegisterUser.this, "Authentication failed.",
-                                                    Toast.LENGTH_SHORT).show();
+                                        // insert data in firestore
+                                            userId = mAuth.getCurrentUser().getUid();
+                                            documentReference = db.collection("Users").document(userId);
 
-                                            //updateUI(null);
+
+                                            Map<String, String> appuser = new HashMap<>();
+                                            appuser.put("Email", userEmail.getText().toString());
+                                            appuser.put("User Name", userName.getText().toString());
+
+                                            documentReference.set(appuser).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    Log.d(TAG, "User Created" );
+
+                                                }
+                                            }).addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    Log.d(TAG, "onFailure" + e.getMessage());
+                                                }
+                                            });
+
                                         }
-
-                                        // ...
                                     }
+
                                 });
-
-
-                        mAuth.signInWithEmailAndPassword(email, userPassword)
-                                .addOnCompleteListener(RegisterUser.this, new OnCompleteListener<AuthResult>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<AuthResult> task) {
-                                        if (task.isSuccessful()) {
-                                            // Sign in success, update UI with the signed-in user's information
-                                            Log.d(TAG, "signInWithEmail:success");
-                                            FirebaseUser user = mAuth.getCurrentUser();
-                                            //updateUI(user);
-                                        } else {
-                                            // If sign in fails, display a message to the user.
-                                            Log.w(TAG, "signInWithEmail:failure", task.getException());
-                                            Toast.makeText(RegisterUser.this, "Authentication failed.",
-                                                    Toast.LENGTH_SHORT).show();
-                                            //updateUI(null);
-                                        }
-
-                                        // ...
-                                    }
-                                });
-
+                    }else{
+                        progressDialog.dismiss();
+                        password.setError("Password is not the same");
                     }
                 }else{
-                    password.setError("Password does not match.");
-                    password.requestFocus();
-
+                    progressDialog.dismiss();
+                    Toast.makeText(RegisterUser.this, "Error occured", Toast.LENGTH_SHORT);
                 }
-
-
             }
         });
 
-
     }
-
-
-
-
 
 }
 
