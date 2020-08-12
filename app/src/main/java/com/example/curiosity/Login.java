@@ -43,13 +43,13 @@ import java.util.Map;
 
 public class Login extends AppCompatActivity {
 
-    TextView registerText;
-
     private static final String TAG = "AndroidClarified";
 
     private GoogleSignInClient googleSignInClient;
     private SignInButton googleSignInButton;
     int RC_SIGN_IN=0;
+
+    private TextView registerText;
     private TextView forgotPassword;
     private EditText userEmail, password;
     private Button loginButton;
@@ -83,9 +83,9 @@ public class Login extends AppCompatActivity {
         mFirebaseAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
-        googleSignInButton = findViewById(R.id.googleLogin);
-        googleSignInButton.setColorScheme(SignInButton.COLOR_DARK);
+        //finding buttons/text through their respective ids
 
+        googleSignInButton = findViewById(R.id.googleLogin);
         userEmail = findViewById(R.id.userEmail);
         password = findViewById(R.id.password);
         loginButton = findViewById(R.id.loginButton);
@@ -152,7 +152,7 @@ public class Login extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if(!task.isSuccessful()){
                                 progressDialog.dismiss();
-                                userEmail.setError("userEmail or password is wrong");
+                                userEmail.setError("Email or password is incorrect");
                             }else{
                                 progressDialog.dismiss();
                                 Intent i = new Intent(Login.this, Dashboard.class);
@@ -188,11 +188,8 @@ public class Login extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Forgot Password");
 
-        //set linear layout
+
         LinearLayout linearLayout = new LinearLayout(this);
-
-        //views to set in dialog
-
         final EditText mEmailText = new EditText(this);
         mEmailText.setHint("Email");
         mEmailText.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
@@ -248,8 +245,7 @@ public class Login extends AppCompatActivity {
         });
     }
 
-
-    //sign in Google
+    //Google sign in
     private void signInGoogle(){
         Intent signIntent = googleSignInClient.getSignInIntent();
         startActivityForResult(signIntent, RC_SIGN_IN);
@@ -264,11 +260,11 @@ public class Login extends AppCompatActivity {
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
-                // Google Sign In was successful, authenticate with Firebase
+                // Google Sign In was successful
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account);
             } catch (ApiException e) {
-                // Google Sign In failed, update UI appropriately
+                // Google Sign In failed
                 Log.w(TAG, "Google sign in failed", e);
                 // ...
             }

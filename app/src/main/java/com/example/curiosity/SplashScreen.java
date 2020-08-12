@@ -11,6 +11,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class SplashScreen extends AppCompatActivity {
 
     private static int SPLASH_SCREEN= 5000;
@@ -25,6 +27,9 @@ public class SplashScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash);
+
+        //making sure user is logged out
+        FirebaseAuth.getInstance().signOut();
 
         //Animations
         topAnim= AnimationUtils.loadAnimation(this,R.anim.splash_anim);
@@ -44,6 +49,8 @@ public class SplashScreen extends AppCompatActivity {
                 finish();
             }
         },SPLASH_SCREEN);
+
+
 
     }
 }

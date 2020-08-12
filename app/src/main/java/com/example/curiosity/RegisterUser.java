@@ -119,7 +119,7 @@ public class RegisterUser extends AppCompatActivity {
                                         progressDialog.dismiss();
 
                                         if (!task.isSuccessful()) {
-                                            password.setError("Password must have more than 6 characters");
+                                            password.setError("Registration unsuccessful.");
                                         }else {
                                             Toast.makeText(RegisterUser.this, "Register Successful", Toast.LENGTH_LONG);
 
@@ -136,6 +136,7 @@ public class RegisterUser extends AppCompatActivity {
                                                 @Override
                                                 public void onSuccess(Void aVoid) {
                                                     Log.d(TAG, "User Created" );
+                                                    Toast.makeText(RegisterUser.this, "Account has been created!", Toast.LENGTH_SHORT).show();
 
                                                 }
                                             }).addOnFailureListener(new OnFailureListener() {
