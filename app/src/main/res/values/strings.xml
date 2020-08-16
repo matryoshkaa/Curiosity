@@ -2,4 +2,7 @@
     <string name="app_name">Curiosity</string>
     <string name="username">Username</string>
     <string name="curiosity">Curiosity</string>
+    <string name="vaccination_records">Vaccination Records</string>
+    <string name="todo">TODO</string>
+    <string name="todo">TODO</string>
 </resources>
