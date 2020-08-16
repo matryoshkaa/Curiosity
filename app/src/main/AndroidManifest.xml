@@ -11,7 +11,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
+        <activity android:name=".ScanPet"></activity>
+        <activity android:name=".TrackPet" />
+        <activity android:name=".UserProfile" />
+        <activity android:name=".Pet" />
         <activity android:name=".SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,17 +24,15 @@
         </activity>
         <activity android:name=".Login" />
         <activity android:name=".RegisterUser" />
-        <activity android:name=".Dashboard"/>
+        <activity android:name=".Dashboard" />
         <activity android:name=".MonitorAppetite" />
         <activity android:name=".ActivityLevel" />
         <activity android:name=".TrackWeight" />
-        <activity android:name=".HealthWeight"/>
+        <activity android:name=".HealthWeight" />
         <activity android:name=".CheckupRecords" />
         <activity android:name=".VaccinationRecords" />
         <activity android:name=".Settings" />
         <activity android:name=".HealthRecords" />
-
-
 
         <meta-data
             android:name="preloaded_fonts"
