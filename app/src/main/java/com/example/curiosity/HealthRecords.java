@@ -9,7 +9,7 @@ import android.widget.ImageButton;
 
 public class HealthRecords extends AppCompatActivity {
 
-//    ImageButton back_button;       //will activate this after the pages for them are made
+    ImageButton back_button;       //will activate this after the pages for them are made
     ImageButton settings_button;
 
     ImageButton vaccinationRec_button;
@@ -26,6 +26,7 @@ public class HealthRecords extends AppCompatActivity {
         checkup_button=(ImageButton)findViewById(R.id.checkup_button);
         healthWeight_button=(ImageButton)findViewById(R.id.health_weight_button);
         settings_button=(ImageButton)findViewById(R.id.settings_button);
+        back_button=(ImageButton)findViewById(R.id.back_button);
 
         vaccinationRec_button.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -55,6 +56,14 @@ public class HealthRecords extends AppCompatActivity {
             @Override
             public void onClick(View v){
                 Intent intent=new Intent(HealthRecords.this,Settings.class);
+                startActivity(intent);
+            }
+        });
+
+        back_button.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent intent=new Intent(HealthRecords.this,Dashboard.class);
                 startActivity(intent);
             }
         });

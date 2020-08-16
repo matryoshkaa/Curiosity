@@ -3,5 +3,6 @@
     <string name="username">Username</string>
     <string name="curiosity">Curiosity</string>
     <string name="vaccination_records">Vaccination Records</string>
+    <string name="pets">Pets</string>
     <string name="todo">TODO</string>
 </resources>

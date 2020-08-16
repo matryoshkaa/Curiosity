@@ -11,8 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ScanPet"></activity>
-        <activity android:name=".TrackPet" />
+        <activity android:name=".ScanPet"/>
+        <activity android:name=".TrackPet"/>
         <activity android:name=".UserProfile" />
         <activity android:name=".Pet" />
         <activity android:name=".SplashScreen">
