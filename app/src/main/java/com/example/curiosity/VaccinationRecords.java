@@ -15,7 +15,7 @@ public class VaccinationRecords extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_vacc_records);
+        setContentView(R.layout.activity_vaccination_records);
 
         back_button=(ImageButton)findViewById(R.id.back_button);
         settings_button=(ImageButton)findViewById(R.id.settings_button);
