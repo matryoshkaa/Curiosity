@@ -1,63 +1,195 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Settings"
-    android:background="#00c2cb">
+    android:background="#ffffff"
+    android:orientation="vertical"
+    tools:context=".Settings">
 
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
-        android:layout_width="413dp"
-        android:layout_height="72dp"
+        android:layout_width="428dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_marginStart="1dp"
         android:layout_marginLeft="1dp"
         android:layout_marginEnd="1dp"
         android:layout_marginRight="1dp"
-        android:layout_marginBottom="75dp"
-        android:background="#FFFFFF"
+        android:layout_marginBottom="15dp"
+        android:background="#00c2cb"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
         app:layout_constraintBottom_toTopOf="@+id/vacc_rec_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="250dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="172dp"
-        android:layout_marginLeft="172dp"
-        android:layout_marginEnd="181dp"
-        android:layout_marginRight="181dp"
-        android:fontFamily="@font/montserrat"
-        android:text="Settings"
-        android:textColor="#000000"
-        android:textSize="27sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.046"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.021" />
-
-    <ImageButton
-        android:id="@+id/back_button"
-        android:layout_width="37dp"
-        android:layout_height="39dp"
-        android:background="#00FFFFFF"
-        android:scaleType="fitCenter"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/textView"
-        app:layout_constraintHorizontal_bias="0.125"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.023"
-        app:srcCompat="@drawable/ic_back"
-        tools:ignore="VectorDrawableCompat" />
+        <TextView
+            android:layout_width="300dp"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/montserrat"
+            android:gravity="center"
+            android:layout_marginStart="1dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginEnd="1dp"
+            android:layout_marginRight="1dp"
+            android:text="Settings"
+            android:textColor="#FFFF"
+            android:textSize="24sp" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.appcompat.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/setting_linear_layout_design"
+        android:onClick="goToFeedbackAndSupport"
+        android:orientation="horizontal"
+        android:weightSum="100">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="10">
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/feedback"
+                app:tint="#00c2cb" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/feedback_support"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="90"
+            android:fontFamily="@font/montserrat"
+            android:gravity="center_vertical"
+            android:paddingLeft="15dp"
+            android:text="Feedback &amp; Support"
+            android:textColor="#000000"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/setting_linear_layout_design"
+        android:onClick="goToFaq"
+        android:orientation="horizontal"
+        android:weightSum="100">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="10">
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/faq"
+                app:tint="#00c2cb" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/faq"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="90"
+            android:fontFamily="@font/montserrat"
+            android:gravity="center_vertical"
+            android:paddingLeft="15dp"
+            android:text="FAQ"
+            android:textColor="#000000"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/setting_linear_layout_design"
+        android:onClick="goToTermsAndCondition"
+        android:orientation="horizontal"
+        android:weightSum="100">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="10">
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/terms"
+                app:tint="#00c2cb" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/terms_and_condition"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="90"
+            android:fontFamily="@font/montserrat"
+            android:gravity="center_vertical"
+            android:paddingLeft="15dp"
+            android:text="Terms &amp; Condition"
+            android:textColor="#000000"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/setting_linear_layout_design"
+        android:onClick="logout"
+        android:orientation="horizontal"
+        android:weightSum="100">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="10">
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/logout"
+                app:tint="#00c2cb" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/logout"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="90"
+            android:fontFamily="@font/montserrat"
+            android:gravity="center_vertical"
+            android:paddingLeft="15dp"
+            android:text="Logout"
+            android:textColor="#000000"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+
+</LinearLayout>
