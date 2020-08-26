@@ -15,6 +15,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -39,6 +40,7 @@ public class FeedbackAndSupport extends AppCompatActivity {
     EditText form;
 
     String username;
+    String user;
 
     FirebaseAuth mFirebaseAuth;
     FirebaseAuth.AuthStateListener mAuthListener;
@@ -54,6 +56,7 @@ public class FeedbackAndSupport extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feedback_and_support);
 
+        //firebase authentication
         mFirebaseAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         firebaseUser = mFirebaseAuth.getCurrentUser();
@@ -61,15 +64,6 @@ public class FeedbackAndSupport extends AppCompatActivity {
             userId = firebaseUser.getUid();
             documentReference = db.collection("Users").document(userId);
         }
-
-        GoogleSignInOptions gso = new GoogleSignInOptions
-                .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-
-        // Build a GoogleSignInClient with the options specified by gso.
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -80,8 +74,17 @@ public class FeedbackAndSupport extends AppCompatActivity {
             }
         };
 
+
+
         save_feedback=(Button)findViewById(R.id.save_feedback);
         form=(EditText)findViewById(R.id.form);
+
+
+        // google user retrieval
+        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
+        if (acct != null) {
+             user = acct.getDisplayName();
+        }
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -96,7 +99,10 @@ public class FeedbackAndSupport extends AppCompatActivity {
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if(documentSnapshot.exists()){
                     name = documentSnapshot.getString("User Name");
-
+                }
+                else
+                {
+                    name=user;
 
                 }
             }
@@ -120,7 +126,6 @@ public class FeedbackAndSupport extends AppCompatActivity {
             @Override
             public void onClick(View v){
 
-
                 String feedback = form.getText().toString();
 
                 Map<String, String> userMap=new HashMap<>();
@@ -142,9 +147,6 @@ public class FeedbackAndSupport extends AppCompatActivity {
                     }
                 });
 
-
-
-
             }
         });
 
@@ -155,6 +157,7 @@ public class FeedbackAndSupport extends AppCompatActivity {
     protected void onStart(){
         super.onStart();
         mFirebaseAuth.addAuthStateListener(mAuthListener);
+
     }
 
     }
