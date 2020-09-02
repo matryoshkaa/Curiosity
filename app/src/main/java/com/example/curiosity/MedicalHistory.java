@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 
-public class MonitorAppetite extends AppCompatActivity {
+public class MedicalHistory extends AppCompatActivity {
 
     ImageButton back_button;
     ImageButton settings_button;
@@ -15,7 +15,7 @@ public class MonitorAppetite extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_monitor_appetite);
+        setContentView(R.layout.activity_medical_history);
 
         back_button=(ImageButton)findViewById(R.id.back_button);
         settings_button=(ImageButton)findViewById(R.id.settings_button);
@@ -24,7 +24,7 @@ public class MonitorAppetite extends AppCompatActivity {
         settings_button.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Intent intent=new Intent(MonitorAppetite.this,Settings.class);
+                Intent intent=new Intent(MedicalHistory.this,Settings.class);
                 startActivity(intent);
             }
         });
@@ -33,7 +33,7 @@ public class MonitorAppetite extends AppCompatActivity {
         back_button.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Intent intent=new Intent(MonitorAppetite.this,HealthWeight.class);
+                Intent intent=new Intent(MedicalHistory.this,HealthWeight.class);
                 startActivity(intent);
             }
         });

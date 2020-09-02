@@ -82,7 +82,7 @@
         android:layout_marginTop="20dp"
         android:fontFamily="@font/montserrat"
         android:gravity="center"
-        android:text="Record vital details to give your pet the best chance of living a healthy life!"
+        android:text="Access and record vital details to give your pet the best chance of living a healthy life!"
         android:textColor="#2B2B2B"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -130,12 +130,12 @@
         app:layout_constraintVertical_bias="0.171" />
 
     <Button
-        android:id="@+id/activityButton"
+        android:id="@+id/medicalButton"
         android:layout_width="252dp"
         android:layout_height="60dp"
         android:background="@drawable/round_aqua_rect"
         android:fontFamily="@font/montserrat"
-        android:text="Record Activity Level"
+        android:text="Medical History"
         android:textAllCaps="false"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="@+id/background"
@@ -146,12 +146,12 @@
         app:layout_constraintVertical_bias="0.467" />
 
     <Button
-        android:id="@+id/appetiteButton"
+        android:id="@+id/bloodButton"
         android:layout_width="252dp"
         android:layout_height="60dp"
         android:background="@drawable/round_aqua_rect"
         android:fontFamily="@font/montserrat"
-        android:text="Monitor Appetite"
+        android:text="Blood Test History"
         android:textAllCaps="false"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="@+id/background"

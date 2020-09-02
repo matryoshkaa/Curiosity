@@ -17,8 +17,8 @@ public class HealthWeight extends AppCompatActivity {
     ImageButton back_button;
     ImageButton settings_button;
     Button weightButton;
-    Button activityButton;
-    Button appetiteButton;
+    Button medicalButton;
+    Button bloodButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,8 +28,8 @@ public class HealthWeight extends AppCompatActivity {
         back_button=(ImageButton)findViewById(R.id.back_button);
         settings_button=(ImageButton)findViewById(R.id.settings_button);
         weightButton = (Button)findViewById(R.id.weightButton);
-        activityButton=(Button)findViewById(R.id.activityButton);
-        appetiteButton=(Button)findViewById(R.id.appetiteButton);
+        medicalButton=(Button)findViewById(R.id.medicalButton);
+        bloodButton=(Button)findViewById(R.id.bloodButton);
 
         //on press settings button
         settings_button.setOnClickListener(new View.OnClickListener(){
@@ -59,19 +59,19 @@ public class HealthWeight extends AppCompatActivity {
         });
 //
         //log activity level button
-        activityButton.setOnClickListener(new View.OnClickListener(){
+        medicalButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Intent intent=new Intent(HealthWeight.this,ActivityLevel.class);
+                Intent intent=new Intent(HealthWeight.this, MedicalHistory.class);
                 startActivity(intent);
             }
         });
 //
         //monitor pet appetite
-        appetiteButton.setOnClickListener(new View.OnClickListener(){
+        bloodButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Intent intent=new Intent(HealthWeight.this,MonitorAppetite.class);
+                Intent intent=new Intent(HealthWeight.this, BloodTests.class);
                 startActivity(intent);
             }
         });

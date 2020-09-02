@@ -28,8 +28,8 @@
         <activity android:name=".Login" />
         <activity android:name=".RegisterUser" />
         <activity android:name=".Dashboard" />
-        <activity android:name=".MonitorAppetite" />
-        <activity android:name=".ActivityLevel" />
+        <activity android:name=".BloodTests" />
+        <activity android:name=".MedicalHistory" />
         <activity android:name=".TrackWeight" />
         <activity android:name=".HealthWeight" />
         <activity android:name=".CheckupRecords" />

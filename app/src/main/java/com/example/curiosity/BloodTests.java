@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 
-public class ActivityLevel extends AppCompatActivity {
+public class BloodTests extends AppCompatActivity {
 
     ImageButton back_button;
     ImageButton settings_button;
@@ -15,7 +15,7 @@ public class ActivityLevel extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_level);
+        setContentView(R.layout.activity_blood_tests);
 
         back_button=(ImageButton)findViewById(R.id.back_button);
         settings_button=(ImageButton)findViewById(R.id.settings_button);
@@ -24,7 +24,7 @@ public class ActivityLevel extends AppCompatActivity {
         settings_button.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Intent intent=new Intent(ActivityLevel.this,Settings.class);
+                Intent intent=new Intent(BloodTests.this,Settings.class);
                 startActivity(intent);
             }
         });
@@ -33,7 +33,7 @@ public class ActivityLevel extends AppCompatActivity {
         back_button.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Intent intent=new Intent(ActivityLevel.this,HealthWeight.class);
+                Intent intent=new Intent(BloodTests.this,HealthWeight.class);
                 startActivity(intent);
             }
         });
