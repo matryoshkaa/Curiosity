@@ -42,6 +42,7 @@ public class TrackWeight extends AppCompatActivity {
     TextView weight;
     Button save_weight;
 
+
     FirebaseAuth mFirebaseAuth;
     FirebaseAuth.AuthStateListener mAuthListener;
     private GoogleSignInClient mGoogleSignInClient;
@@ -67,6 +68,8 @@ public class TrackWeight extends AppCompatActivity {
         settings_button=(ImageButton)findViewById(R.id.settings_button);
         weight=(TextView)findViewById(R.id.weight);
         save_weight=(Button)findViewById(R.id.save_weight);
+
+
 
         //on press settings button
         settings_button.setOnClickListener(new View.OnClickListener(){

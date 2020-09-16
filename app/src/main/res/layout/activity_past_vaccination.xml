@@ -7,7 +7,6 @@
     tools:context=".PastVaccination"
     android:background="#00c2cb">
 
-
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="413dp"
@@ -16,7 +15,6 @@
         android:layout_marginLeft="1dp"
         android:layout_marginEnd="1dp"
         android:layout_marginRight="1dp"
-        android:layout_marginBottom="75dp"
         android:background="#FFFFFF"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
@@ -26,10 +24,21 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="UnknownIdInLayout" />
 
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/vaccineList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="76dp"
+        android:scrollbars="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        tools:layout_editor_absoluteX="7dp" />
+
     <TextView
         android:id="@+id/textView"
-        android:layout_width="250dp"
-        android:layout_height="40dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="172dp"
         android:layout_marginLeft="172dp"
         android:layout_marginEnd="181dp"
@@ -74,5 +83,7 @@
         app:layout_constraintVertical_bias="0.022"
         app:srcCompat="@drawable/ic_setting"
         tools:ignore="VectorDrawableCompat" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

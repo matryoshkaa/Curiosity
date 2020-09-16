@@ -45,7 +45,7 @@
     <TextView
         android:id="@+id/intro"
         android:layout_width="305dp"
-        android:layout_height="70dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="56dp"
         android:layout_marginBottom="504dp"
         android:fontFamily="@font/montserrat"

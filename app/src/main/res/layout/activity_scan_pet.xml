@@ -28,8 +28,8 @@
 
     <TextView
         android:id="@+id/scanHeader"
-        android:layout_width="85dp"
-        android:layout_height="36dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="172dp"
         android:layout_marginLeft="172dp"
         android:layout_marginEnd="181dp"

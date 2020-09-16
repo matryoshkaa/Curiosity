@@ -11,7 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".FeedbackAndSupport"></activity>
+        <activity android:name=".UpcomingVaccinations"/>
+        <activity android:name=".PastVaccination" />
+        <activity android:name=".FeedbackAndSupport" />
         <activity android:name=".Faq" />
         <activity android:name=".TermsAndCondition" />
         <activity android:name=".ScanPet" />
@@ -19,12 +21,12 @@
         <activity android:name=".UserProfile" />
         <activity android:name=".Pet" />
         <activity android:name=".SplashScreen">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
-    </activity>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".Login" />
         <activity android:name=".RegisterUser" />
         <activity android:name=".Dashboard" />

@@ -27,22 +27,23 @@
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="250dp"
-        android:layout_height="40dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="172dp"
         android:layout_marginLeft="172dp"
         android:layout_marginEnd="181dp"
         android:layout_marginRight="181dp"
         android:fontFamily="@font/montserrat"
+        android:gravity="center"
         android:text="Health and Weight"
         android:textColor="#000000"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.421"
+        app:layout_constraintHorizontal_bias="0.475"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.023" />
+        app:layout_constraintVertical_bias="0.021" />
 
     <ImageButton
         android:id="@+id/back_button"
@@ -85,6 +86,7 @@
         android:text="Access and record vital details to give your pet the best chance of living a healthy life!"
         android:textColor="#2B2B2B"
         android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/dateBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
@@ -95,8 +97,9 @@
         android:layout_height="398dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.506"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/toolbar"
+        app:layout_constraintTop_toBottomOf="@+id/dateBar"
         app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/round_rect_shape" />
 
@@ -110,7 +113,7 @@
         app:layout_constraintHorizontal_bias="0.553"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.4"
+        app:layout_constraintVertical_bias="0.428"
         app:srcCompat="@drawable/round_black_rect" />
 
     <Button
