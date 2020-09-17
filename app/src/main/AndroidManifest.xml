@@ -18,7 +18,13 @@
         <activity android:name=".FeedbackAndSupport" />
         <activity android:name=".Faq" />
         <activity android:name=".TermsAndCondition" />
-        <activity android:name=".ScanPet" />
+        <activity android:name=".ScanPet">
+            <intent-filter>
+                <action android:name="android.nfc.action.NDEF_DISCOVERED"/>
+                <data android:mimeType="text/plain"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
         <activity android:name=".TrackPet" />
         <activity android:name=".UserProfile" />
         <activity android:name=".Pet" />

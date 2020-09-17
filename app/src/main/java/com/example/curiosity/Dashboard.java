@@ -29,6 +29,7 @@ public class Dashboard extends AppCompatActivity {
         pet_button=(ImageButton)findViewById(R.id.pet_button);
         scan_button=(ImageButton)findViewById(R.id.scan_button);
 
+
         //on press settings button
         settings_button.setOnClickListener(new View.OnClickListener(){
             @Override
