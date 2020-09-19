@@ -27,8 +27,8 @@
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="250dp"
-        android:layout_height="40dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="172dp"
         android:layout_marginLeft="172dp"
         android:layout_marginEnd="181dp"
@@ -39,10 +39,10 @@
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.38"
+        app:layout_constraintHorizontal_bias="0.479"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.023" />
+        app:layout_constraintVertical_bias="0.021" />
 
     <ImageButton
         android:id="@+id/back_button"
@@ -74,57 +74,83 @@
         app:srcCompat="@drawable/ic_setting"
         tools:ignore="VectorDrawableCompat" />
 
-    <ScrollView
-        android:layout_width="409dp"
-        android:layout_height="657dp"
-        android:layout_marginStart="1dp"
-        android:layout_marginLeft="1dp"
-        android:layout_marginTop="1dp"
-        android:layout_marginEnd="1dp"
-        android:layout_marginRight="1dp"
-        android:layout_marginBottom="1dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="277dp"
+        android:layout_height="181dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginLeft="80dp"
+        android:layout_marginTop="65dp"
+        android:layout_marginEnd="77dp"
+        android:layout_marginRight="77dp"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/textView3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.423"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:srcCompat="@drawable/checkup_rec" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="337dp"
+        android:layout_height="96dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="33dp"
+        android:fontFamily="@font/montserrat"
+        android:gravity="center"
+        android:text="Regular checkups ensure that your pet is happy and healthy. Now access information pertaining to your pet's checkup records!"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/pastCheckups"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
+    <Button
+        android:id="@+id/upcomingCheckups"
+        android:layout_width="252dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginLeft="80dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="79dp"
+        android:layout_marginRight="79dp"
+        android:layout_marginBottom="84dp"
+        android:background="@drawable/round_black_rect"
+        android:fontFamily="@font/montserrat"
+        android:text="Upcoming Checkups"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pastVaccines"
+        app:layout_constraintVertical_bias="1.0" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="15sp"
-            android:layout_marginStart="20sp"
-            android:layout_marginEnd="20sp"
-            android:layout_marginLeft="20sp">
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" >
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:fontFamily="@font/montserrat"
-                    android:text="Upcoming"
-                    android:textColor="#FFFFFF"
-                    android:textSize="18sp" />
-
-                <LinearLayout
-                    android:layout_marginTop="5dp"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/whiteline">
-                </LinearLayout>
-
-            </LinearLayout>
-
-
-
-
-        </RelativeLayout>
-
-    </ScrollView>
+    <Button
+        android:id="@+id/pastCheckups"
+        android:layout_width="252dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="79dp"
+        android:layout_marginLeft="79dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="80dp"
+        android:layout_marginRight="80dp"
+        android:layout_marginBottom="200dp"
+        android:background="@drawable/round_black_rect"
+        android:fontFamily="@font/montserrat"
+        android:text="Past Checkups"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3"
+        app:layout_constraintVertical_bias="1.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

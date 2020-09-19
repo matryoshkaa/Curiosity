@@ -11,17 +11,15 @@ public class Vaccination {
     private String vaccineName;
     private String clinicName;
     private Date date;
-    private String status;
 
     public Vaccination(){
         //empty constructor
     }
 
-    public Vaccination(String vaccineName,String clinicName, Date date,Date timestamp,String status){
+    public Vaccination(String vaccineName,String clinicName, Date date){
         this.vaccineName=vaccineName;
         this.clinicName=clinicName;
         this.date=date;
-        this.status=status;
     }
 
     public void setVaccineName(String vaccineName) {
@@ -36,10 +34,6 @@ public class Vaccination {
         this.date = date;
     }
 
-    public void setStatus(String status) {
-        this.status=status;
-    }
-
     public String getVaccineName() {
         return vaccineName;
     }
@@ -50,10 +44,6 @@ public class Vaccination {
 
     public Date getDate() {
         return date;
-    }
-
-    public String getStatus() {
-        return status;
     }
 
 
