@@ -4,6 +4,8 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.NFC" />
+    <uses-sdk android:minSdkVersion="10"/>
+
 
     <application
         android:allowBackup="true"
@@ -12,9 +14,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".UpcomingCheckupRecords"></activity>
-        <activity android:name=".PastCheckupRecords" />
-        <activity android:name=".UpcomingVaccinations" />
+        <activity android:name=".UpcomingVaccinations"/>
         <activity android:name=".PastVaccination" />
         <activity android:name=".FeedbackAndSupport" />
         <activity android:name=".Faq" />
