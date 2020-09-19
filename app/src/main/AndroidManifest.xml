@@ -16,6 +16,8 @@
         android:theme="@style/AppTheme">
         <activity android:name=".UpcomingVaccinations"/>
         <activity android:name=".PastVaccination" />
+        <activity android:name=".UpcomingCheckupRecords"/>
+        <activity android:name=".PastCheckupRecords" />
         <activity android:name=".FeedbackAndSupport" />
         <activity android:name=".Faq" />
         <activity android:name=".TermsAndCondition" />
