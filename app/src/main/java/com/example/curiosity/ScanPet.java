@@ -6,10 +6,12 @@ import android.content.Intent;
 import android.nfc.NdefMessage;
 import android.nfc.NfcAdapter;
 
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 public class ScanPet extends AppCompatActivity {
 
@@ -18,17 +20,26 @@ public class ScanPet extends AppCompatActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction())) {
-            Parcelable[] rawMessages =
-                    intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
-            if (rawMessages != null) {
-                NdefMessage[] messages = new NdefMessage[rawMessages.length];
-                for (int i = 0; i < rawMessages.length; i++) {
-                    messages[i] = (NdefMessage) rawMessages[i];
-                }
-                // Process the messages array.
-            }
-        }
+//        if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction())) {
+//            System.out.print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+//            Parcelable[] rawMessages =
+//                    intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
+//
+//            if (rawMessages != null) {
+//                NdefMessage[] messages = new NdefMessage[rawMessages.length];
+//                for (int i = 0; i < rawMessages.length; i++) {
+//                    messages[i] = (NdefMessage) rawMessages[i];
+//                }
+//                // Process the messages array.
+//
+////                TextView textView = (TextView) findViewById(R.id.ScannedID);
+////                textView.setText(messages.toString());
+//
+//            }
+//        }
+
+        Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+        System.out.println(tag);
     }
 
 
