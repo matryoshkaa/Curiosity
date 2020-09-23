@@ -6,4 +6,24 @@
     <string name="pets">Pets</string>
     <string name="todo">TODO</string>
     <string name="settings">Settings</string>
+    <string name="termsAndCondition">
+Last updated [ 20/09/2020 ]\n\n Please read these Terms and Conditions carefully before using
+the website, smart collar and Curiosity mobile
+application (the "Service") operated by Alt+F4.
+Your access to and use of the Service is conditioned on your acceptance of and compliance with
+these terms. These terms apply to all visitors, users and others who access or use the service.\n\n
+
+If you wish to purchase any product or service made available through the service,
+you may be asked to supply certain information relevant to your purchase. The smart collar that comes with the service can only be purchased once the app is downloaded and cannot be obtained by any other vendors other than the original company.
+\n\n
+
+Our service allows you to save, link, store, share certain information,text or other material ("Content"). Unless otherwise indicated, the Application is our property and all source code, databases, functionality, software, website designs, audio, video, text, photographs, and graphics on the Application owned or controlled by us or licensed to us, and are protected by copyright and trademark laws\n\n
+
+We respect the intellectual property rights of others. If you believe that any material available on or through the Application infringes upon any copyright you own or control, please immediately notify our company. \n\n
+
+We reserve the right, at our sole discretion, to modify or replace these Terms at any time. If a
+revision in material is brought up, we will try to provide a notice prior to at least 30 daysWhat constitutes a material change will be determined at our sole discretion. \n\n
+If you have any questions about these Terms, please contact us.
+    </string>
+
 </resources>
