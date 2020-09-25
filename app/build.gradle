@@ -53,4 +53,6 @@ dependencies {
     implementation 'com.google.gms:google-services:4.3.3'
     //calendar
     implementation 'com.applandeo:material-calendar-view:1.4.0'
+    implementation 'com.jjoe64:graphview:4.2.2'
+
 }

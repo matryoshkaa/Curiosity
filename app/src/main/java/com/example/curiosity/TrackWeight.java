@@ -29,8 +29,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class TrackWeight extends AppCompatActivity {
@@ -41,6 +44,7 @@ public class TrackWeight extends AppCompatActivity {
     ImageButton settings_button;
     TextView weight;
     Button save_weight;
+    Button weight_analytic;
 
 
     FirebaseAuth mFirebaseAuth;
@@ -68,6 +72,7 @@ public class TrackWeight extends AppCompatActivity {
         settings_button=(ImageButton)findViewById(R.id.settings_button);
         weight=(TextView)findViewById(R.id.weight);
         save_weight=(Button)findViewById(R.id.save_weight);
+        weight_analytic=(Button)findViewById(R.id.weight_analytic);
 
 
 
@@ -89,11 +94,22 @@ public class TrackWeight extends AppCompatActivity {
             }
         });
 
+        weight_analytic.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent intent=new Intent(TrackWeight.this,AnalyseWeight.class);
+                startActivity(intent);
+            }
+        });
+
 
         db= FirebaseFirestore.getInstance();
 
         Calendar calendar= Calendar.getInstance();
-        final String currentDate= DateFormat.getDateInstance(DateFormat.FULL).format(calendar.getTime());
+       // final String currentDate= DateFormat.getDateInstance(DateFormat.FULL).format(calendar.getTime());
+
+        final String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+
 
         //firebase authentication
         mFirebaseAuth = FirebaseAuth.getInstance();
@@ -149,8 +165,8 @@ public class TrackWeight extends AppCompatActivity {
 
                 Map<String, String> userMap=new HashMap<>();
 
-                userMap.put("Date",currentDate);
-                userMap.put("Weight",petWeight);
+                userMap.put("date",currentDate);
+                userMap.put("weight",petWeight);
 
                 //query= db.collection("Users").whereEqualTo("User Name", name);
 
