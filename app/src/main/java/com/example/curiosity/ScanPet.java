@@ -21,6 +21,7 @@ public class ScanPet extends AppCompatActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+
         if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction())) {
             Parcelable[] rawMessages =
                     intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
@@ -29,7 +30,9 @@ public class ScanPet extends AppCompatActivity {
                 for (int i = 0; i < rawMessages.length; i++) {
                     messages[i] = (NdefMessage) rawMessages[i];
                 }
-                // Process the messages array.
+                for(int i=0; i<messages.length; i++){
+                    System.out.println(messages[i]);
+                }
             }
         }
     }
