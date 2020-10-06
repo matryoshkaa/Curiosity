@@ -10,6 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -60,11 +62,31 @@ public class AddPet extends AppCompatActivity {
                 fStore.collection("Users")
                         .document(userid);
 
+
+
         //pulling data from db
         documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
                 numberofpets = documentSnapshot.getString("Number of Pets");
+            }
+        });
+        //MaterialDatePicker
+        MaterialDatePicker.Builder builder = MaterialDatePicker.Builder.datePicker();
+        builder.setTitleText("Select a date");
+        final MaterialDatePicker materialDatePicker = builder.build();
+        //calendar
+        dob.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                materialDatePicker.show(getSupportFragmentManager(), "DATE_PICKER");
+            }
+        });
+
+        materialDatePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener() {
+            @Override
+            public void onPositiveButtonClick(Object selection) {
+                dob.setText(materialDatePicker.getHeaderText());
             }
         });
         addpetButton.setOnClickListener(new View.OnClickListener() {
@@ -120,5 +142,7 @@ public class AddPet extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+
     }
 }
