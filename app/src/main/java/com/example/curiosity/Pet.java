@@ -1,13 +1,12 @@
 package com.example.curiosity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -16,6 +15,7 @@ public class Pet extends AppCompatActivity {
     ImageButton back_button;
     ImageButton settings_button;
     FloatingActionButton addPetButton;
+    Button temporarynfcButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,6 +24,7 @@ public class Pet extends AppCompatActivity {
         back_button=(ImageButton)findViewById(R.id.back_button);
         settings_button=(ImageButton)findViewById(R.id.settings_button);
         addPetButton=findViewById(R.id.addpettbutton);
+        temporarynfcButton=findViewById(R.id.temporaryNFCButton);
         //on press settings button
         settings_button.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -50,6 +51,14 @@ public class Pet extends AppCompatActivity {
                 startActivity(intent);
             }
 
+        });
+
+        temporarynfcButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(Pet.this, NFCPetDetails.class);
+                startActivity(intent);
+            }
         });
     }
 }
