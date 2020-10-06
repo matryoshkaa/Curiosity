@@ -96,6 +96,7 @@ public class Pet extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
         temporarynfcButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,4 +108,5 @@ public class Pet extends AppCompatActivity {
 
 
         }
+    }
 
