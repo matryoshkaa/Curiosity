@@ -1,8 +1,5 @@
 package com.example.curiosity;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,6 +11,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -123,10 +122,10 @@ public class RegisterUser extends AppCompatActivity {
                                             userId = mAuth.getCurrentUser().getUid();
                                             documentReference = db.collection("Users").document(userId);
 
-
                                             Map<String, String> appuser = new HashMap<>();
                                             appuser.put("Email", userEmail.getText().toString());
                                             appuser.put("User Name", userName.getText().toString());
+                                            appuser.put("Number of Pets", "0");
 
                                             documentReference.set(appuser).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                 @Override
