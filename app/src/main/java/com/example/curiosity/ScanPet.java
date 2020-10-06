@@ -114,29 +114,25 @@ public class ScanPet extends AppCompatActivity {
             };
             Intent intent = getIntent();
             String id = getNdefMessages(intent);
-
+            System.out.println(id);
             petId = (TextView) findViewById(R.id.ScannedID);
             petId.setText(getNdefMessages(intent));
 
-            DocumentReference documentReference = fStore.collection("Users").document(userid).collection("Pets")
-                    .document(id);
+                DocumentReference documentReference = fStore.collection("Users").document(userid).collection("Pets")
+                        .document(id);
+                documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
+                        petname.setText(documentSnapshot.getString("name"));
+                        pettype.setText(documentSnapshot.getString("Pet Type"));
+                        petbreed.setText(documentSnapshot.getString("Pet Breed"));
 
+                        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+                        String strDate = dateFormat.format(documentSnapshot.getDate("DOB"));
+                        petdob.setText(strDate);
 
-            documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
-                @Override
-                public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
-                    petname.setText(documentSnapshot.getString("name"));
-                    pettype.setText(documentSnapshot.getString("Pet Type"));
-                    petbreed.setText(documentSnapshot.getString("Pet Breed"));
-
-                    DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
-                    String strDate = dateFormat.format(documentSnapshot.getDate("DOB"));
-                    petdob.setText(strDate);
-
-                }
-            });
-
-
+                    }
+                });
 
 
 ////////////////////////////////////////////////////////////////
