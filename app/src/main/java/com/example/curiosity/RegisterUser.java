@@ -3,10 +3,8 @@ package com.example.curiosity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.net.nsd.NsdManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -23,11 +21,9 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -73,7 +69,7 @@ public class RegisterUser extends AppCompatActivity {
 
 
         //Getting variable values using their IDs
-        userName = (EditText)findViewById(R.id.userName);
+        userName = (EditText)findViewById(R.id.userProfileName);
         userEmail = (EditText)findViewById(R.id.userEmail);
         password = (EditText) findViewById(R.id.password);
         confirmPass = (EditText) findViewById(R.id.confirmPass);

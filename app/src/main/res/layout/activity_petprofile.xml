@@ -4,9 +4,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UserProfile"
+    tools:context=".PetProfile"
     android:background="#00c2cb">
 
+
+    <Button
+        android:id="@+id/deletepet"
+        android:layout_width="294dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="157dp"
+        android:layout_marginLeft="157dp"
+        android:layout_marginEnd="157dp"
+        android:layout_marginRight="157dp"
+        android:layout_marginBottom="188dp"
+        android:text="Delete Pet"
+        app:backgroundTint="#DC7575"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -21,39 +37,41 @@
         android:theme="?attr/actionBarTheme"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.244"
+        app:layout_constraintHorizontal_bias="0.133"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
-        android:id="@+id/profileHeader"
+        android:id="@+id/addpetHeader"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="172dp"
-        android:layout_marginLeft="172dp"
+        android:layout_height="39dp"
+        android:layout_marginStart="160dp"
+        android:layout_marginLeft="160dp"
         android:layout_marginEnd="181dp"
         android:layout_marginRight="181dp"
         android:fontFamily="@font/montserrat"
-        android:gravity="center"
-        android:text="User Profile"
+        android:text="Add Pet"
         android:textColor="#000000"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.441"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.02" />
+        app:layout_constraintVertical_bias="0.021" />
 
     <ImageButton
         android:id="@+id/back_button"
         android:layout_width="37dp"
         android:layout_height="39dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
         android:background="#00FFFFFF"
+        android:contentDescription="@string/todo"
         android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/profileHeader"
+        app:layout_constraintEnd_toStartOf="@+id/petHeader"
         app:layout_constraintHorizontal_bias="0.125"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -65,32 +83,35 @@
         android:id="@+id/settings_button"
         android:layout_width="63dp"
         android:layout_height="34dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginRight="40dp"
         android:background="#00FFFFFF"
+        android:contentDescription="TODO"
         android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/toolbar"
-        app:layout_constraintHorizontal_bias="0.601"
-        app:layout_constraintStart_toEndOf="@+id/profileHeader"
+        app:layout_constraintHorizontal_bias="0.673"
+        app:layout_constraintStart_toEndOf="@+id/petHeader"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.021"
+        app:layout_constraintVertical_bias="0.02"
         app:srcCompat="@drawable/ic_setting"
         tools:ignore="VectorDrawableCompat" />
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/userProfilePicture"
+        android:id="@+id/petProfilePicture"
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:layout_marginStart="32dp"
         android:layout_marginLeft="32dp"
         android:layout_marginTop="120dp"
-        android:src="@drawable/profilepicture"
+        android:src="@drawable/peticon"
         app:civ_border_color="#FF000000"
         app:civ_border_width="2dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/userProfileName"
+        android:id="@+id/petProfileName"
         android:layout_width="158dp"
         android:layout_height="92dp"
         android:layout_marginStart="32dp"
@@ -98,75 +119,45 @@
         android:layout_marginEnd="48dp"
         android:layout_marginRight="48dp"
         android:fontFamily="@font/roboto_slab_bold"
-        android:text="User Name"
+        android:text="Pet Name"
         android:textAllCaps="false"
         android:textColor="#FFFFFF"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/userProfilePicture"
+        app:layout_constraintStart_toEndOf="@+id/petProfilePicture"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.231" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/phoneTextField"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="300dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:hint="Phone Number"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="8dp">
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/phoneNumber"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:inputType="text"
-            />
-    </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/emailTextField"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="400dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:hint="Email"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="8dp">
+    <Button
+        android:id="@+id/markPetAsLost"
+        android:layout_width="294dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="157dp"
+        android:layout_marginLeft="157dp"
+        android:layout_marginEnd="157dp"
+        android:layout_marginRight="157dp"
+        android:layout_marginBottom="388dp"
+        android:text="Mark Pet As Lost"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:inputType="text"
-            />
-    </com.google.android.material.textfield.TextInputLayout>
+    <Button
+        android:id="@+id/transferOwnership"
+        android:layout_width="294dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="157dp"
+        android:layout_marginLeft="157dp"
+        android:layout_marginEnd="157dp"
+        android:layout_marginRight="157dp"
+        android:layout_marginBottom="288dp"
+        android:text="Transfer Ownership"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/dobTextField"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="500dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:hint="Date of Birth"
-        android:clickable="true"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="8dp">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/dob"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:inputType="text"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            />
-    </com.google.android.material.textfield.TextInputLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

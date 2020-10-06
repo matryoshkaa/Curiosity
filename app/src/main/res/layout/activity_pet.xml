@@ -8,6 +8,7 @@
     android:background="#00c2cb">
 
 
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="454dp"
@@ -77,4 +78,92 @@
         tools:ignore="VectorDrawableCompat"
         android:contentDescription="TODO" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addpettbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_margin="16dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginBottom="32dp"
+        android:backgroundTint="#FFFF"
+        android:contentDescription=""
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_baseline_add_24"
+        tools:ignore="VectorDrawableCompat" />
+
+    <ImageView
+        android:id="@+id/peticon1"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginLeft="60dp"
+        android:layout_marginTop="140dp"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/peticon" />
+
+    <ImageView
+        android:id="@+id/peticon2"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginTop="140dp"
+        android:layout_marginEnd="60dp"
+        android:layout_marginRight="60dp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/peticon" />
+
+    <ImageView
+        android:id="@+id/peticon3"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginLeft="60dp"
+        android:layout_marginTop="316dp"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/peticon" />
+
+    <ImageView
+        android:id="@+id/peticon4"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginTop="316dp"
+        android:layout_marginEnd="60dp"
+        android:layout_marginRight="60dp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/peticon" />
+
+    <ImageView
+        android:id="@+id/peticon5"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginLeft="60dp"
+        android:layout_marginTop="504dp"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/peticon" />
+
+
+    <ImageView
+        android:id="@+id/peticon6"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginTop="504dp"
+        android:layout_marginEnd="60dp"
+        android:layout_marginRight="60dp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/peticon" />
 </androidx.constraintlayout.widget.ConstraintLayout>
