@@ -146,6 +146,7 @@ for (int i = 0;i<6;i++) {
                 startActivity(intent);
             }
         });
+
         temporarynfcButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -211,4 +212,5 @@ for (int i = 0;i<6;i++) {
 
 
         }
+    }
 

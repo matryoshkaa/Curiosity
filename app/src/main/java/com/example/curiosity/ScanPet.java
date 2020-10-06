@@ -30,10 +30,13 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.annotations.Nullable;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -41,33 +44,27 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.sql.SQLOutput;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 public class ScanPet extends AppCompatActivity {
 
-    private static final String TAG = "-----------------------";
-
-    FirebaseAuth mFirebaseAuth;
-    FirebaseAuth.AuthStateListener mAuthListener;
-    private GoogleSignInClient mGoogleSignInClient;
-
-    DocumentReference documentReference;
-    String userId, name;
+    FirebaseAuth fAuth; //to get user id------------------------
+    FirebaseFirestore fStore; //for data retrieval--------------
+    String userid;
 
     private FirebaseFirestore db;
-    FirebaseUser firebaseUser;
-    CollectionReference ref;
 
-    Query query;
-
-    String username;
-    String user;
 
     ImageButton back_button;
     ImageButton settings_button;
 
+    TextView petname;
+    TextView pettype;
+    TextView petbreed;
+    TextView petdob;
 
-
-    TextView mText;
+    TextView petId;
     NfcAdapter mAdapter;
     PendingIntent mPendingIntent;
     IntentFilter mFilters[];
@@ -79,26 +76,20 @@ public class ScanPet extends AppCompatActivity {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_scan_pet);
 
-            db = FirebaseFirestore.getInstance();
+            back_button = (ImageButton) findViewById(R.id.back_button);
+            settings_button = (ImageButton) findViewById(R.id.settings_button);
+            petname = findViewById(R.id.petName);
+            pettype = findViewById(R.id.petType);
+            petbreed = findViewById(R.id.petBreed);
+            petdob = findViewById(R.id.petDOB);
+            petId = (TextView) findViewById(R.id.ScannedID);
+
+            fAuth = FirebaseAuth.getInstance();
+            fStore = FirebaseFirestore.getInstance();
+
+            userid = fAuth.getCurrentUser().getUid();
 
 
-            mFirebaseAuth = FirebaseAuth.getInstance();
-            firebaseUser = mFirebaseAuth.getCurrentUser();
-            if (firebaseUser != null) {
-                userId = firebaseUser.getUid();
-                documentReference = db.collection("Users").document(userId);
-            }
-
-            mAuthListener = new FirebaseAuth.AuthStateListener() {
-                @Override
-                public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                    if (mFirebaseAuth.getCurrentUser() == null) {
-                        startActivity(new Intent(ScanPet.this, Login.class));
-                    }
-                }
-            };
-
-            mText = (TextView) findViewById(R.id.ScannedID);
 
             mAdapter = NfcAdapter.getDefaultAdapter(this);
             mPendingIntent = PendingIntent.getActivity(this, 0,
@@ -123,45 +114,28 @@ public class ScanPet extends AppCompatActivity {
             };
             Intent intent = getIntent();
             String id = getNdefMessages(intent);
+            System.out.println(id);
+            petId = (TextView) findViewById(R.id.ScannedID);
+            petId.setText(getNdefMessages(intent));
 
-            mText = (TextView) findViewById(R.id.ScannedID);
-            mText.setText(getNdefMessages(intent));
+                DocumentReference documentReference = fStore.collection("Users").document(userid).collection("Pets")
+                        .document(id);
+                documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
+                        petname.setText(documentSnapshot.getString("name"));
+                        pettype.setText(documentSnapshot.getString("Pet Type"));
+                        petbreed.setText(documentSnapshot.getString("Pet Breed"));
 
-
-            // google user retrieval
-            GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
-            if (acct != null) {
-                user = acct.getDisplayName();
-            }
-
-            documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                @Override
-                public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    if (documentSnapshot.exists()) {
-                        name = documentSnapshot.getString("User Name");
-                    } else {
-                        name = user;
+                        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+                        String strDate = dateFormat.format(documentSnapshot.getDate("DOB"));
+                        petdob.setText(strDate);
 
                     }
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Log.d(TAG, "FAILURE " + e.getMessage());
-                }
-            });
-
-            ref=db.collection("Users")
-                    .document(userId)
-                    .collection("Pets")
-                    .document("Berry")
-                    .collection("Check Up Records");
+                });
 
 
-            back_button = (ImageButton) findViewById(R.id.back_button);
-            settings_button = (ImageButton) findViewById(R.id.settings_button);
-
-
+////////////////////////////////////////////////////////////////
             //on press settings button
             settings_button.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -218,8 +192,8 @@ public class ScanPet extends AppCompatActivity {
     public void onNewIntent(Intent intent){
             super.onNewIntent(intent);
         Log.i("Foreground dispatch", "Discovered tag with intent:" + intent);
-        mText = (TextView) findViewById(R.id.ScannedID);
-        mText.setText(getNdefMessages(intent));
+        petId = (TextView) findViewById(R.id.ScannedID);
+        petId.setText(getNdefMessages(intent));
         //System.out.println(getNdefMessages(intent));
     }
 
