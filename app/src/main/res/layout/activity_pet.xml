@@ -142,6 +142,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/peticon" />
 
+
     <ImageView
         android:id="@+id/peticon5"
         android:layout_width="120dp"
@@ -153,7 +154,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/peticon" />
-
 
     <ImageView
         android:id="@+id/peticon6"
@@ -179,4 +179,107 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.068"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/numofpets"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:layout_marginLeft="6dp"
+        android:layout_marginTop="12dp"
+        android:text="TextView"
+        android:visibility="invisible"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+    <TextView
+        android:id="@+id/petname1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="103dp"
+        android:layout_marginLeft="103dp"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/roboto_slab_bold"
+        android:text="Pet Name"
+        android:textColor="#FFFFFF"
+        android:visibility="invisible"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/peticon1" />
+
+    <TextView
+        android:id="@+id/petname2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="103dp"
+        android:layout_marginRight="103dp"
+        android:fontFamily="@font/roboto_slab_bold"
+        android:text="Pet Name"
+        android:textColor="#FFFFFF"
+        android:visibility="invisible"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/peticon2" />
+
+    <TextView
+        android:id="@+id/petname4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="103dp"
+        android:layout_marginRight="103dp"
+        android:fontFamily="@font/roboto_slab_bold"
+        android:text="Pet Name"
+        android:textColor="#FFFFFF"
+        android:visibility="invisible"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/peticon4" />
+
+    <TextView
+        android:id="@+id/petname6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="103dp"
+        android:layout_marginRight="103dp"
+        android:fontFamily="@font/roboto_slab_bold"
+        android:text="Pet Name"
+        android:textColor="#FFFFFF"
+        android:visibility="invisible"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/peticon6" />
+
+    <TextView
+        android:id="@+id/petname3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="103dp"
+        android:layout_marginLeft="103dp"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/roboto_slab_bold"
+        android:text="Pet Name"
+        android:textColor="#FFFFFF"
+        android:visibility="invisible"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/peticon3" />
+
+    <TextView
+        android:id="@+id/petname5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="93dp"
+        android:layout_marginLeft="93dp"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/roboto_slab_bold"
+        android:text="Pet Name"
+        android:textColor="#FFFFFF"
+        android:visibility="invisible"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/peticon5" />
 </androidx.constraintlayout.widget.ConstraintLayout>
