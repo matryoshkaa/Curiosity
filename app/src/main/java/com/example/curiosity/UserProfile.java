@@ -1,22 +1,130 @@
 package com.example.curiosity;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
+import com.google.android.material.snackbar.Snackbar;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.SetOptions;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import android.view.View.OnKeyListener;
+import android.view.KeyEvent;
+import android.widget.Toast;
+
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class UserProfile extends AppCompatActivity {
 
+
     ImageButton back_button;
     ImageButton settings_button;
+
+    FirebaseAuth fAuth; //to get user id
+    FirebaseFirestore fStore; //for data retrieval
+    String userid;
+
+    TextView fullname;
+    TextView phone;
+    TextView email;
+    TextView dob;
+    ImageView profilePic;
+    public Uri imageUri;
+    private FirebaseStorage storage;
+    private StorageReference storageReference;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
+        fullname = findViewById(R.id.userProfileName);
+        phone = findViewById(R.id.phoneNumber);
+        email = findViewById(R.id.email);
+        dob = findViewById(R.id.dob);
+        profilePic = findViewById(R.id.userProfilePicture);
 
+        fAuth = FirebaseAuth.getInstance();
+        fStore = FirebaseFirestore.getInstance();
+
+
+        userid = fAuth.getCurrentUser().getUid();
+        DocumentReference documentReference = fStore.collection("Users").document(userid);
+
+
+        //MaterialDatePicker
+        MaterialDatePicker.Builder builder = MaterialDatePicker.Builder.datePicker();
+        builder.setTitleText("Select a date");
+        final MaterialDatePicker materialDatePicker = builder.build();
+        //calendar
+        dob.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                materialDatePicker.show(getSupportFragmentManager(), "DATE_PICKER");
+            }
+        });
+
+        materialDatePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener() {
+            @Override
+            public void onPositiveButtonClick(Object selection) {
+                dob.setText(materialDatePicker.getHeaderText());
+                Map<String, String> appuser = new HashMap<>();
+                appuser.put("DOB", dob.getText().toString());
+
+
+                documentReference.set(appuser, SetOptions.merge());
+            }
+        });
+
+        //pulling data from db
+        documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
+                fullname.setText(documentSnapshot.getString("User name"));
+                email.setText(documentSnapshot.getString("Email"));
+                String phoneExists = documentSnapshot.getString("Phone");
+                if(TextUtils.isEmpty(phoneExists)){}else{phone.setText(documentSnapshot.getString("Phone")); }
+                String dobExists = documentSnapshot.getString("DOB");
+                if(TextUtils.isEmpty(dobExists)){}else{dob.setText(documentSnapshot.getString("DOB"));}
+            }
+        });
+
+
+
+        //back button
         back_button=(ImageButton)findViewById(R.id.back_button);
         settings_button=(ImageButton)findViewById(R.id.settings_button);
 
@@ -37,5 +145,103 @@ public class UserProfile extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+
+        //on pressing the enter key
+        phone.setOnKeyListener(new OnKeyListener() {
+            public boolean onKey(View view, int keyCode, KeyEvent keyevent) {
+                //If the keyevent is a key-down event on the "enter" button
+                if ((keyevent.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+
+                    Map<String, String> appuser = new HashMap<>();
+                    appuser.put("Phone", phone.getText().toString());
+
+
+                    documentReference.set(appuser, SetOptions.merge());
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        email.setOnKeyListener(new OnKeyListener() {
+            public boolean onKey(View view, int keyCode, KeyEvent keyevent) {
+                //If the keyevent is a key-down event on the "enter" button
+                if ((keyevent.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+
+                    Map<String, String> appuser = new HashMap<>();
+                    appuser.put("Email", email.getText().toString());
+
+
+                    documentReference.set(appuser, SetOptions.merge());
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        profilePic = findViewById(R.id.userProfilePicture);
+        storage = FirebaseStorage.getInstance();
+        storageReference= storage.getReference();
+
+        profilePic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                choosePicture();
+            }
+        });
+
     }
+
+    private void choosePicture() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, 1);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==1 &&resultCode==RESULT_OK && data!=null && data.getData()!= null){
+            imageUri = data.getData();
+            profilePic.setImageURI(imageUri);
+            uploadPicture();
+        }
+
+    }
+
+    private void uploadPicture() {
+        final ProgressDialog pd = new ProgressDialog(this);
+        pd.setTitle("Uploading Image...");
+        pd.show();
+
+        final String randomKey = UUID.randomUUID().toString();
+        StorageReference riversRef = storageReference.child("images/" +userid +".jpg");
+
+        riversRef.putFile(imageUri)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        pd.dismiss();
+                        Snackbar.make(findViewById(android.R.id.content), "Image Uploaded.", Snackbar.LENGTH_LONG).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        pd.dismiss();
+                        Toast.makeText(getApplicationContext(), "Failed To Upload", Toast.LENGTH_LONG).show();
+                    }
+                })
+                .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onProgress(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
+                        double progressPercent = (100.00 * taskSnapshot.getBytesTransferred()/taskSnapshot.getTotalByteCount());
+                        pd.setMessage("Percentage: " + (int) progressPercent + "%");
+                    }
+                });
+
+    }
+
 }
