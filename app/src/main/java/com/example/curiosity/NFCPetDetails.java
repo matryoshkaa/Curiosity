@@ -7,18 +7,17 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.SetOptions;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-
-public class AddPet extends AppCompatActivity {
+public class NFCPetDetails extends AppCompatActivity {
 
     ImageButton back_button;
     ImageButton settings_button;
@@ -30,58 +29,47 @@ public class AddPet extends AppCompatActivity {
     TextView petname;
     TextView pettype;
     TextView petbreed;
-    TextView dob;
+    TextView petdob;
     Button addpetButton;
 
     private FirebaseFirestore db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_addpet);
+        setContentView(R.layout.activity_nfcpetdetails);
 
         back_button=(ImageButton)findViewById(R.id.back_button);
         settings_button=(ImageButton)findViewById(R.id.settings_button);
         petname = findViewById(R.id.petName);
         pettype = findViewById(R.id.petType);
         petbreed = findViewById(R.id.petBreed);
-        dob = findViewById(R.id.petDOB);
+        petdob = findViewById(R.id.petDOB);
         addpetButton =findViewById(R.id.addpetButton);
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
 
 
         userid = fAuth.getCurrentUser().getUid();
-        DocumentReference documentReference =
-                fStore.collection("Users")
-                        .document(userid);
+        DocumentReference documentReference = fStore.collection("Users").document(userid).collection("Pets")
+                .document("Pet");
 
-
-
-        addpetButton.setOnClickListener(new View.OnClickListener() {
+        //pulling data from db
+        documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
             @Override
-            public void onClick(View v) {
-                Map<String, String> petMap =new HashMap<>();
-                String uniqueId = UUID.randomUUID().toString();
-                petMap.put("Pet ID",uniqueId);
-                petMap.put("Pet Name",petname.getText().toString());
-                petMap.put("Pet Type",pettype.getText().toString());
-                petMap.put("Pet Breed",petbreed.getText().toString());
-                petMap.put("Pet DOB",dob.getText().toString());
-                DocumentReference documentReference2 =
-                        fStore.collection("Users")
-                                .document(userid)
-                                .collection("Pets2")
-                                .document("Pet");
-                documentReference2.set(petMap, SetOptions.merge());
-                Intent intent=new Intent(AddPet.this,PetProfile.class);
-                startActivity(intent);
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
+                petname.setText(documentSnapshot.getString("Pet Name"));
+                pettype.setText(documentSnapshot.getString("Pet Type"));
+                petbreed.setText(documentSnapshot.getString("Pet Breed"));
+                petdob.setText(documentSnapshot.getString("Pet DOB"));
+
             }
         });
+
         //on press settings button
         settings_button.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Intent intent=new Intent(AddPet.this,Settings.class);
+                Intent intent=new Intent(NFCPetDetails.this,Settings.class);
                 startActivity(intent);
             }
         });
@@ -90,7 +78,7 @@ public class AddPet extends AppCompatActivity {
         back_button.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Intent intent=new Intent(AddPet.this,Pet.class);
+                Intent intent=new Intent(NFCPetDetails.this,Pet.class);
                 startActivity(intent);
             }
         });
