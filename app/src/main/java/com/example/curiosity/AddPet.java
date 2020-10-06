@@ -7,11 +7,15 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.SetOptions;
 
 import java.util.HashMap;
@@ -33,6 +37,7 @@ public class AddPet extends AppCompatActivity {
     TextView dob;
     Button addpetButton;
 
+    String numberofpets;
     private FirebaseFirestore db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,11 +60,27 @@ public class AddPet extends AppCompatActivity {
                 fStore.collection("Users")
                         .document(userid);
 
-
-
+        //pulling data from db
+        documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
+                numberofpets = documentSnapshot.getString("Number of Pets");
+            }
+        });
         addpetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //update number of pets
+                Map<String, String> userMap =new HashMap<>();
+                int nop = Integer.parseInt(numberofpets) + 1;
+
+                userMap.put("Number of Pets", Integer.toString(nop));
+                DocumentReference documentReference3 =
+                        fStore.collection("Users")
+                                .document(userid);
+                documentReference3.set(userMap, SetOptions.merge());
+
+                //add to pet collection
                 Map<String, String> petMap =new HashMap<>();
                 String uniqueId = UUID.randomUUID().toString();
                 petMap.put("Pet ID",uniqueId);
@@ -67,12 +88,17 @@ public class AddPet extends AppCompatActivity {
                 petMap.put("Pet Type",pettype.getText().toString());
                 petMap.put("Pet Breed",petbreed.getText().toString());
                 petMap.put("Pet DOB",dob.getText().toString());
+
+
                 DocumentReference documentReference2 =
                         fStore.collection("Users")
                                 .document(userid)
-                                .collection("Pets2")
-                                .document("Pet");
+                                .collection("Pets")
+                                .document("Pet"+nop);
                 documentReference2.set(petMap, SetOptions.merge());
+
+
+
                 Intent intent=new Intent(AddPet.this,PetProfile.class);
                 startActivity(intent);
             }
