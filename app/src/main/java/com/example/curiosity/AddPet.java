@@ -119,6 +119,7 @@ public class AddPet extends AppCompatActivity {
                                 .document("Pet"+nop);
                 documentReference2.set(petMap, SetOptions.merge());
 
+                PetProfile.petid=Integer.toString(nop);
 
 
                 Intent intent=new Intent(AddPet.this,PetProfile.class);
