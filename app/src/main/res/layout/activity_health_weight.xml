@@ -154,7 +154,7 @@
         android:layout_height="60dp"
         android:background="@drawable/round_aqua_rect"
         android:fontFamily="@font/montserrat"
-        android:text="AI input"
+        android:text="Symptom Logger"
         android:textAllCaps="false"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="@+id/background"
