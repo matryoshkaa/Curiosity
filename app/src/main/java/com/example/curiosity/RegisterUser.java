@@ -22,6 +22,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -141,6 +142,15 @@ public class RegisterUser extends AppCompatActivity {
                                                 }
                                             });
 
+                                            //adding "PetDocNames" document to "Pet" collection so user can see their pets
+                                            // insert data in firestore
+                                            documentReference = db.collection("Users").document(userId).collection("Pets").document("PetDocNames");
+
+                                            Map<String, String> PetDocNames = new HashMap<>();
+                                            for (int i = 1; i <= 6 ; i++)
+                                            PetDocNames.put("PetDocName"+i, "");
+
+                                            documentReference.set(PetDocNames, SetOptions.merge());
                                         }
                                     }
 
