@@ -76,8 +76,6 @@ public class TransferPet extends AppCompatActivity {
                 DocumentReference documentReference;
 
                 //CHANGES TO YOUR DATABASE RECORDS
-                //get Pet Data
-
 
                 //reduce your number of pets by 1
                 documentReference = fStore.collection("Users").document(yuserid);
