@@ -56,21 +56,19 @@ public class AddPet extends AppCompatActivity {
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
 
-
+        //getting docreference
         userid = fAuth.getCurrentUser().getUid();
-        DocumentReference documentReference =
-                fStore.collection("Users")
-                        .document(userid);
-
-
+        DocumentReference documentReference = fStore.collection("Users").document(userid);
 
         //pulling data from db
         documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
+                //getting number of pets from the db and setting it to variable
                 numberofpets = documentSnapshot.getString("Number of Pets");
             }
         });
+
         //MaterialDatePicker
         MaterialDatePicker.Builder builder = MaterialDatePicker.Builder.datePicker();
         builder.setTitleText("Select a date");
@@ -89,18 +87,17 @@ public class AddPet extends AppCompatActivity {
                 dob.setText(materialDatePicker.getHeaderText());
             }
         });
+
         addpetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 //update number of pets
                 Map<String, String> userMap =new HashMap<>();
                 int nop = Integer.parseInt(numberofpets) + 1;
-
                 userMap.put("Number of Pets", Integer.toString(nop));
-                DocumentReference documentReference3 =
-                        fStore.collection("Users")
-                                .document(userid);
-                documentReference3.set(userMap, SetOptions.merge());
+                DocumentReference documentReference = fStore.collection("Users").document(userid);
+                documentReference.set(userMap, SetOptions.merge());
 
                 //add to pet collection
                 Map<String, String> petMap =new HashMap<>();
@@ -110,19 +107,24 @@ public class AddPet extends AppCompatActivity {
                 petMap.put("Pet Type",pettype.getText().toString());
                 petMap.put("Pet Breed",petbreed.getText().toString());
                 petMap.put("Pet DOB",dob.getText().toString());
+                petMap.put("Status","Found");
 
-
-                DocumentReference documentReference2 =
-                        fStore.collection("Users")
+                documentReference = fStore.collection("Users")
                                 .document(userid)
                                 .collection("Pets")
-                                .document("Pet"+nop);
-                documentReference2.set(petMap, SetOptions.merge());
+                                .document(""+uniqueId);
+                documentReference.set(petMap, SetOptions.merge());
 
-                PetProfile.petid=Integer.toString(nop);
+                //updating petdocnames
+                documentReference = fStore.collection("Users")
+                        .document(userid)
+                        .collection("Pets")
+                        .document("PetDocNames");
+                Map<String, String> petDocName =new HashMap<>();
+                petDocName.put("PetDocName"+nop,uniqueId);
+                documentReference.set(petDocName, SetOptions.merge());
 
-
-                Intent intent=new Intent(AddPet.this,PetProfile.class);
+                Intent intent=new Intent(AddPet.this,Pet.class);
                 startActivity(intent);
             }
         });
