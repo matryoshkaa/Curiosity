@@ -1,12 +1,11 @@
 package com.example.curiosity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class Dashboard extends AppCompatActivity {
 
@@ -17,6 +16,7 @@ public class Dashboard extends AppCompatActivity {
     ImageButton track_button;
     ImageButton pet_button;
 
+    String currentPet; //current selected pet from settings
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
