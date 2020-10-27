@@ -19,9 +19,12 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.SetOptions;
+
+import java.util.HashMap;
 
 
-public class Pet extends AppCompatActivity {
+public class PetFromSettings extends AppCompatActivity {
 
     private static final String TAG = "MyActivity";
     ImageButton back_button;
@@ -45,7 +48,7 @@ public class Pet extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pet);
+        setContentView(R.layout.activity_pet_from_settings);
 
         back_button = (ImageButton) findViewById(R.id.back_button);
         settings_button = (ImageButton) findViewById(R.id.settings_button);
@@ -86,7 +89,7 @@ public class Pet extends AppCompatActivity {
         userid = fAuth.getCurrentUser().getUid();
 
 
-        intent = new Intent(Pet.this, PetProfile.class);
+        intent = new Intent(PetFromSettings.this, Dashboard.class);
 
         //pulling data from db and displaying pets
         DocumentReference documentReference = fStore.collection("Users").document(userid);
@@ -110,10 +113,15 @@ public class Pet extends AppCompatActivity {
             }
         });
         //peticons onclicks
+        DocumentReference doc = fStore.collection("Users").document(userid);
+        HashMap<String, String> updateCurrentPet = new HashMap<>();
 
         peticon1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                updateCurrentPet.put("Current Pet", petIdArray[0]);
+                doc.set(updateCurrentPet, SetOptions.merge());
 
                 intent.putExtra("petname", petNameArray[0].getText().toString());
                 intent.putExtra("petid", petIdArray[0]);
@@ -125,6 +133,9 @@ public class Pet extends AppCompatActivity {
         peticon2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                updateCurrentPet.put("Current Pet", petIdArray[1]);
+                doc.set(updateCurrentPet, SetOptions.merge());
 
                 intent.putExtra("petname", petNameArray[1].getText().toString());
                 intent.putExtra("petid", petIdArray[1]);
@@ -138,6 +149,9 @@ public class Pet extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                updateCurrentPet.put("Current Pet", petIdArray[2]);
+                doc.set(updateCurrentPet, SetOptions.merge());
+
                 intent.putExtra("petname", petNameArray[2].getText().toString());
                 intent.putExtra("petid", petIdArray[2]);
                 intent.putExtra("petdocid", "3");
@@ -150,6 +164,9 @@ public class Pet extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                updateCurrentPet.put("Current Pet", petIdArray[3]);
+                doc.set(updateCurrentPet, SetOptions.merge());
+
                 intent.putExtra("petname", petNameArray[3].getText().toString());
                 intent.putExtra("petid", petIdArray[3]);
                 intent.putExtra("petdocid", "4");
@@ -160,6 +177,9 @@ public class Pet extends AppCompatActivity {
         peticon5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                updateCurrentPet.put("Current Pet", petIdArray[4]);
+                doc.set(updateCurrentPet, SetOptions.merge());
 
                 intent.putExtra("petname", petNameArray[4].getText().toString());
                 intent.putExtra("petid", petIdArray[4]);
@@ -172,6 +192,9 @@ public class Pet extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                updateCurrentPet.put("Current Pet", petIdArray[5]);
+                doc.set(updateCurrentPet, SetOptions.merge());
+
                 intent.putExtra("petname", petNameArray[5].getText().toString());
                 intent.putExtra("petid", petIdArray[5]);
                 intent.putExtra("petdocid", "6");
@@ -183,7 +206,7 @@ public class Pet extends AppCompatActivity {
         settings_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Pet.this, Settings.class);
+                Intent intent = new Intent(PetFromSettings.this, Settings.class);
                 startActivity(intent);
             }
         });
@@ -192,7 +215,7 @@ public class Pet extends AppCompatActivity {
         back_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Pet.this, Dashboard.class);
+                Intent intent = new Intent(PetFromSettings.this, Dashboard.class);
                 startActivity(intent);
             }
         });
@@ -204,11 +227,11 @@ public class Pet extends AppCompatActivity {
                 int nop = Integer.parseInt(numberofpets);
                 if (nop == 6)
                 {
-                    Toast.makeText(Pet.this, "You can only hold 6 pets!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(PetFromSettings.this, "You can only hold 6 pets!", Toast.LENGTH_LONG).show();
                 }
                 else
                 {
-                    Intent intent = new Intent(Pet.this, AddPet.class);
+                    Intent intent = new Intent(PetFromSettings.this, AddPet.class);
                     startActivity(intent);
                 }
             }
