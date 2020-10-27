@@ -1,12 +1,15 @@
 package com.example.curiosity;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -51,11 +54,13 @@ public class TransferPet extends AppCompatActivity {
         settings_button=(ImageButton)findViewById(R.id.settings_button);
         transferButton= (Button) findViewById(R.id.transferButton);
         theirid = findViewById(R.id.transferId);
+        copyIdButton = findViewById(R.id.copyIdButton);
 
         //firestore variables
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
         yuserid = fAuth.getCurrentUser().getUid(); //your user id
+
 
 
         String petid, petname, pettype, petbreed, petDOB, petstatus, petdocid, ynop;
@@ -80,7 +85,6 @@ public class TransferPet extends AppCompatActivity {
                 //reduce your number of pets by 1
                 documentReference = fStore.collection("Users").document(yuserid);
                 String updated_ynop = Integer.toString(Integer.parseInt(ynop)-1);
-                Log.d("boop updated nop",updated_ynop);
 
                 HashMap<String, String> ynop = new HashMap<>();
                 ynop.put("Number of Pets",updated_ynop);
@@ -137,7 +141,6 @@ public class TransferPet extends AppCompatActivity {
                 //get their used id from textfield
                 String tuserid; //their user id
                 tuserid = theirid.getText().toString();
-                Log.d("boop their user id",tuserid);
 
                 //using data snapshot to edit their data
                 DocumentReference docRef = fStore.collection("Users").document(tuserid);
@@ -149,10 +152,8 @@ public class TransferPet extends AppCompatActivity {
                             if (document.exists()) {
 
                                 //increase their number of pets by 1
-                                Log.d("boop their nop", "DocumentSnapshot data: " + document.getData().get("Number of Pets").toString());
                                 int tnop_ = Integer.parseInt(document.getData().get("Number of Pets").toString());
                                 String updated_tnop = Integer.toString(tnop_+1);
-                                Log.d("boop updated nop",updated_tnop);
 
                                 HashMap<String, String> tnop = new HashMap<>();
                                 tnop.put("Number of Pets",updated_tnop);
@@ -184,6 +185,18 @@ public class TransferPet extends AppCompatActivity {
                 });
 
 
+            }
+        });
+
+        copyIdButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText("label", yuserid);
+                clipboard.setPrimaryClip(clip);
+
+                Toast.makeText(getApplicationContext(), "Your ID has been copied!",
+                        Toast.LENGTH_LONG).show();
             }
         });
         //on press settings button
