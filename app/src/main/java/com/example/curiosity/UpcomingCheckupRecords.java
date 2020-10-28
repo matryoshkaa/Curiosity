@@ -1,6 +1,7 @@
 package com.example.curiosity;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -10,19 +11,24 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 
 import java.util.Date;
@@ -41,6 +47,7 @@ public class UpcomingCheckupRecords extends AppCompatActivity {
     private GoogleSignInClient mGoogleSignInClient;
 
     DocumentReference documentReference;
+    DocumentReference petDocRef;
     String userId, name;
 
     private FirebaseFirestore db;
@@ -49,6 +56,7 @@ public class UpcomingCheckupRecords extends AppCompatActivity {
     CollectionReference ref;
     private CheckupAdapter adapter;
 
+    String pet="";
 
     Query query;
 
@@ -90,9 +98,9 @@ public class UpcomingCheckupRecords extends AppCompatActivity {
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if (documentSnapshot.exists()) {
                     name = documentSnapshot.getString("User Name");
+
                 } else {
                     name = user;
-
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -102,14 +110,23 @@ public class UpcomingCheckupRecords extends AppCompatActivity {
             }
         });
 
-        ref=db.collection("Users")
-                .document(userId)
-                .collection("Pets")
-                .document("Berry")
-                .collection("Check Up Records");
+        DocumentReference petDocRef = db.collection("Users").document(userId);
+        petDocRef.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
+                pet = documentSnapshot.getString("Current Pet");
+            }
+        });
 
 
-        setUpRecyclerView();
+            ref = db.collection("Users")
+                    .document(userId)
+                    .collection("Pets")
+                    .document(pet)
+                    .collection("Check Up Records");
+
+            setUpRecyclerView();
+
 
 
         back_button = (ImageButton) findViewById(R.id.back_button);
@@ -132,6 +149,7 @@ public class UpcomingCheckupRecords extends AppCompatActivity {
 
 
     }
+
 
     private void setUpRecyclerView(){
         //Query query=ref.whereEqualTo("status","Past").orderBy("date");

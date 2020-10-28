@@ -46,13 +46,13 @@
         <activity android:name=".PetFromSettings" />
         <activity android:name=".NFCPetDetails" />
         <activity android:name=".SplashScreen"/>
-        <activity android:name=".Login" />
-        <activity android:name=".RegisterUser" ></activity>
-        <activity android:name=".Dashboard" > <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
+        <activity android:name=".Login" ><intent-filter>
+        <action android:name="android.intent.action.MAIN" />
 
-            <category android:name="android.intent.category.LAUNCHER" />
+        <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter></activity>
+        <activity android:name=".RegisterUser" ></activity>
+        <activity android:name=".Dashboard" > </activity>
         <activity android:name=".BloodTests" />
         <activity android:name=".MedicalHistory" />
         <activity android:name=".TrackWeight" />
