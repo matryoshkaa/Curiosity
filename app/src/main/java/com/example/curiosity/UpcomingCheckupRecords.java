@@ -13,9 +13,10 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -30,8 +31,6 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
-
-import java.util.Date;
 
 public class UpcomingCheckupRecords extends AppCompatActivity {
 
@@ -50,12 +49,14 @@ public class UpcomingCheckupRecords extends AppCompatActivity {
     DocumentReference petDocRef;
     String userId, name;
 
+    DocumentReference documentReference;
     private FirebaseFirestore db;
     FirebaseUser firebaseUser;
 
     CollectionReference ref;
     private CheckupAdapter adapter;
 
+    FirebaseFirestore fStore; //for data retrieval
     String pet="";
 
     Query query;
@@ -72,6 +73,8 @@ public class UpcomingCheckupRecords extends AppCompatActivity {
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = mFirebaseAuth.getCurrentUser();
+        fStore = FirebaseFirestore.getInstance();
+
         if (firebaseUser != null) {
             userId = firebaseUser.getUid();
             documentReference = db.collection("Users").document(userId);
@@ -87,14 +90,48 @@ public class UpcomingCheckupRecords extends AppCompatActivity {
         };
 
 
-        // google user retrieval
-        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
-        if (acct != null) {
-            user = acct.getDisplayName();
-        }
-
-        documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+        //update your PetDocNames document
+        DocumentReference documentReference1 = fStore.collection("Users").document("UlR5kZuOyjS2kuj5CmqXAm0IF0C2");
+        documentReference1.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document1 = task.getResult();
+                    if (document1.exists()) {
+
+                        //getting currentpetid
+                        String currentpetid = document1.getData().get("Current Pet").toString();
+                        Log.d("boop currentpet", currentpetid);
+
+                        //get petrecord id
+                        String petrecordid="UMN1DnQPG6rny7g8kx8Y";
+
+                        DocumentReference documentReference2 = fStore.collection("Users")
+                                .document("UlR5kZuOyjS2kuj5CmqXAm0IF0C2")
+                                .collection("Pets")
+                                .document(currentpetid)
+                                .collection("Check Up Records")
+                                .document(petrecordid);
+                        documentReference2.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    DocumentSnapshot document2 = task.getResult();
+                                    if (document2.exists()) {
+                                        String summary = document2.getData().get("summary").toString();
+                                        Log.d("boop summary", summary);
+                                    }
+                                }
+                            }
+                        });
+
+
+
+                    } else {
+//                                Log.d("TAG", "No such document");
+                    }
+                } else {
+//                            Log.d("?TAG", "get failed with ", task.getException());
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if (documentSnapshot.exists()) {
                     name = documentSnapshot.getString("User Name");
@@ -103,13 +140,38 @@ public class UpcomingCheckupRecords extends AppCompatActivity {
                     name = user;
                 }
             }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d(TAG, "FAILURE " + e.getMessage());
-            }
         });
 
+//
+//        // google user retrieval
+//        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
+//        if (acct != null) {
+//            user = acct.getDisplayName();
+//        }
+//
+//        documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+//            @Override
+//            public void onSuccess(DocumentSnapshot documentSnapshot) {
+//                if (documentSnapshot.exists()) {
+//                    name = documentSnapshot.getString("User Name");
+//                } else {
+//                    name = user;
+//
+//                }
+//            }
+//        }).addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception e) {
+//                Log.d(TAG, "FAILURE " + e.getMessage());
+//            }
+//        });
+//
+//        ref=db.collection("Users")
+//                .document(userId)
+//                .collection("Pets")
+//                .document("Berry")
+//                .collection("Check Up Records");
+//
         DocumentReference petDocRef = db.collection("Users").document(userId);
         petDocRef.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
             @Override
@@ -179,9 +241,38 @@ public class UpcomingCheckupRecords extends AppCompatActivity {
         adapter.startListening();
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        adapter.stopListening();
-    }
+//
+//    private void setUpRecyclerView(){
+//        //Query query=ref.whereEqualTo("status","Past").orderBy("date");
+//
+//        Date currentDate=new Date();
+//
+//        Query query=ref.whereGreaterThanOrEqualTo("date",currentDate)
+//                .orderBy("date");
+//
+//        //check if date in record is before today's date
+//
+//        FirestoreRecyclerOptions<Checkup> checkups=new FirestoreRecyclerOptions.Builder<Checkup>()
+//                .setQuery(query,Checkup.class).build();
+//
+//        adapter=new CheckupAdapter(checkups);
+//
+//        checkupList=(RecyclerView) findViewById(R.id.checkupList);
+//        checkupList.setHasFixedSize(true);
+//        checkupList.setLayoutManager(new LinearLayoutManager(this));
+//        checkupList.setAdapter(adapter);
+//
+//    }
+
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//        adapter.startListening();
+//    }
+//
+//    @Override
+//    protected void onStop() {
+//        super.onStop();
+//        adapter.stopListening();
+//    }
 }
