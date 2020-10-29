@@ -1,10 +1,17 @@
 package com.example.curiosity;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,13 +19,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 
 public class UpcomingCheckupRecords extends AppCompatActivity {
@@ -34,6 +45,8 @@ public class UpcomingCheckupRecords extends AppCompatActivity {
     FirebaseAuth.AuthStateListener mAuthListener;
     private GoogleSignInClient mGoogleSignInClient;
 
+    DocumentReference documentReference;
+    DocumentReference petDocRef;
     String userId, name;
 
     DocumentReference documentReference;
@@ -44,6 +57,7 @@ public class UpcomingCheckupRecords extends AppCompatActivity {
     private CheckupAdapter adapter;
 
     FirebaseFirestore fStore; //for data retrieval
+    String pet="";
 
     Query query;
 
@@ -118,6 +132,12 @@ public class UpcomingCheckupRecords extends AppCompatActivity {
                     }
                 } else {
 //                            Log.d("?TAG", "get failed with ", task.getException());
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()) {
+                    name = documentSnapshot.getString("User Name");
+
+                } else {
+                    name = user;
                 }
             }
         });
@@ -152,6 +172,23 @@ public class UpcomingCheckupRecords extends AppCompatActivity {
 //                .document("Berry")
 //                .collection("Check Up Records");
 //
+        DocumentReference petDocRef = db.collection("Users").document(userId);
+        petDocRef.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
+                pet = documentSnapshot.getString("Current Pet");
+            }
+        });
+
+
+            ref = db.collection("Users")
+                    .document(userId)
+                    .collection("Pets")
+                    .document(pet)
+                    .collection("Check Up Records");
+
+            setUpRecyclerView();
+
 
 
         back_button = (ImageButton) findViewById(R.id.back_button);
@@ -175,6 +212,34 @@ public class UpcomingCheckupRecords extends AppCompatActivity {
 
     }
 
+
+    private void setUpRecyclerView(){
+        //Query query=ref.whereEqualTo("status","Past").orderBy("date");
+
+        Date currentDate=new Date();
+
+        Query query=ref.whereGreaterThanOrEqualTo("date",currentDate)
+                .orderBy("date");
+
+        //check if date in record is before today's date
+
+        FirestoreRecyclerOptions<Checkup> checkups=new FirestoreRecyclerOptions.Builder<Checkup>()
+                .setQuery(query,Checkup.class).build();
+
+        adapter=new CheckupAdapter(checkups);
+
+        checkupList=(RecyclerView) findViewById(R.id.checkupList);
+        checkupList.setHasFixedSize(true);
+        checkupList.setLayoutManager(new LinearLayoutManager(this));
+        checkupList.setAdapter(adapter);
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        adapter.startListening();
+    }
 
 //
 //    private void setUpRecyclerView(){
