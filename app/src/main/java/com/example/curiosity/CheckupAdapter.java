@@ -30,7 +30,6 @@ public class CheckupAdapter extends FirestoreRecyclerAdapter<Checkup, CheckupAda
         checkupHolder.date.setText(String.valueOf(checkup.getDate()));
         checkupHolder.summary.setText(checkup.getSummary());
 
-
     }
 
     @NonNull
@@ -39,6 +38,7 @@ public class CheckupAdapter extends FirestoreRecyclerAdapter<Checkup, CheckupAda
         View v= LayoutInflater.from(parent.getContext()).inflate(R.layout.checkup_layout,parent,false);
         return new CheckupHolder(v);
     }
+
 
     class CheckupHolder extends RecyclerView.ViewHolder{
         TextView checkupName;
@@ -55,4 +55,5 @@ public class CheckupAdapter extends FirestoreRecyclerAdapter<Checkup, CheckupAda
             summary=itemView.findViewById(R.id.summary);
         }
     }
+
 }

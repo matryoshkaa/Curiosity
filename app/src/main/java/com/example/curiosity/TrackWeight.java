@@ -60,7 +60,7 @@ public class TrackWeight extends AppCompatActivity {
 
     String username;
     String user;
-
+    String pet;
 
 
     @Override
@@ -105,10 +105,6 @@ public class TrackWeight extends AppCompatActivity {
 
         db= FirebaseFirestore.getInstance();
 
-        Calendar calendar= Calendar.getInstance();
-       // final String currentDate= DateFormat.getDateInstance(DateFormat.FULL).format(calendar.getTime());
-
-        final String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
 
 
         //firebase authentication
@@ -156,11 +152,33 @@ public class TrackWeight extends AppCompatActivity {
         });
 
 
+        db.collection("Users").document(userId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists())
+                    pet = documentSnapshot.getString("Current Pet");
+                onButtonClick(pet);
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG, "FAILURE " + e.getMessage());
+            }
+        });
+
+
+
+    };
+
+    public void onButtonClick(String pet){
 
         save_weight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //String petWeight=weight.toString();
+                Calendar calendar= Calendar.getInstance();
+                final String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+
                 String petWeight = weight.getText().toString();
 
                 Map<String, String> userMap=new HashMap<>();
@@ -173,15 +191,15 @@ public class TrackWeight extends AppCompatActivity {
                 db.collection("Users")
                         .document(userId)
                         .collection("Pets")
-                        .document("Berry")
+                        .document(pet)
                         .collection("Weight")
                         .add(userMap)
                         .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Toast.makeText(TrackWeight.this,"Weight has been added!",Toast.LENGTH_LONG).show();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onSuccess(DocumentReference documentReference) {
+                                Toast.makeText(TrackWeight.this,"Weight has been added!",Toast.LENGTH_LONG).show();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         String error=e.getMessage();
@@ -197,6 +215,5 @@ public class TrackWeight extends AppCompatActivity {
 
 
 
-
-    };
+    }
 }
