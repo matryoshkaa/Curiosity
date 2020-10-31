@@ -8,10 +8,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -57,12 +59,7 @@ public class AnalyseWeight extends AppCompatActivity {
     Query query;
     String username;
     String user;
-
-    LineGraphSeries series;
-    GraphView graph;
-
-
-
+    String currentPet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,10 +68,11 @@ public class AnalyseWeight extends AppCompatActivity {
 
         back_button=(ImageButton)findViewById(R.id.back_button);
         settings_button=(ImageButton)findViewById(R.id.settings_button);
-        graph = (GraphView) findViewById(R.id.graph);
-        series = new LineGraphSeries();
 
         db = FirebaseFirestore.getInstance();
+
+        //get selected pet ID
+        currentPet = getIntent().getStringExtra("REF");
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = mFirebaseAuth.getCurrentUser();
@@ -116,49 +114,21 @@ public class AnalyseWeight extends AppCompatActivity {
             }
         });
 
-        collectionReference=db.collection("Users")
+        db.collection("Users")
                 .document(userId)
                 .collection("Pets")
-                .document("Berry")
-                .collection("Weight");
-
-        collectionReference.addSnapshotListener(this, new EventListener<QuerySnapshot>() {
+                .document(currentPet)
+                .collection("Weight").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
-            public void onEvent(QuerySnapshot queryDocumentSnapshots, FirebaseFirestoreException e) {
-                if (e != null) {
-                    return;
-                }
-                String data = "";
-                for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-                    WeightData node = documentSnapshot.toObject(WeightData.class);
-                    node.setDocumentId(documentSnapshot.getId());
-                    String documentId = node.getDocumentId();
-                    String date = node.getDate();
-                    String weight = node.getWeight();
-
-                    SimpleDateFormat f = new SimpleDateFormat("dd-MM-yyyy");
-                    Date d = null;
-                    try {
-                        d = f.parse(date);
-                    } catch (ParseException ex) {
-                        ex.printStackTrace();
-                    }
-                    long milliseconds = d.getTime();
-                        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[]{
-                                new DataPoint(milliseconds,  Integer. parseInt(weight)),
-                        });
-                        graph.addSeries(series);
-
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    if(task.getResult().size()==0)
+                        Toast.makeText(AnalyseWeight.this, "No information to display", Toast.LENGTH_SHORT).show();
+                } else {
+                    Log.d(TAG, "Error getting documents: ", task.getException());
                 }
             }
-
         });
-
-
-
-
-
-        setUpGraph();
 
 
 
@@ -182,46 +152,6 @@ public class AnalyseWeight extends AppCompatActivity {
 
     }
 
-
-    public void setUpGraph() {
-        ref=db.collection("Users")
-                .document(userId)
-                .collection("Pets")
-                .document("Berry")
-                .collection("Weight")
-                .get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        String data = "";
-                        for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-                            WeightData node = documentSnapshot.toObject(WeightData.class);
-                            node.setDocumentId(documentSnapshot.getId());
-                            String documentId = node.getDocumentId();
-                            String date = node.getDate();
-                            String weight = node.getWeight();
-
-                            SimpleDateFormat f = new SimpleDateFormat("dd-MM-yyyy");
-                            Date d = null;
-                            try {
-                                d = f.parse(date);
-                            } catch (ParseException ex) {
-                                ex.printStackTrace();
-                            }
-                            long milliseconds = d.getTime();
-                            LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[]{
-                                    new DataPoint(milliseconds,  Integer. parseInt(weight)),
-                            });
-                            graph.addSeries(series);
-
-
-
-                        }
-                    }
-
-                });
-
-}
 
 
 }

@@ -75,7 +75,6 @@ public class TrackWeight extends AppCompatActivity {
         weight_analytic=(Button)findViewById(R.id.weight_analytic);
 
 
-
         //on press settings button
         settings_button.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -94,13 +93,6 @@ public class TrackWeight extends AppCompatActivity {
             }
         });
 
-        weight_analytic.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                Intent intent=new Intent(TrackWeight.this,AnalyseWeight.class);
-                startActivity(intent);
-            }
-        });
 
 
         db= FirebaseFirestore.getInstance();
@@ -188,6 +180,7 @@ public class TrackWeight extends AppCompatActivity {
 
                 //query= db.collection("Users").whereEqualTo("User Name", name);
 
+                if(pet!=null && !pet.equals("")){
                 db.collection("Users")
                         .document(userId)
                         .collection("Pets")
@@ -206,12 +199,26 @@ public class TrackWeight extends AppCompatActivity {
 
                         Toast.makeText(TrackWeight.this,"Error: "+error,Toast.LENGTH_LONG).show();
                     }
-                });{
+                });
+                }else
+                    Toast.makeText(TrackWeight.this, "No pet has been added to track weight", Toast.LENGTH_SHORT).show();
+            }
+        });
 
-                }
+        weight_analytic.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                if(pet!=null && !pet.equals("")){
+                    Intent intent=new Intent(TrackWeight.this,AnalyseWeight.class);
+                    intent.putExtra("REF", pet);
+                    startActivity(intent);
+            }
+                else
+                    Toast.makeText(TrackWeight.this, "No pet has been added to analyse weight", Toast.LENGTH_SHORT).show();
 
             }
         });
+
 
 
 

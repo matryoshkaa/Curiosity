@@ -57,6 +57,7 @@
         <activity android:name=".MedicalHistory" />
         <activity android:name=".TrackWeight" />
         <activity android:name=".HealthWeight" />
+        <activity android:name=".AnalyseWeight" />
         <activity android:name=".CheckupRecords" />
         <activity android:name=".VaccinationRecords" />
         <activity android:name=".Settings" />
