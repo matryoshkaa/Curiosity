@@ -5,6 +5,11 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.NFC" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_SMS"/>
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+
 
     <application
         android:allowBackup="true"
@@ -13,6 +18,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="@string/map_key"/>
+
+
         <activity android:name=".UpcomingVaccinations"/>
         <activity android:name=".PastVaccination" />
         <activity android:name=".UpcomingCheckupRecords"/>
@@ -35,16 +45,14 @@
         <activity android:name=".TransferPet" />
         <activity android:name=".PetFromSettings" />
         <activity android:name=".NFCPetDetails" />
-        <activity android:name=".SplashScreen">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        <activity android:name=".SplashScreen"/>
+        <activity android:name=".Login" ><intent-filter>
+        <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".Login" />
-        <activity android:name=".RegisterUser" />
-        <activity android:name=".Dashboard" />
+        <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter></activity>
+        <activity android:name=".RegisterUser" ></activity>
+        <activity android:name=".Dashboard" > </activity>
         <activity android:name=".BloodTests" />
         <activity android:name=".MedicalHistory" />
         <activity android:name=".TrackWeight" />
