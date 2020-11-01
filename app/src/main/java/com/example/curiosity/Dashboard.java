@@ -44,14 +44,6 @@ public class Dashboard extends AppCompatActivity {
     private FirebaseFirestore db;
     FirebaseUser firebaseUser;
 
-    String petOne;
-    String petTwo;
-    String petThree;
-    String petFour;
-    String petFive;
-    String petSix;
-    String[]petArray;
-
     String pet="";
     String username;
     String user;
@@ -62,8 +54,6 @@ public class Dashboard extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
-
-        petArray= new String[6];
 
         settings_button=(ImageButton)findViewById(R.id.settings_button);
         profile_button=(ImageButton)findViewById(R.id.profile_button);
@@ -174,35 +164,6 @@ public class Dashboard extends AppCompatActivity {
         });
 
 
-        docRef=db.collection("Users").document(userId).collection("Pets").document("PetDocNames");
-
-        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if (documentSnapshot.exists()){
-                    petOne=documentSnapshot.getString("PetDocName1");
-                    petTwo=documentSnapshot.getString("PetDocName2");
-                    petThree=documentSnapshot.getString("PetDocName3");
-                    petFour=documentSnapshot.getString("PetDocName4");
-                    petFive=documentSnapshot.getString("PetDocName5");
-                    petSix=documentSnapshot.getString("PetDocName6");
-
-                    petArray[0]=petOne;
-                    petArray[1]=petTwo;
-                    petArray[2]=petThree;
-                    petArray[3]=petFour;
-                    petArray[4]=petFive;
-                    petArray[5]=petSix;
-                }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d(TAG, "FAILURE " + e.getMessage());
-            }
-        });
-
-
     }
 
     public void onButtonClick(String pet){
@@ -230,7 +191,6 @@ public class Dashboard extends AppCompatActivity {
             public void onClick(View v){
                 Intent intent=new Intent(Dashboard.this,TrackPet.class);
                 intent.putExtra("REF", pet);
-                intent.putExtra("PET_ARRAY", petArray);
                 intent.putExtra("PET_TRACKER_ID", trackerId);
                 startActivity(intent);
             }

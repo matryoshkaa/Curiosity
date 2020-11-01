@@ -61,13 +61,7 @@ public class TrackPet extends FragmentActivity implements OnMapReadyCallback {
     String user;
     String trackerId;
 
-    String[] petArray;
-
-    int petCollarNum;
-    int petNum;
-
     GoogleMap map;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +69,6 @@ public class TrackPet extends FragmentActivity implements OnMapReadyCallback {
         setContentView(R.layout.activity_track_pet);
 
         pet = getIntent().getStringExtra("REF");
-        petArray = getIntent().getStringArrayExtra("PET_ARRAY");
         trackerId = getIntent().getStringExtra("PET_TRACKER_ID");
 
         back_button=(ImageButton)findViewById(R.id.back_button);
@@ -146,31 +139,10 @@ public class TrackPet extends FragmentActivity implements OnMapReadyCallback {
             }
         });
 
-
         //SMS PERMISSION
         ActivityCompat.requestPermissions(TrackPet.this,new String[]{Manifest.permission.READ_SMS}, PackageManager.PERMISSION_GRANTED);
     }
 
-    public int checkPetId(){
-
-       if(pet.equals(petArray[0]))
-           petNum=1;
-       else if(pet.equals(petArray[1]))
-           petNum=2;
-       else if(pet.equals(petArray[2]))
-           petNum=3;
-       else if(pet.equals(petArray[3]))
-           petNum=4;
-       else if(pet.equals(petArray[4]))
-           petNum=5;
-       else if(pet.equals(petArray[5]))
-           petNum=6;
-       else
-           petNum=0;
-
-       return petNum;
-
-    }
 
     public String readSMS(){
 
@@ -201,32 +173,22 @@ public class TrackPet extends FragmentActivity implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         map=googleMap;
 
-        if(pet!=null && !pet.equals("") && trackerId!=null)
-            petCollarNum=checkPetId();
-        else
-            Toast.makeText(TrackPet.this, "No records to display", Toast.LENGTH_SHORT).show();
+        if(pet!=null && !pet.equals("") && trackerId!=null) {
+            String petCoordinates = readSMS();
 
-        String petCoordinates=readSMS();
+            if (!petCoordinates.equals("")) {
+                String[] location = petCoordinates.split(",");
 
-        if(!petCoordinates.equals("")) {
-            String[] location = petCoordinates.split(",");
-            int petId=Integer.parseInt(location[0]);
-
-            if(petId==petCollarNum)
-            {
-                double lat = Double.parseDouble(location[1]);
-                double lng = Double.parseDouble(location[2]);
+                double lat = Double.parseDouble(location[0]);
+                double lng = Double.parseDouble(location[1]);
 
                 LatLng petLocation = new LatLng(lat, lng);
                 map.addMarker(new MarkerOptions().position(petLocation).title("Your pet"));
                 map.moveCamera(CameraUpdateFactory.newLatLng(petLocation));
-            }
-            else
+            } else
                 Toast.makeText(TrackPet.this, "No location to display", Toast.LENGTH_SHORT).show();
-
         }
         else
             Toast.makeText(TrackPet.this, "No location to display", Toast.LENGTH_SHORT).show();
-
     }
 }

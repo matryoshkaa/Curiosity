@@ -178,8 +178,6 @@ public class TrackWeight extends AppCompatActivity {
                 userMap.put("date",currentDate);
                 userMap.put("weight",petWeight);
 
-                //query= db.collection("Users").whereEqualTo("User Name", name);
-
                 if(pet!=null && !pet.equals("")){
                 db.collection("Users")
                         .document(userId)
