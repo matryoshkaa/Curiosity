@@ -37,6 +37,8 @@ public class AddPet extends AppCompatActivity {
     TextView pettype;
     TextView petbreed;
     TextView dob;
+    TextView trackerno;
+
     Button addpetButton;
 
     String numberofpets;
@@ -52,6 +54,7 @@ public class AddPet extends AppCompatActivity {
         pettype = findViewById(R.id.petType);
         petbreed = findViewById(R.id.petBreed);
         dob = findViewById(R.id.petDOB);
+        trackerno = findViewById(R.id.trackerNumber);
         addpetButton =findViewById(R.id.addpetButton);
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
@@ -107,6 +110,7 @@ public class AddPet extends AppCompatActivity {
                 petMap.put("Pet Type",pettype.getText().toString());
                 petMap.put("Pet Breed",petbreed.getText().toString());
                 petMap.put("Pet DOB",dob.getText().toString());
+                petMap.put("Tracker Number",trackerno.getText().toString());
                 petMap.put("Status","Found");
 
                 documentReference = fStore.collection("Users")
