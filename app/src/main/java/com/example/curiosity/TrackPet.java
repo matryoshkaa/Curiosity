@@ -37,6 +37,9 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class TrackPet extends FragmentActivity implements OnMapReadyCallback {
 
@@ -182,6 +185,8 @@ public class TrackPet extends FragmentActivity implements OnMapReadyCallback {
                 double lat = Double.parseDouble(location[0]);
                 double lng = Double.parseDouble(location[1]);
 
+                addCoordinates(lat,lng);
+
                 LatLng petLocation = new LatLng(lat, lng);
                 map.addMarker(new MarkerOptions().position(petLocation).title("Your pet"));
                 map.moveCamera(CameraUpdateFactory.newLatLng(petLocation));
@@ -191,4 +196,36 @@ public class TrackPet extends FragmentActivity implements OnMapReadyCallback {
         else
             Toast.makeText(TrackPet.this, "No location to display", Toast.LENGTH_SHORT).show();
     }
+
+    public void addCoordinates(double lat,double lng){
+
+        Map<String, Number> coordinateMap=new HashMap<>();
+        coordinateMap.put("Latitude",lat);
+        coordinateMap.put("Longitude",lng);
+
+            if(pet!=null && !pet.equals("")){
+                db.collection("Users")
+                        .document(userId)
+                        .collection("Pets")
+                        .document(pet)
+                        .collection("Location")
+                        .add(coordinateMap)
+                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                            @Override
+                            public void onSuccess(DocumentReference documentReference) {
+                                Log.d("TAG", "Coordinates has been added to the database!");
+                                System.out.println("Coordinates got added");
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        String error=e.getMessage();
+                        Log.d("TAG", "Error adding coordinates");System.out.println("ERROR ADDING COORD");
+                    }
+                });
+            }else
+                Log.d("TAG", "Error adding coordinates");System.out.println("ERROR ADDING COORD");
+        }
+
+
 }
