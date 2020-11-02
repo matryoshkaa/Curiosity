@@ -158,43 +158,6 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@drawable/setting_linear_layout_design"
-        android:onClick="logout"
-        android:orientation="horizontal"
-        android:weightSum="100">
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_weight="10">
-
-            <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="10dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/logout"
-                app:tint="#00c2cb" />
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/logout"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_weight="90"
-            android:fontFamily="@font/montserrat"
-            android:gravity="center_vertical"
-            android:paddingLeft="15dp"
-            android:text="Logout"
-            android:textColor="#000000"
-            android:textSize="18sp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/setting_linear_layout_design"
         android:onClick="goToPetSelect"
         android:orientation="horizontal"
         android:weightSum="100">
@@ -224,6 +187,43 @@
             android:gravity="center_vertical"
             android:paddingLeft="15dp"
             android:text="Select Pet"
+            android:textColor="#000000"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/setting_linear_layout_design"
+        android:onClick="logout"
+        android:orientation="horizontal"
+        android:weightSum="100">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="10">
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/logout"
+                app:tint="#00c2cb" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/logout"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="90"
+            android:fontFamily="@font/montserrat"
+            android:gravity="center_vertical"
+            android:paddingLeft="15dp"
+            android:text="Logout"
             android:textColor="#000000"
             android:textSize="18sp" />
     </LinearLayout>

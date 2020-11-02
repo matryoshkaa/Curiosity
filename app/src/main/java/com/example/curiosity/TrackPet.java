@@ -14,6 +14,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,6 +48,7 @@ public class TrackPet extends FragmentActivity implements OnMapReadyCallback {
 
     ImageButton back_button;
     ImageButton settings_button;
+    Button heatmapButton;
 
     FirebaseAuth mFirebaseAuth;
     FirebaseAuth.AuthStateListener mAuthListener;
@@ -76,6 +78,7 @@ public class TrackPet extends FragmentActivity implements OnMapReadyCallback {
 
         back_button=(ImageButton)findViewById(R.id.back_button);
         settings_button=(ImageButton)findViewById(R.id.settings_button);
+        heatmapButton=(Button) findViewById(R.id.heatmapButton);
 
         SupportMapFragment mapFragment=(SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -138,6 +141,14 @@ public class TrackPet extends FragmentActivity implements OnMapReadyCallback {
             @Override
             public void onClick(View v){
                 Intent intent=new Intent(TrackPet.this,Dashboard.class);
+                startActivity(intent);
+            }
+        });
+
+        heatmapButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent intent=new Intent(TrackPet.this,Heatmap.class);
                 startActivity(intent);
             }
         });
