@@ -12,15 +12,25 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
-import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Dashboard extends AppCompatActivity {
 
@@ -49,6 +59,10 @@ public class Dashboard extends AppCompatActivity {
     String user;
 
     String trackerId="";
+
+    Map<String, Object> map;
+    List<Collection<Object>> sortedRecord;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,7 +137,6 @@ public class Dashboard extends AppCompatActivity {
             }
         };
 
-
         // google user retrieval
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
         if (acct != null) {
@@ -164,11 +177,13 @@ public class Dashboard extends AppCompatActivity {
         });
 
 
+
     }
 
-    public void onButtonClick(String pet){
+    public void onButtonClick(String pet) {
 
-        if(pet!=null && pet!="") {
+
+        if (pet != null && !pet.equals("")) {
 
             db.collection("Users").document(userId).collection("Pets").document(pet).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
@@ -186,16 +201,53 @@ public class Dashboard extends AppCompatActivity {
 
         }
 
-        track_button.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                Intent intent=new Intent(Dashboard.this,TrackPet.class);
-                intent.putExtra("REF", pet);
-                intent.putExtra("PET_TRACKER_ID", trackerId);
-                startActivity(intent);
-            }
-        });
+        sortedRecord=new ArrayList<java.util.Collection<Object>>();
+
+        if (pet != null && pet != "") {
+
+            db.collection("Users")
+                    .document(userId)
+                    .collection("Pets")
+                    .document(pet)
+                    .collection("Location").orderBy("Date", Query.Direction.DESCENDING)
+                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+
+                            map = document.getData();
+                            String date = map.get("Date").toString();
+                            String latitude = map.get("Latitude").toString();
+                            String longitude = map.get("Longitude").toString();
+                            sortedRecord.add(map.values());
+
+                        }
+                    } else {
+                        System.out.println("Error getting documents: ");
+                    }
+                }
+            });
+        }
+
+            track_button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(Dashboard.this, TrackPet.class);
+                    intent.putExtra("REF", pet);
+                    intent.putExtra("PET_TRACKER_ID", trackerId);
+
+                    if(sortedRecord!=null && !sortedRecord.isEmpty())
+                        intent.putExtra("LATEST_COORDINATES", sortedRecord.get(0).toString());
+                    else
+                        intent.putExtra("LATEST_COORDINATES", "");
+
+                    startActivity(intent);
+                }
+            });
+
 
 
     }
+
 }

@@ -27,7 +27,9 @@
             android:contentDescription="TODO"
             android:scaleType="fitCenter"
             app:srcCompat="@drawable/ic_back"
-            tools:ignore="VectorDrawableCompat" />
+            tools:ignore="VectorDrawableCompat"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="18dp" />
 
         <TextView
             android:id="@+id/heatmapHeader"
@@ -41,6 +43,7 @@
             android:textSize="24sp"
             />
 
+
         <ImageButton
             android:id="@+id/settings_button"
             android:layout_width="35dp"
@@ -53,7 +56,9 @@
             android:scaleType="fitCenter"
             app:srcCompat="@drawable/ic_setting"
             tools:ignore="VectorDrawableCompat"
-            android:contentDescription="TODO" />
+            android:contentDescription="TODO"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="18dp" />
 
     </RelativeLayout>
 
@@ -62,28 +67,13 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-<!--        <fragment-->
-<!--            android:id="@+id/map"-->
-<!--            android:name="com.google.android.gms.maps.SupportMapFragment"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent" >-->
+        <fragment
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
 
-<!--            <Button-->
-<!--                android:id="@+id/heatmapButton"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_gravity="right|bottom"-->
-<!--                android:layout_marginBottom="15dp"-->
-<!--                android:layout_marginRight="10dp"-->
-<!--                android:text="View Heatmap"-->
-<!--                android:textColor="#FFFFFF"-->
-<!--                android:background="@drawable/round_black_rect"-->
-<!--                android:padding="10dp"-->
-<!--                />-->
-
-<!--        </fragment>-->
-
-
+        </fragment>
 
     </LinearLayout>
 

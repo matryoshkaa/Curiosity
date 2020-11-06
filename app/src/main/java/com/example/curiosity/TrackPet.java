@@ -28,8 +28,11 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -37,8 +40,15 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 
@@ -66,6 +76,10 @@ public class TrackPet extends FragmentActivity implements OnMapReadyCallback {
     String user;
     String trackerId;
 
+    String recentCoordinate;
+    String recentLat;
+    String recentLng;
+
     GoogleMap map;
 
     @Override
@@ -75,6 +89,7 @@ public class TrackPet extends FragmentActivity implements OnMapReadyCallback {
 
         pet = getIntent().getStringExtra("REF");
         trackerId = getIntent().getStringExtra("PET_TRACKER_ID");
+        recentCoordinate = getIntent().getStringExtra("LATEST_COORDINATES");
 
         back_button=(ImageButton)findViewById(R.id.back_button);
         settings_button=(ImageButton)findViewById(R.id.settings_button);
@@ -82,6 +97,7 @@ public class TrackPet extends FragmentActivity implements OnMapReadyCallback {
 
         SupportMapFragment mapFragment=(SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
+        assert mapFragment != null;
         mapFragment.getMapAsync(this);
 
         db = FirebaseFirestore.getInstance();
@@ -145,14 +161,6 @@ public class TrackPet extends FragmentActivity implements OnMapReadyCallback {
             }
         });
 
-        heatmapButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                Intent intent=new Intent(TrackPet.this,Heatmap.class);
-                startActivity(intent);
-            }
-        });
-
         //SMS PERMISSION
         ActivityCompat.requestPermissions(TrackPet.this,new String[]{Manifest.permission.READ_SMS}, PackageManager.PERMISSION_GRANTED);
     }
@@ -187,6 +195,10 @@ public class TrackPet extends FragmentActivity implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         map=googleMap;
 
+        heatmap(pet);
+
+        System.out.println("RECENT COORD FROM DASH"+recentCoordinate);
+
         if(pet!=null && !pet.equals("") && trackerId!=null) {
             String petCoordinates = readSMS();
 
@@ -201,7 +213,23 @@ public class TrackPet extends FragmentActivity implements OnMapReadyCallback {
                 LatLng petLocation = new LatLng(lat, lng);
                 map.addMarker(new MarkerOptions().position(petLocation).title("Your pet"));
                 map.moveCamera(CameraUpdateFactory.newLatLng(petLocation));
-            } else
+            }
+            else if(recentCoordinate!=null && !recentCoordinate.equals(""))
+            {
+                recentCoordinate = recentCoordinate.substring(recentCoordinate.indexOf("[") + 1);
+                recentCoordinate = recentCoordinate.substring(0, recentCoordinate.indexOf("]"));
+
+                String[] location = recentCoordinate.split(",");
+                System.out.println("COORDINATE TRACK PET"+location);
+
+                double lat = Double.parseDouble(location[0]);
+                double lng = Double.parseDouble(location[1]);
+
+                LatLng petLocation = new LatLng(lat, lng);
+                map.addMarker(new MarkerOptions().position(petLocation).title("Your pet"));
+                map.moveCamera(CameraUpdateFactory.newLatLng(petLocation));
+            }
+            else
                 Toast.makeText(TrackPet.this, "No location to display", Toast.LENGTH_SHORT).show();
         }
         else
@@ -210,9 +238,19 @@ public class TrackPet extends FragmentActivity implements OnMapReadyCallback {
 
     public void addCoordinates(double lat,double lng){
 
-        Map<String, Number> coordinateMap=new HashMap<>();
-        coordinateMap.put("Latitude",lat);
-        coordinateMap.put("Longitude",lng);
+        Calendar calendar= Calendar.getInstance();
+        final String currentDate = new SimpleDateFormat("yyyy-dd-MM", Locale.getDefault()).format(new Date());
+
+        String latitude=Double.toString(lat);
+        String longitude=Double.toString(lng);
+
+        String date= currentDate.toString();
+
+        Map<String, String> coordinateMap=new HashMap<>();
+        coordinateMap.put("Latitude",latitude);
+        coordinateMap.put("Longitude",longitude);
+        coordinateMap.put("Date",date);
+
 
             if(pet!=null && !pet.equals("")){
                 db.collection("Users")
@@ -231,11 +269,61 @@ public class TrackPet extends FragmentActivity implements OnMapReadyCallback {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         String error=e.getMessage();
-                        Log.d("TAG", "Error adding coordinates");System.out.println("ERROR ADDING COORD");
+                        Log.d("TAG", "Error adding coordinates");
                     }
                 });
             }else
-                Log.d("TAG", "Error adding coordinates");System.out.println("ERROR ADDING COORD");
+                Log.d("TAG", "Error adding coordinates");
+        }
+
+
+
+
+        public void heatmap(String pet){
+
+
+//            if(pet!=null && pet!="") {
+//
+////                db.collection("Users")
+////                    .document(userId).collection("Pets")
+////                    .document(pet).collection("Location").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+////                    @Override
+////                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+////                        if (task.isSuccessful()) {
+////                            List<DocumentSnapshot> myListOfDocuments = task.getResult().getDocuments();
+////                        }
+////                    }
+////                });
+//
+//            }
+
+            if(pet!=null && pet!="") {
+
+
+                db.collection("Users")
+                        .document(userId).collection("Pets")
+                        .document(pet).collection("Location").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                System.out.println(document.getData());
+                            }
+                        } else {
+                            System.out.println("Error getting documents: ");
+                        }
+                    }
+                });
+
+            }
+
+//            heatmapButton.setOnClickListener(new View.OnClickListener(){
+//                @Override
+//                public void onClick(View v){
+//                    Intent intent=new Intent(TrackPet.this,Heatmap.class);
+//                    startActivity(intent);
+//                }
+//            });
         }
 
 
