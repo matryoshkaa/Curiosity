@@ -1,6 +1,7 @@
 package com.example.curiosity;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RawRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
@@ -10,14 +11,17 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -28,6 +32,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.TileOverlay;
+import com.google.android.gms.maps.model.TileOverlayOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -42,8 +48,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.maps.android.heatmaps.Gradient;
+import com.google.maps.android.heatmaps.HeatmapTileProvider;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -77,8 +87,22 @@ public class TrackPet extends FragmentActivity implements OnMapReadyCallback {
     String trackerId;
 
     String recentCoordinate;
-    String recentLat;
-    String recentLng;
+    Map<String, Object> coordMap;
+    List<LatLng> coordinateList = new ArrayList<>();
+
+    boolean checkHeatmap=false;
+
+    int[] colors = {
+            Color.rgb(102, 225, 0), // green
+            Color.rgb(255, 255, 0),   // yellow
+            Color.rgb(255, 128, 0),   // yellow
+            Color.rgb(255, 0, 0)    // red
+    };
+
+    float[] startPoints = {
+            0.2f,0.4f,0.6f, 1f
+    };
+
 
     GoogleMap map;
 
@@ -195,9 +219,7 @@ public class TrackPet extends FragmentActivity implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         map=googleMap;
 
-        heatmap(pet);
-
-        System.out.println("RECENT COORD FROM DASH"+recentCoordinate);
+        setHeatmap(pet);
 
         if(pet!=null && !pet.equals("") && trackerId!=null) {
             String petCoordinates = readSMS();
@@ -209,10 +231,12 @@ public class TrackPet extends FragmentActivity implements OnMapReadyCallback {
                 double lng = Double.parseDouble(location[1]);
 
                 addCoordinates(lat,lng);
+                checkHeatmap=true;
 
                 LatLng petLocation = new LatLng(lat, lng);
                 map.addMarker(new MarkerOptions().position(petLocation).title("Your pet"));
-                map.moveCamera(CameraUpdateFactory.newLatLng(petLocation));
+                map.animateCamera(CameraUpdateFactory.newLatLngZoom(petLocation, 15), 2000, null);
+
             }
             else if(recentCoordinate!=null && !recentCoordinate.equals(""))
             {
@@ -220,14 +244,14 @@ public class TrackPet extends FragmentActivity implements OnMapReadyCallback {
                 recentCoordinate = recentCoordinate.substring(0, recentCoordinate.indexOf("]"));
 
                 String[] location = recentCoordinate.split(",");
-                System.out.println("COORDINATE TRACK PET"+location);
+                checkHeatmap=true;
 
                 double lat = Double.parseDouble(location[0]);
                 double lng = Double.parseDouble(location[1]);
 
                 LatLng petLocation = new LatLng(lat, lng);
                 map.addMarker(new MarkerOptions().position(petLocation).title("Your pet"));
-                map.moveCamera(CameraUpdateFactory.newLatLng(petLocation));
+                map.animateCamera(CameraUpdateFactory.newLatLngZoom(petLocation, 15), 2000, null);
             }
             else
                 Toast.makeText(TrackPet.this, "No location to display", Toast.LENGTH_SHORT).show();
@@ -252,79 +276,69 @@ public class TrackPet extends FragmentActivity implements OnMapReadyCallback {
         coordinateMap.put("Date",date);
 
 
-            if(pet!=null && !pet.equals("")){
-                db.collection("Users")
-                        .document(userId)
-                        .collection("Pets")
-                        .document(pet)
-                        .collection("Location")
-                        .add(coordinateMap)
-                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                            @Override
-                            public void onSuccess(DocumentReference documentReference) {
-                                Log.d("TAG", "Coordinates has been added to the database!");
-                                System.out.println("Coordinates got added");
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        String error=e.getMessage();
-                        Log.d("TAG", "Error adding coordinates");
-                    }
-                });
-            }else
-                Log.d("TAG", "Error adding coordinates");
-        }
-
-
-
-
-        public void heatmap(String pet){
-
-
-//            if(pet!=null && pet!="") {
-//
-////                db.collection("Users")
-////                    .document(userId).collection("Pets")
-////                    .document(pet).collection("Location").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-////                    @Override
-////                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-////                        if (task.isSuccessful()) {
-////                            List<DocumentSnapshot> myListOfDocuments = task.getResult().getDocuments();
-////                        }
-////                    }
-////                });
-//
-//            }
-
-            if(pet!=null && pet!="") {
-
-
-                db.collection("Users")
-                        .document(userId).collection("Pets")
-                        .document(pet).collection("Location").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                System.out.println(document.getData());
-                            }
-                        } else {
-                            System.out.println("Error getting documents: ");
+        if(pet!=null && !pet.equals("")){
+            db.collection("Users")
+                    .document(userId)
+                    .collection("Pets")
+                    .document(pet)
+                    .collection("Location")
+                    .add(coordinateMap)
+                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                        @Override
+                        public void onSuccess(DocumentReference documentReference) {
+                            Log.d("TAG", "Coordinates has been added to the database!");
+                            System.out.println("Coordinates got added");
                         }
+                    }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    String error=e.getMessage();
+                    Log.d("TAG", "Error adding coordinates");
+                }
+            });
+        }else
+            Log.d("TAG", "Error adding coordinates");
+    }
+
+
+    private void setHeatmap(String pet) {
+
+        if(pet!=null && !pet.equals("")) {
+            db.collection("Users")
+                    .document(userId).collection("Pets")
+                    .document(pet).collection("Location").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            coordMap = document.getData();
+                            String latitude = coordMap.get("Latitude").toString();
+                            String longitude =coordMap.get("Longitude").toString();
+
+                            double lt=Double.parseDouble(latitude);
+                            double ln= Double.parseDouble(longitude);
+                            coordinateList.add(new LatLng(lt,ln));
+                        }
+
+                    } else {
+                        System.out.println("Error getting documents: ");
                     }
-                });
-
-            }
-
-//            heatmapButton.setOnClickListener(new View.OnClickListener(){
-//                @Override
-//                public void onClick(View v){
-//                    Intent intent=new Intent(TrackPet.this,Heatmap.class);
-//                    startActivity(intent);
-//                }
-//            });
+                }
+            });
         }
+    }
+
+    public void clickHeatmap(View v){
+
+        if(checkHeatmap) {
+            Intent intent = new Intent(TrackPet.this, Heatmap.class);
+            intent.putExtra("ARRAY", (Serializable) coordinateList);
+            startActivity(intent);
+        }
+        else
+            Toast.makeText(TrackPet.this, "No heatmap to display", Toast.LENGTH_SHORT).show();
+
+    }
 
 
 }
