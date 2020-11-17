@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".BloodTests"
+    tools:context=".SymptomLogger"
     android:background="#00c2cb">
 
 
@@ -74,6 +74,43 @@
         app:layout_constraintVertical_bias="0.022"
         app:srcCompat="@drawable/ic_setting"
         tools:ignore="VectorDrawableCompat" />
+
+    <Button
+        android:id="@+id/searchDisease"
+        android:layout_width="252dp"
+        android:layout_height="60dp"
+        android:background="@drawable/round_aqua_rect"
+        android:fontFamily="@font/montserrat"
+        android:text="Search"
+        android:textAllCaps="false"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textView"
+        app:layout_constraintVertical_bias="0.775" />
+
+
+
+    <ListView
+        android:id="@+id/list_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="-80dp"
+        tools:layout_editor_absoluteY="0dp"/>
+
+        <CheckBox
+            android:id="@+id/checkbox_meat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="meat"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.294"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textView" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
