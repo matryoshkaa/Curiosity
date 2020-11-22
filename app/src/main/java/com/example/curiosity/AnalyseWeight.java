@@ -60,6 +60,7 @@ public class AnalyseWeight extends AppCompatActivity {
     String username;
     String user;
     String currentPet;
+    String idealWeight;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,8 +72,9 @@ public class AnalyseWeight extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
 
-        //get selected pet ID
+        //get selected pet ID and ideal weight
         currentPet = getIntent().getStringExtra("REF");
+        idealWeight = getIntent().getStringExtra("IDEAL_WEIGHT");
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = mFirebaseAuth.getCurrentUser();
@@ -111,22 +113,6 @@ public class AnalyseWeight extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Log.d(TAG, "FAILURE " + e.getMessage());
-            }
-        });
-
-        db.collection("Users")
-                .document(userId)
-                .collection("Pets")
-                .document(currentPet)
-                .collection("Weight").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    if(task.getResult().size()==0)
-                        Toast.makeText(AnalyseWeight.this, "No information to display", Toast.LENGTH_SHORT).show();
-                } else {
-                    Log.d(TAG, "Error getting documents: ", task.getException());
-                }
             }
         });
 
