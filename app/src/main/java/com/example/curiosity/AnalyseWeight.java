@@ -56,11 +56,13 @@ public class AnalyseWeight extends AppCompatActivity {
     FirebaseUser firebaseUser;
     Task<QuerySnapshot> ref;
 
-    Query query;
-    String username;
     String user;
     String currentPet;
     String idealWeight;
+    String latestWeight;
+
+    double idealPetWeight;
+    double latestPetWeight;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +76,10 @@ public class AnalyseWeight extends AppCompatActivity {
 
         //get selected pet ID and ideal weight
         currentPet = getIntent().getStringExtra("REF");
-        idealWeight = getIntent().getStringExtra("IDEAL_WEIGHT");
+        idealWeight = getIntent().getStringExtra("WEIGHT");
+        latestWeight = getIntent().getStringExtra("LATESTWEIGHT");
+
+        System.out.println("ID AND WEIGHT "+currentPet +" "+idealWeight);
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = mFirebaseAuth.getCurrentUser();
@@ -116,7 +121,17 @@ public class AnalyseWeight extends AppCompatActivity {
             }
         });
 
+        if(idealWeight!=null && idealWeight!="")
+            if(latestWeight!=null && latestWeight!=""){
 
+            idealPetWeight=Double.parseDouble(idealWeight);
+            latestPetWeight=Double.parseDouble(latestWeight);
+
+            if(latestPetWeight>idealPetWeight)
+                System.out.println("YOUR PET HEAVY");
+            else
+                System.out.println("YOUR PET NO EAT ANYTHING");
+            }
 
         //on press settings button
         settings_button.setOnClickListener(new View.OnClickListener(){

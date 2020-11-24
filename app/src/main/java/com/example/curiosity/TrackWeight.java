@@ -17,8 +17,10 @@ import android.widget.Toast;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -27,6 +29,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -61,7 +65,10 @@ public class TrackWeight extends AppCompatActivity {
     String username;
     String user;
     String pet;
-    String petWeight;
+    String idealWeight;
+    String latestWeight;
+
+    Map<String, Object> map;
 
 
     @Override
@@ -75,6 +82,11 @@ public class TrackWeight extends AppCompatActivity {
         save_weight=(Button)findViewById(R.id.save_weight);
         weight_analytic=(Button)findViewById(R.id.weight_analytic);
 
+        user=getIntent().getStringExtra("USERID");
+        pet=getIntent().getStringExtra("REF");
+
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
 
         //on press settings button
         settings_button.setOnClickListener(new View.OnClickListener(){
@@ -95,76 +107,74 @@ public class TrackWeight extends AppCompatActivity {
         });
 
 
+        if (pet!= null && !pet.equals("")) {
 
-        db= FirebaseFirestore.getInstance();
+            db.collection("Users").document(user).collection("Pets").document(pet).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    if (documentSnapshot.exists())
+                        idealWeight = documentSnapshot.getString("Weight");
+                    onButtonClick(idealWeight);
 
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.d(TAG, "FAILURE " + e.getMessage());
+                }
+            });
 
-
-        //firebase authentication
-        mFirebaseAuth = FirebaseAuth.getInstance();
-        db = FirebaseFirestore.getInstance();
-        firebaseUser = mFirebaseAuth.getCurrentUser();
-        if(firebaseUser != null){
-            userId = firebaseUser.getUid();
-            documentReference = db.collection("Users").document(userId);
         }
 
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                if (mFirebaseAuth.getCurrentUser() == null){
-                    startActivity(new Intent(TrackWeight.this, Login.class));
+        if (pet != null && pet != "") {
+
+            db.collection("Users")
+                    .document(user)
+                    .collection("Pets")
+                    .document(pet)
+                    .collection("Weight").orderBy("date", Query.Direction.DESCENDING)
+                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            map = document.getData();
+                            latestWeight = map.get("weight").toString();
+                            System.out.println("LATEST WEIGHT "+document.getData());
+                        }
+                    } else {
+                        System.out.println("Error getting documents: ");
+                    }
                 }
-            }
-        };
-
-
-        // google user retrieval
-        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
-        if (acct != null) {
-            user = acct.getDisplayName();
+            });
         }
 
-        documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if(documentSnapshot.exists()){
-                    name = documentSnapshot.getString("User Name");
-                }
-                else
-                {
-                    name=user;
-
-                }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d(TAG, "FAILURE " + e.getMessage());
-            }
-        });
-
-
-        db.collection("Users").document(userId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if (documentSnapshot.exists())
-                    pet = documentSnapshot.getString("Current Pet");
-                onButtonClick(pet);
-
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d(TAG, "FAILURE " + e.getMessage());
-            }
-        });
 
 
 
     };
 
-    public void onButtonClick(String pet){
+    public void onButtonClick(String idealWeight){
+
+        weight_analytic.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+
+                if(pet!=null && !pet.equals("")){
+
+                    Intent intent=new Intent(TrackWeight.this,AnalyseWeight.class);
+                    intent.putExtra("REF", pet);
+                    intent.putExtra("WEIGHT", idealWeight);
+                    intent.putExtra("LATESTWEIGHT", latestWeight);
+
+                    startActivity(intent);
+            }
+                else
+                    Toast.makeText(TrackWeight.this, "No pet has been added to analyse weight", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
 
         save_weight.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -180,65 +190,29 @@ public class TrackWeight extends AppCompatActivity {
                 userMap.put("weight",petWeight);
 
                 if(pet!=null && !pet.equals("")){
-                db.collection("Users")
-                        .document(userId)
-                        .collection("Pets")
-                        .document(pet)
-                        .collection("Weight")
-                        .add(userMap)
-                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                            @Override
-                            public void onSuccess(DocumentReference documentReference) {
-                                Toast.makeText(TrackWeight.this,"Weight has been added!",Toast.LENGTH_LONG).show();
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        String error=e.getMessage();
+                    db.collection("Users")
+                            .document(user)
+                            .collection("Pets")
+                            .document(pet)
+                            .collection("Weight")
+                            .add(userMap)
+                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                @Override
+                                public void onSuccess(DocumentReference documentReference) {
+                                    Toast.makeText(TrackWeight.this,"Weight has been added!",Toast.LENGTH_LONG).show();
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            String error=e.getMessage();
 
-                        Toast.makeText(TrackWeight.this,"Error: "+error,Toast.LENGTH_LONG).show();
-                    }
-                });
+                            Toast.makeText(TrackWeight.this,"Error: "+error,Toast.LENGTH_LONG).show();
+                        }
+                    });
                 }else
                     Toast.makeText(TrackWeight.this, "No pet has been added to track weight", Toast.LENGTH_SHORT).show();
             }
         });
-
-        weight_analytic.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-
-
-                if (pet!= null && !pet.equals("")) {
-
-                    db.collection("Users").document(userId).collection("Pets").document(pet).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                        @Override
-                        public void onSuccess(DocumentSnapshot documentSnapshot) {
-                            if (documentSnapshot.exists())
-                                petWeight = documentSnapshot.getString("Ideal Weight");
-
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.d(TAG, "FAILURE " + e.getMessage());
-                        }
-                    });
-
-                }
-
-                if(pet!=null && !pet.equals("")){
-                    Intent intent=new Intent(TrackWeight.this,AnalyseWeight.class);
-                    intent.putExtra("REF", pet);
-                    intent.putExtra("IDEAL_WEIGHT", petWeight);
-                    startActivity(intent);
-            }
-                else
-                    Toast.makeText(TrackWeight.this, "No pet has been added to analyse weight", Toast.LENGTH_SHORT).show();
-
-            }
-        });
-
 
 
 

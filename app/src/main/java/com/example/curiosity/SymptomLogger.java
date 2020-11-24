@@ -2,8 +2,13 @@ package com.example.curiosity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
@@ -13,6 +18,7 @@ import android.widget.ListView;
 import android.widget.ScrollView;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -25,8 +31,8 @@ public class SymptomLogger extends AppCompatActivity {
     ImageButton settings_button;
     ListView symptomListView;
 
-    List symptoms = new ArrayList();
-    ArrayAdapter adapter;
+    List symptoms = new ArrayList<String>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,15 +45,7 @@ public class SymptomLogger extends AppCompatActivity {
 
 
 
-        try{
-            addSymptoms();
 
-
-        }
-        catch (IOException e) {
-            System.out.println("Aaaaaaaaaaaaaaaaaaaaaaaa");
-            e.printStackTrace();
-        }
         //on press settings button
         settings_button.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -68,17 +66,5 @@ public class SymptomLogger extends AppCompatActivity {
 
     }
 
-    void addSymptoms() throws IOException {
-        BufferedReader bfReader = new BufferedReader(new FileReader("src\\main\\assets\\symptoms.txt"));
-        String line = bfReader.readLine();
-        while(line!=null){
-            symptoms.add(line);
-            line = bfReader.readLine();
-        }
-        bfReader.close();
 
-        for(int i=0; i<symptoms.size(); i++){
-            System.out.println(symptoms.get(i));
-        }
-    }
 }
