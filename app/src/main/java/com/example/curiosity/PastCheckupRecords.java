@@ -5,27 +5,36 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class PastCheckupRecords extends AppCompatActivity {
 
@@ -34,7 +43,6 @@ public class PastCheckupRecords extends AppCompatActivity {
     ImageButton back_button;
     ImageButton settings_button;
     RecyclerView checkupList;
-
 
     FirebaseAuth mFirebaseAuth;
     FirebaseAuth.AuthStateListener mAuthListener;
@@ -49,19 +57,22 @@ public class PastCheckupRecords extends AppCompatActivity {
     CollectionReference ref;
     private CheckupAdapter adapter;
 
-
     Query query;
 
     String username;
     String user;
+    String currentPet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_past_checkup_records);
 
-        db = FirebaseFirestore.getInstance();
+        //get selected pet ID
+        currentPet = getIntent().getStringExtra("REF");
 
+        //setting up database and user credentials
+        db = FirebaseFirestore.getInstance();
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = mFirebaseAuth.getCurrentUser();
@@ -86,6 +97,7 @@ public class PastCheckupRecords extends AppCompatActivity {
             user = acct.getDisplayName();
         }
 
+        //user name retrieval
         documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -103,15 +115,37 @@ public class PastCheckupRecords extends AppCompatActivity {
             }
         });
 
-        ref=db.collection("Users")
-                .document(userId)
-                .collection("Pets")
-                .document("Berry")
-                .collection("Check Up Records");
+
+        //setting up document reference
+        if(currentPet!=null && !currentPet.equals("")) {
 
 
-        setUpRecyclerView();
+            db.collection("Users")
+                    .document(userId)
+                    .collection("Pets")
+                    .document(currentPet)
+                    .collection("Check Up Records").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        if(task.getResult().size()==0)
+                        Toast.makeText(PastCheckupRecords.this, "No records to display", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Log.d(TAG, "Error getting documents: ", task.getException());
+                    }
+                }
+            });
 
+            ref = db.collection("Users")
+                    .document(userId)
+                    .collection("Pets")
+                    .document(currentPet)
+                    .collection("Check Up Records");
+
+            setUpRecyclerView();
+        }
+        else
+            Toast.makeText(PastCheckupRecords.this, "No records to display", Toast.LENGTH_SHORT).show();
 
         back_button = (ImageButton) findViewById(R.id.back_button);
         settings_button = (ImageButton) findViewById(R.id.settings_button);
@@ -135,14 +169,12 @@ public class PastCheckupRecords extends AppCompatActivity {
     }
 
     private void setUpRecyclerView(){
-        //Query query=ref.whereEqualTo("status","Past").orderBy("date");
 
         Date currentDate=new Date();
 
+        //check if date in record is before today's date
         Query query=ref.whereLessThanOrEqualTo("date",currentDate)
                 .orderBy("date");
-
-        //check if date in record is before today's date
 
         FirestoreRecyclerOptions<Checkup> checkups=new FirestoreRecyclerOptions.Builder<Checkup>()
                 .setQuery(query,Checkup.class).build();
@@ -154,17 +186,26 @@ public class PastCheckupRecords extends AppCompatActivity {
         checkupList.setLayoutManager(new LinearLayoutManager(this));
         checkupList.setAdapter(adapter);
 
+
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+
+        if(currentPet!=null && !currentPet.equals(""))
         adapter.startListening();
+        else
+            Toast.makeText(PastCheckupRecords.this, "No records to display", Toast.LENGTH_SHORT).show();
     }
 
+    @SuppressLint("ShowToast")
     @Override
     protected void onStop() {
         super.onStop();
-        adapter.stopListening();
+        if(currentPet!=null && !currentPet.equals(""))
+            adapter.stopListening();
+        else
+            Toast.makeText(PastCheckupRecords.this, "No records to display", Toast.LENGTH_SHORT);
     }
 }

@@ -149,7 +149,7 @@
         app:layout_constraintVertical_bias="0.467" />
 
     <Button
-        android:id="@+id/bloodButton"
+        android:id="@+id/symptomButton"
         android:layout_width="252dp"
         android:layout_height="60dp"
         android:background="@drawable/round_aqua_rect"

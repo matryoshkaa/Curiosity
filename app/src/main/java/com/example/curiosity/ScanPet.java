@@ -114,9 +114,10 @@ public class ScanPet extends AppCompatActivity {
             };
             Intent intent = getIntent();
             String id = getNdefMessages(intent);
+            //if
             System.out.println(id);
             petId = (TextView) findViewById(R.id.ScannedID);
-            petId.setText(getNdefMessages(intent));
+            petId.setText(id);
 
                 DocumentReference documentReference = fStore.collection("Users").document(userid).collection("Pets")
                         .document(id);
