@@ -197,9 +197,6 @@
             android:layout_width="match_parent"
             android:layout_height="41dp"
             android:inputType="text"
-
-            android:paddingTop="0dp"
-            android:paddingBottom="0dp"
             android:text="" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -222,8 +219,6 @@
             android:layout_width="match_parent"
             android:layout_height="41dp"
             android:inputType="text"
-            android:paddingTop="0dp"
-            android:paddingBottom="0dp"
             android:text="" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -246,8 +241,6 @@
         android:layout_width="match_parent"
         android:layout_height="41dp"
         android:inputType="text"
-        android:paddingTop="0dp"
-        android:paddingBottom="0dp"
         android:text="" />
 
 </com.google.android.material.textfield.TextInputLayout>
@@ -270,9 +263,7 @@
             android:layout_width="match_parent"
             android:layout_height="41dp"
             android:inputType="text"
-            android:paddingTop="0dp"
-            android:paddingBottom="0dp"
-            android:text=""/>
+            android:text="" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -294,8 +285,6 @@
             android:layout_width="match_parent"
             android:layout_height="41dp"
             android:inputType="text"
-            android:paddingTop="0dp"
-            android:paddingBottom="0dp"
             android:text="" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -318,8 +307,6 @@
             android:layout_width="match_parent"
             android:layout_height="41dp"
             android:inputType="text"
-            android:paddingTop="0dp"
-            android:paddingBottom="0dp"
             android:text="" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -342,8 +329,6 @@
             android:layout_width="match_parent"
             android:layout_height="41dp"
             android:inputType="text"
-            android:paddingTop="0dp"
-            android:paddingBottom="0dp"
             android:text="" />
 
     </com.google.android.material.textfield.TextInputLayout>
