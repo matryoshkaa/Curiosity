@@ -22,6 +22,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.SetOptions;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 
 public class PetFromSettings extends AppCompatActivity {
@@ -86,7 +87,7 @@ public class PetFromSettings extends AppCompatActivity {
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
 
-        userid = fAuth.getCurrentUser().getUid();
+        userid = Objects.requireNonNull(fAuth.getCurrentUser()).getUid();
 
 
         intent = new Intent(PetFromSettings.this, Dashboard.class);

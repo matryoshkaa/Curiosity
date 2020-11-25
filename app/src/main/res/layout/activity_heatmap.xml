@@ -11,6 +11,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="58dp"
+        android:layout_alignParentTop="true"
         android:paddingTop="5dp"
         android:background="#FFFFFF"
         android:orientation="horizontal">
@@ -23,6 +24,7 @@
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="18dp"
             android:background="#00FFFFFF"
+            android:contentDescription="TODO"
             android:scaleType="fitCenter"
             app:srcCompat="@drawable/ic_back"
             tools:ignore="VectorDrawableCompat"
@@ -30,33 +32,33 @@
             android:layout_marginStart="18dp" />
 
         <TextView
-            android:id="@+id/trackHeader"
+            android:id="@+id/heatmapHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="5dp"
             android:fontFamily="@font/montserrat"
-            android:text="@string/track"
+            android:text="Heatmap"
             android:textColor="#000000"
             android:textSize="24sp"
             />
 
 
-    <ImageButton
-        android:id="@+id/settings_button"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:padding="2dp"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="18dp"
-        android:layout_marginTop="5dp"
-        android:background="#00FFFFFF"
-        android:scaleType="fitCenter"
-        app:srcCompat="@drawable/ic_setting"
-        tools:ignore="VectorDrawableCompat"
-        android:contentDescription="TODO"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="18dp" />
+        <ImageButton
+            android:id="@+id/settings_button"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:padding="2dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="18dp"
+            android:layout_marginTop="5dp"
+            android:background="#00FFFFFF"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/ic_setting"
+            tools:ignore="VectorDrawableCompat"
+            android:contentDescription="TODO"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="18dp" />
 
     </RelativeLayout>
 
@@ -65,27 +67,13 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-    <fragment
-        android:id="@+id/map"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        <fragment
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
 
-        <Button
-            android:id="@+id/heatmapButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right|bottom"
-            android:layout_marginBottom="15dp"
-            android:layout_marginRight="10dp"
-            android:textColor="#FFFFFF"
-            android:onClick="clickHeatmap"
-            android:text="View Heatmap"
-            android:background="@drawable/round_black_rect"
-            android:padding="10dp"
-            />
-
-    </fragment>
+        </fragment>
 
     </LinearLayout>
 

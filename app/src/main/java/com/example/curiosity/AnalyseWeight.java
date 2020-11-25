@@ -8,10 +8,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -54,15 +56,13 @@ public class AnalyseWeight extends AppCompatActivity {
     FirebaseUser firebaseUser;
     Task<QuerySnapshot> ref;
 
-    Query query;
-    String username;
     String user;
+    String currentPet;
+    String idealWeight;
+    String latestWeight;
 
-    LineGraphSeries series;
-    GraphView graph;
-
-
-
+    double idealPetWeight;
+    double latestPetWeight;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,10 +71,15 @@ public class AnalyseWeight extends AppCompatActivity {
 
         back_button=(ImageButton)findViewById(R.id.back_button);
         settings_button=(ImageButton)findViewById(R.id.settings_button);
-        graph = (GraphView) findViewById(R.id.graph);
-        series = new LineGraphSeries();
 
         db = FirebaseFirestore.getInstance();
+
+        //get selected pet ID and ideal weight
+        currentPet = getIntent().getStringExtra("REF");
+        idealWeight = getIntent().getStringExtra("WEIGHT");
+        latestWeight = getIntent().getStringExtra("LATESTWEIGHT");
+
+        System.out.println("ID AND WEIGHT "+currentPet +" "+idealWeight);
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = mFirebaseAuth.getCurrentUser();
@@ -116,51 +121,17 @@ public class AnalyseWeight extends AppCompatActivity {
             }
         });
 
-        collectionReference=db.collection("Users")
-                .document(userId)
-                .collection("Pets")
-                .document("Berry")
-                .collection("Weight");
+        if(idealWeight!=null && idealWeight!="")
+            if(latestWeight!=null && latestWeight!=""){
 
-        collectionReference.addSnapshotListener(this, new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(QuerySnapshot queryDocumentSnapshots, FirebaseFirestoreException e) {
-                if (e != null) {
-                    return;
-                }
-                String data = "";
-                for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-                    WeightData node = documentSnapshot.toObject(WeightData.class);
-                    node.setDocumentId(documentSnapshot.getId());
-                    String documentId = node.getDocumentId();
-                    String date = node.getDate();
-                    String weight = node.getWeight();
+            idealPetWeight=Double.parseDouble(idealWeight);
+            latestPetWeight=Double.parseDouble(latestWeight);
 
-                    SimpleDateFormat f = new SimpleDateFormat("dd-MM-yyyy");
-                    Date d = null;
-                    try {
-                        d = f.parse(date);
-                    } catch (ParseException ex) {
-                        ex.printStackTrace();
-                    }
-                    long milliseconds = d.getTime();
-                        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[]{
-                                new DataPoint(milliseconds,  Integer. parseInt(weight)),
-                        });
-                        graph.addSeries(series);
-
-                }
+            if(latestPetWeight>idealPetWeight)
+                System.out.println("YOUR PET HEAVY");
+            else
+                System.out.println("YOUR PET NO EAT ANYTHING");
             }
-
-        });
-
-
-
-
-
-        setUpGraph();
-
-
 
         //on press settings button
         settings_button.setOnClickListener(new View.OnClickListener(){
@@ -182,46 +153,6 @@ public class AnalyseWeight extends AppCompatActivity {
 
     }
 
-
-    public void setUpGraph() {
-        ref=db.collection("Users")
-                .document(userId)
-                .collection("Pets")
-                .document("Berry")
-                .collection("Weight")
-                .get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        String data = "";
-                        for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-                            WeightData node = documentSnapshot.toObject(WeightData.class);
-                            node.setDocumentId(documentSnapshot.getId());
-                            String documentId = node.getDocumentId();
-                            String date = node.getDate();
-                            String weight = node.getWeight();
-
-                            SimpleDateFormat f = new SimpleDateFormat("dd-MM-yyyy");
-                            Date d = null;
-                            try {
-                                d = f.parse(date);
-                            } catch (ParseException ex) {
-                                ex.printStackTrace();
-                            }
-                            long milliseconds = d.getTime();
-                            LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[]{
-                                    new DataPoint(milliseconds,  Integer. parseInt(weight)),
-                            });
-                            graph.addSeries(series);
-
-
-
-                        }
-                    }
-
-                });
-
-}
 
 
 }
