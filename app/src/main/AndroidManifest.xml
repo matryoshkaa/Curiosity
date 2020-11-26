@@ -24,7 +24,6 @@
 
         <activity android:name=".UpcomingVaccinations"/>
         <activity android:name=".PetDetails"/>
-        <activity android:name=".UpcomingVaccinations" />
         <activity android:name=".PastVaccination" />
         <activity android:name=".UpcomingCheckupRecords" />
         <activity android:name=".PastCheckupRecords" />

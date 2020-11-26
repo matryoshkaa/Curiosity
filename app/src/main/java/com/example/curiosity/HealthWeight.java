@@ -45,12 +45,8 @@ public class HealthWeight extends AppCompatActivity {
     private FirebaseFirestore db;
     FirebaseUser firebaseUser;
 
-    Query query;
-
-    String username;
     String user;
     String pet;
-    String petWeight;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,13 +77,6 @@ public class HealthWeight extends AppCompatActivity {
             }
         });
 
-        medicalButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                Intent intent=new Intent(HealthWeight.this, MedicalHistory.class);
-                startActivity(intent);
-            }
-        });
 
         symptomButton.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -173,6 +162,16 @@ public class HealthWeight extends AppCompatActivity {
             @Override
             public void onClick(View v){
                 Intent intent=new Intent(HealthWeight.this,TrackWeight.class);
+                intent.putExtra("REF",pet);
+                intent.putExtra("USERID",userId);
+                startActivity(intent);
+            }
+        });
+
+        medicalButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent intent=new Intent(HealthWeight.this, MedicalHistory.class);
                 intent.putExtra("REF",pet);
                 intent.putExtra("USERID",userId);
                 startActivity(intent);

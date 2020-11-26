@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -64,6 +65,14 @@ public class AnalyseWeight extends AppCompatActivity {
     double idealPetWeight;
     double latestPetWeight;
 
+    //weight range variable
+    double underweight;
+    double slightlyUnderweight;
+    double slightlyOverweight;
+    double overweight;
+
+    TextView analysis;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +80,7 @@ public class AnalyseWeight extends AppCompatActivity {
 
         back_button=(ImageButton)findViewById(R.id.back_button);
         settings_button=(ImageButton)findViewById(R.id.settings_button);
+        analysis=(TextView)findViewById(R.id.analysis);
 
         db = FirebaseFirestore.getInstance();
 
@@ -121,17 +131,37 @@ public class AnalyseWeight extends AppCompatActivity {
             }
         });
 
-        if(idealWeight!=null && idealWeight!="")
-            if(latestWeight!=null && latestWeight!=""){
+        if(idealWeight!=null && !idealWeight.equals(""))
+            if(latestWeight!=null && !latestWeight.equals("")){
 
             idealPetWeight=Double.parseDouble(idealWeight);
             latestPetWeight=Double.parseDouble(latestWeight);
 
-            if(latestPetWeight>idealPetWeight)
-                System.out.println("YOUR PET HEAVY");
-            else
-                System.out.println("YOUR PET NO EAT ANYTHING");
+            System.out.println("PET CURRENT WEIGHT "+latestPetWeight);
+
+            underweight=(idealPetWeight/2);
+            slightlyUnderweight=(underweight*1.5);
+            slightlyOverweight=(underweight*2.5);
+            overweight=(underweight*3.5);
+
+            if(latestPetWeight==idealPetWeight)
+                analysis.setText("According to our analysis, your pet is the ideal weight! Keep this up!");
+            else if(latestPetWeight>underweight&&latestPetWeight<slightlyUnderweight)
+                analysis.setText("According to our analysis, your pet is underweight. We're a bit worried about your pet, please be more careful!");
+            else if(latestPetWeight>slightlyUnderweight&&latestPetWeight<idealPetWeight)
+                analysis.setText("According to our analysis, your pet is slightly underweight.Please take care and stay healthy!");
+            else if(latestPetWeight>idealPetWeight&&latestPetWeight<slightlyOverweight)
+                analysis.setText("According to our analysis, your pet is slightly overweight. Please take care and stay healthy!");
+            else if(latestPetWeight>slightlyOverweight&&latestPetWeight<overweight)
+               analysis.setText("According to our analysis, your pet is overweight. We're a bit worried about your pet, please be more careful!");
+            else if(latestPetWeight<underweight)
+                analysis.setText("According to our analysis, your pet is too underweight. Please consult with your vet");
+            else if(latestPetWeight>overweight)
+                analysis.setText("According to our analysis, your pet is too overweight. Please consult with your vet");
+
             }
+        else
+            Toast.makeText(AnalyseWeight.this, "Do not have enough weight information to conduct analysis", Toast.LENGTH_SHORT).show();
 
         //on press settings button
         settings_button.setOnClickListener(new View.OnClickListener(){
@@ -146,7 +176,7 @@ public class AnalyseWeight extends AppCompatActivity {
         back_button.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Intent intent=new Intent(AnalyseWeight.this,HealthWeight.class);
+                Intent intent=new Intent(AnalyseWeight.this,TrackWeight.class);
                 startActivity(intent);
             }
         });
