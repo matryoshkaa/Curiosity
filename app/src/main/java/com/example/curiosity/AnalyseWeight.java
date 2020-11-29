@@ -145,19 +145,19 @@ public class AnalyseWeight extends AppCompatActivity {
             overweight=(underweight*3.5);
 
             if(latestPetWeight==idealPetWeight)
-                analysis.setText("According to our analysis, your pet is the ideal weight! Keep this up!");
+                analysis.setText(R.string.ideal);
             else if(latestPetWeight>underweight&&latestPetWeight<slightlyUnderweight)
-                analysis.setText("According to our analysis, your pet is underweight. We're a bit worried about your pet, please be more careful!");
+                analysis.setText(R.string.underweight);
             else if(latestPetWeight>slightlyUnderweight&&latestPetWeight<idealPetWeight)
-                analysis.setText("According to our analysis, your pet is slightly underweight.Please take care and stay healthy!");
+                analysis.setText(R.string.slightUnderweight);
             else if(latestPetWeight>idealPetWeight&&latestPetWeight<slightlyOverweight)
-                analysis.setText("According to our analysis, your pet is slightly overweight. Please take care and stay healthy!");
+                analysis.setText(R.string.slightOverweight);
             else if(latestPetWeight>slightlyOverweight&&latestPetWeight<overweight)
-               analysis.setText("According to our analysis, your pet is overweight. We're a bit worried about your pet, please be more careful!");
+               analysis.setText(R.string.overweight);
             else if(latestPetWeight<underweight)
-                analysis.setText("According to our analysis, your pet is too underweight. Please consult with your vet");
+                analysis.setText(R.string.tooUnderweight);
             else if(latestPetWeight>overweight)
-                analysis.setText("According to our analysis, your pet is too overweight. Please consult with your vet");
+                analysis.setText(R.string.tooOverweight);
 
             }
         else
