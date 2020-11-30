@@ -152,10 +152,13 @@ public class SymptomLogger extends AppCompatActivity {
         symptoms.add("Difficulty urinating");
         symptoms.add("Disheveled coat");
         symptoms.add("Disorientation");
+        symptoms.add("Drooling");
         symptoms.add("Dropped jaw");
         symptoms.add("Dry cough");
+        symptoms.add("Ear discharge");
         symptoms.add("Enlarged lymph nodes");
         symptoms.add("Excessive itching");
+        symptoms.add("Excessive licking");
         symptoms.add("Excessive panting");
         symptoms.add("Excessive urination");
         symptoms.add("Excessive winking");
@@ -167,10 +170,11 @@ public class SymptomLogger extends AppCompatActivity {
         symptoms.add("Grating in the joint when your dog moves");
         symptoms.add("Hair loss");
         symptoms.add("Hives");
-        symptoms.add("Inability to Jump & Loss of Interest");
+        symptoms.add("Inability to Jump");
         symptoms.add("Increase in appetite");
         symptoms.add("Increased vocalization");
         symptoms.add("Inflamed and irritated skin");
+        symptoms.add("Inflammation around the abdominal area");
         symptoms.add("Inflammation of the gums");
         symptoms.add("Inflammation of the mouth");
         symptoms.add("Intolerance to exercise");
@@ -188,15 +192,17 @@ public class SymptomLogger extends AppCompatActivity {
         symptoms.add("Muscle pain");
         symptoms.add("Narrow stance");
         symptoms.add("Nasal and oral ulcers");
+        symptoms.add("Nasal discharge");
         symptoms.add("Nausea");
         symptoms.add("Odor in the ear");
         symptoms.add("Open-mouth breathing");
         symptoms.add("Oral odor");
         symptoms.add("Pale or inflamed gums");
+        symptoms.add("Paralysis");
+        symptoms.add("Pica");
         symptoms.add("Rapid breathing");
         symptoms.add("Ravenous hunger");
         symptoms.add("Red eyes");
-        symptoms.add("Red or irritated skin");
         symptoms.add("Red or pale gums");
         symptoms.add("Respiratory distress");
         symptoms.add("Restlessness");
@@ -205,7 +211,6 @@ public class SymptomLogger extends AppCompatActivity {
         symptoms.add("Runny nose");
         symptoms.add("Salivating");
         symptoms.add("Scabs");
-        symptoms.add("Unusually scared of water");
         symptoms.add("Segments, larvae or eggs of tapeworms in the feces");
         symptoms.add("Seizures");
         symptoms.add("Shivering");
@@ -223,6 +228,7 @@ public class SymptomLogger extends AppCompatActivity {
         symptoms.add("Ulcers on face");
         symptoms.add("Ulcers on feet");
         symptoms.add("Unexplained bleeding or discharge from body");
+        symptoms.add("Unusually scared of water");
         symptoms.add("Urinating in unusual places");
         symptoms.add("Urinating outside of litter box");
         symptoms.add("Vision problems");
@@ -230,7 +236,9 @@ public class SymptomLogger extends AppCompatActivity {
         symptoms.add("Weakness");
         symptoms.add("Weakness in hind legs");
         symptoms.add("Weight loss");
+        symptoms.add("Wet cough");
         symptoms.add("Wounds that don’t heal");
+        symptoms.add("Worms in vomit");
 
     }
 }
