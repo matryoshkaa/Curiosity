@@ -197,9 +197,8 @@
             android:layout_width="match_parent"
             android:layout_height="41dp"
             android:inputType="text"
-
-            android:paddingTop="0dp"
-            android:paddingBottom="0dp"
+            android:paddingTop="0px"
+            android:paddingBottom="0px"
             android:text="" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -222,8 +221,8 @@
             android:layout_width="match_parent"
             android:layout_height="41dp"
             android:inputType="text"
-            android:paddingTop="0dp"
-            android:paddingBottom="0dp"
+            android:paddingTop="0px"
+            android:paddingBottom="0px"
             android:text="" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -246,8 +245,8 @@
         android:layout_width="match_parent"
         android:layout_height="41dp"
         android:inputType="text"
-        android:paddingTop="0dp"
-        android:paddingBottom="0dp"
+        android:paddingTop="0px"
+        android:paddingBottom="0px"
         android:text="" />
 
 </com.google.android.material.textfield.TextInputLayout>
@@ -270,9 +269,9 @@
             android:layout_width="match_parent"
             android:layout_height="41dp"
             android:inputType="text"
-            android:paddingTop="0dp"
-            android:paddingBottom="0dp"
-            android:text=""/>
+            android:paddingTop="0px"
+            android:paddingBottom="0px"
+            android:text="" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -294,8 +293,8 @@
             android:layout_width="match_parent"
             android:layout_height="41dp"
             android:inputType="text"
-            android:paddingTop="0dp"
-            android:paddingBottom="0dp"
+            android:paddingTop="0px"
+            android:paddingBottom="0px"
             android:text="" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -318,8 +317,8 @@
             android:layout_width="match_parent"
             android:layout_height="41dp"
             android:inputType="text"
-            android:paddingTop="0dp"
-            android:paddingBottom="0dp"
+            android:paddingTop="0px"
+            android:paddingBottom="0px"
             android:text="" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -342,8 +341,8 @@
             android:layout_width="match_parent"
             android:layout_height="41dp"
             android:inputType="text"
-            android:paddingTop="0dp"
-            android:paddingBottom="0dp"
+            android:paddingTop="0px"
+            android:paddingBottom="0px"
             android:text="" />
 
     </com.google.android.material.textfield.TextInputLayout>
