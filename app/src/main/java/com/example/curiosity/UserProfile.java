@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnKeyListener;
@@ -17,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.datepicker.MaterialDatePicker;
@@ -100,6 +102,7 @@ public class UserProfile extends AppCompatActivity {
             }
         });
 
+
         //pulling data from db
         documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
             @Override
@@ -110,6 +113,25 @@ public class UserProfile extends AppCompatActivity {
                 if(TextUtils.isEmpty(phoneExists)){}else{phone.setText(documentSnapshot.getString("Phone")); }
                 String dobExists = documentSnapshot.getString("DOB");
                 if(TextUtils.isEmpty(dobExists)){}else{dob.setText(documentSnapshot.getString("DOB"));}
+            }
+        });
+
+        storage = FirebaseStorage.getInstance();
+        storageReference= storage.getReference();
+
+
+        storageReference.child("images/Owners/" +userid +".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Uri downloadUrl = uri;
+
+                Log.d("boop", downloadUrl.toString());
+                getImage(downloadUrl.toString());
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // File not found
             }
         });
 
@@ -184,6 +206,14 @@ public class UserProfile extends AppCompatActivity {
 
     }
 
+    private void getImage(String ref) {
+        ImageView imageView = (ImageView) findViewById(R.id.userProfilePicture);
+
+        Glide.with(this)
+                .load(ref)
+                .into(imageView);
+    }
+
     private void choosePicture() {
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -208,7 +238,7 @@ public class UserProfile extends AppCompatActivity {
         pd.show();
 
         final String randomKey = UUID.randomUUID().toString();
-        StorageReference riversRef = storageReference.child("images/" +userid +".jpg");
+        StorageReference riversRef = storageReference.child("images/Owners/" +userid +".jpg");
 
         riversRef.putFile(imageUri)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {

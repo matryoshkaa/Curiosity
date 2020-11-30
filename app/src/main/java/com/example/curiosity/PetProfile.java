@@ -1,17 +1,23 @@
 package com.example.curiosity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -21,6 +27,8 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.SetOptions;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,6 +55,11 @@ public class PetProfile extends AppCompatActivity {
 
     Intent intent;
 
+    ImageView petProfilePicture;
+    public Uri imageUri;
+    private FirebaseStorage storage;
+    private StorageReference storageReference;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +73,8 @@ public class PetProfile extends AppCompatActivity {
         transferPet = findViewById(R.id.transferOwnership);
         deletePet = findViewById(R.id.deletepet);
         viewDetails = findViewById(R.id.ViewPetDetailsButton);
+        petProfilePicture = findViewById(R.id.petProfilePicture);
+
         String petName, petId;
         Bundle extras = getIntent().getExtras();
         petName = extras.getString("petname");
@@ -83,6 +98,25 @@ public class PetProfile extends AppCompatActivity {
                 if (statusText.equals("lost")) markPetAsLost.setText("mark pet as found");
 
 
+            }
+        });
+
+        storage = FirebaseStorage.getInstance();
+        storageReference= storage.getReference();
+
+
+        storageReference.child("images/Pets/" +petId +".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Uri downloadUrl = uri;
+
+                Log.d("boop", downloadUrl.toString());
+                getImage(downloadUrl.toString());
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // File not found
             }
         });
 
@@ -202,6 +236,14 @@ public class PetProfile extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    private void getImage(String ref) {
+        ImageView imageView = (ImageView) findViewById(R.id.petProfilePicture);
+
+        Glide.with(this)
+                .load(ref)
+                .into(imageView);
     }
 
     private void DeletePet(String petid, int nop) {
