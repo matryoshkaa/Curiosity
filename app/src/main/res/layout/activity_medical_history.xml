@@ -7,7 +7,6 @@
     tools:context=".MedicalHistory"
     android:background="#00c2cb">
 
-
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="454dp"
@@ -35,7 +34,7 @@
         android:layout_marginRight="181dp"
         android:fontFamily="@font/montserrat"
         android:gravity="center"
-        android:text="Medical History"
+        android:text="Health Record"
         android:textColor="#000000"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -74,6 +73,380 @@
         app:layout_constraintVertical_bias="0.022"
         app:srcCompat="@drawable/ic_setting"
         tools:ignore="VectorDrawableCompat" />
+
+    <LinearLayout
+        android:id="@+id/linearTextBox"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintVertical_bias="0.086"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat"
+            android:paddingLeft="22dp"
+            android:paddingBottom="15dp"
+            android:gravity=""
+            android:layout_marginBottom="10dp"
+            android:paddingTop="15dp"
+            android:text="PET INFORMATION"
+            android:textStyle="bold"
+            android:textSize="18dp"
+            android:textColor="#ffffff"
+            android:background="#000000"
+            />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintVertical_bias="0.086"
+        android:weightSum="1"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat"
+            android:paddingLeft="20dp"
+            android:layout_weight="0.7"
+            android:textStyle="bold"
+            android:text="Pet Name"
+            android:textColor="#FFFFFF"
+            android:textSize="18dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/petName"
+            android:layout_weight="0.3"
+            android:fontFamily="@font/montserrat"
+            android:padding="10dp"
+            android:text="Pet Name"
+            android:textColor="#000000"
+            android:textSize="18dp" />
+
+    </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            app:layout_constraintVertical_bias="0.086"
+            android:weightSum="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat"
+                android:paddingLeft="20dp"
+                android:layout_weight="0.7"
+                android:textStyle="bold"
+                android:text="Birth Date"
+                android:textColor="#FFFFFF"
+                android:textSize="18dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/birthDate"
+                android:layout_weight="0.3"
+                android:fontFamily="@font/montserrat"
+                android:padding="10dp"
+                android:text="Birth Date"
+                android:textColor="#000000"
+                android:textSize="18dp" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            app:layout_constraintVertical_bias="0.086"
+            android:weightSum="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat"
+                android:paddingLeft="20dp"
+                android:layout_weight="0.7"
+                android:textStyle="bold"
+                android:text="Breed"
+                android:textColor="#FFFFFF"
+                android:textSize="18dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/breed"
+                android:layout_weight="0.3"
+                android:fontFamily="@font/montserrat"
+                android:padding="10dp"
+                android:text="Breed"
+                android:textColor="#000000"
+                android:textSize="18dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            app:layout_constraintVertical_bias="0.086"
+            android:weightSum="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat"
+                android:paddingLeft="20dp"
+                android:layout_weight="0.7"
+                android:textStyle="bold"
+                android:text="Gender"
+                android:textColor="#FFFFFF"
+                android:textSize="18dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/gender"
+                android:layout_weight="0.3"
+                android:fontFamily="@font/montserrat"
+                android:padding="10dp"
+                android:text="Gender"
+                android:textColor="#000000"
+                android:textSize="18dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            app:layout_constraintVertical_bias="0.086"
+            android:weightSum="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat"
+                android:paddingLeft="20dp"
+                android:layout_weight="0.7"
+                android:textStyle="bold"
+                android:text="Weight"
+                android:textColor="#FFFFFF"
+                android:textSize="18dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/weight"
+                android:layout_weight="0.3"
+                android:fontFamily="@font/montserrat"
+                android:padding="10dp"
+                android:text="Weight"
+                android:textColor="#000000"
+                android:textSize="18dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            app:layout_constraintVertical_bias="0.086"
+            android:weightSum="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat"
+                android:paddingLeft="20dp"
+                android:layout_weight="0.7"
+                android:textStyle="bold"
+                android:text="Owner"
+                android:textColor="#FFFFFF"
+                android:textSize="18dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/owner"
+                android:layout_weight="0.3"
+                android:fontFamily="@font/montserrat"
+                android:padding="10dp"
+                android:text="Owner"
+                android:textColor="#000000"
+                android:textSize="18dp" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat"
+            android:paddingLeft="22dp"
+            android:paddingBottom="15dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:paddingTop="15dp"
+            android:text="HEALTH CONCERNS"
+            android:textStyle="bold"
+            android:textSize="18dp"
+            android:textColor="#ffffff"
+            android:background="#000000"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            app:layout_constraintVertical_bias="0.086"
+            android:weightSum="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat"
+                android:paddingLeft="20dp"
+                android:layout_weight="0.7"
+                android:textStyle="bold"
+                android:text="Allergies"
+                android:textColor="#FFFFFF"
+                android:textSize="18dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/allergies"
+                android:layout_weight="0.3"
+                android:fontFamily="@font/montserrat"
+                android:padding="10dp"
+                android:text="Allergies"
+                android:textColor="#000000"
+                android:textSize="18dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            app:layout_constraintVertical_bias="0.086"
+            android:weightSum="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat"
+                android:paddingLeft="20dp"
+                android:layout_weight="0.7"
+                android:textStyle="bold"
+                android:text="Disorders"
+                android:textColor="#FFFFFF"
+                android:textSize="18dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/conditions"
+                android:layout_weight="0.3"
+                android:fontFamily="@font/montserrat"
+                android:padding="10dp"
+                android:text="Disorders"
+                android:textColor="#000000"
+                android:textSize="18dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            app:layout_constraintVertical_bias="0.086"
+            android:weightSum="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat"
+                android:paddingLeft="20dp"
+                android:layout_weight="0.7"
+                android:textStyle="bold"
+                android:text="Vet"
+                android:textColor="#FFFFFF"
+                android:textSize="18dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/vet"
+                android:layout_weight="0.3"
+                android:fontFamily="@font/montserrat"
+                android:padding="10dp"
+                android:text="Vet"
+                android:textColor="#000000"
+                android:textSize="18dp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -34,9 +34,12 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -69,6 +72,7 @@ public class TrackWeight extends AppCompatActivity {
     String latestWeight;
 
     Map<String, Object> map;
+    List<String> weightList= new ArrayList<>();
 
 
     @Override
@@ -139,8 +143,9 @@ public class TrackWeight extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             map = document.getData();
-                            latestWeight = map.get("weight").toString();
-                            System.out.println("LATEST WEIGHT "+document.getData());
+                            String weight = map.get("weight").toString();
+                            weightList.add(weight);
+
                         }
                     } else {
                         System.out.println("Error getting documents: ");
@@ -165,7 +170,12 @@ public class TrackWeight extends AppCompatActivity {
                     Intent intent=new Intent(TrackWeight.this,AnalyseWeight.class);
                     intent.putExtra("REF", pet);
                     intent.putExtra("WEIGHT", idealWeight);
-                    intent.putExtra("LATESTWEIGHT", latestWeight);
+
+                    if(!weightList.isEmpty()) {
+                        latestWeight = weightList.get(0);
+                        intent.putExtra("LATESTWEIGHT", latestWeight);
+                    }
+                    else Toast.makeText(TrackWeight.this, "No weight records to analyse", Toast.LENGTH_SHORT).show();
 
                     startActivity(intent);
             }
@@ -199,13 +209,14 @@ public class TrackWeight extends AppCompatActivity {
                             .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                 @Override
                                 public void onSuccess(DocumentReference documentReference) {
+                                    Intent intent=new Intent(TrackWeight.this,HealthWeight.class);
+                                    startActivity(intent);
                                     Toast.makeText(TrackWeight.this,"Weight has been added!",Toast.LENGTH_LONG).show();
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             String error=e.getMessage();
-
                             Toast.makeText(TrackWeight.this,"Error: "+error,Toast.LENGTH_LONG).show();
                         }
                     });
