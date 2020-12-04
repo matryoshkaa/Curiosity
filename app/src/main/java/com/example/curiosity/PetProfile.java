@@ -86,6 +86,7 @@ public class PetProfile extends AppCompatActivity {
             }
         });
 
+
         markPetAsLost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

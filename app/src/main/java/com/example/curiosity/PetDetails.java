@@ -29,7 +29,6 @@ public class PetDetails extends AppCompatActivity {
     FirebaseFirestore fStore; //for data retrieval
     String userid;
     TextView scannedid, petbreed, petdob, pettype, petname, ownerphone, ownername;
-
     private FirebaseStorage storage;
     private StorageReference storageReference;
 
@@ -79,7 +78,6 @@ public class PetDetails extends AppCompatActivity {
                 petname.setText(documentSnapshot.getString("Pet Name"));;
                 }
         });
-
 
 
         //back button

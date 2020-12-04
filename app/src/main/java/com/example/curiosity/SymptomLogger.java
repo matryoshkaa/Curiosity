@@ -6,15 +6,28 @@ import android.content.Intent;
 import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CheckedTextView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ScrollView;
+import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.annotations.Nullable;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -22,7 +35,10 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
@@ -30,13 +46,91 @@ public class SymptomLogger extends AppCompatActivity {
 
     ImageButton back_button;
     ImageButton settings_button;
+    Button searchDisease;
     ListView symptomListView;
-
+    TextView diagnosis;
+    ArrayAdapter adapter;
+    HashMap<String, String[]> canineDiseases = new HashMap<String, String[]>();
+    HashMap<String, String[]> felineDiseases = new HashMap<String, String[]>();
     private static final String TAG = "SymptomLogger";
 
 
+    FirebaseAuth fAuth; //to get user id------------------------
+    FirebaseFirestore fStore; //for data retrieval--------------
+    String userid;
+    String petId;
+    String petType;
+    private FirebaseFirestore db;
+
+    private FirebaseStorage storage;
+    private StorageReference storageReference;
+
+
+
     List symptoms = new ArrayList();
-    ArrayAdapter adapter;
+
+    String [] canineCancer = {"abnormal lumps or masses", "weight loss", "abnormal odor", "Decrease in appetite", "Intolerance to exercise", "Difficulty breathing", "abnormal thirst", "lethargy"};
+
+    String [] canineDiabetes = {"Abnormal thirst", "weight loss", "Excessive urination", "Increase in appetite", "Cloudy eyes", "Deteriorated vision", "Lackluster coat and skint"};
+
+    String[] CPV = {"intolerance to exercise", "Bloody diarrhea", "fever", "weight loss", "general discomfort", "Vomiting", "lethargy", "blood in vomit"};
+
+    String[] canineHeartWorm = {"intolerance to exercise", "weight loss", "cough", "Decrease in appetite", "Abnormal fatigue"};
+
+    String [] kennelCough = {"Strong cough with a honking sound", "Frequent sneezing", "Runny nose", "decrease in appetite", "Lethargy", "abnormal fatigue" ,"fever"};
+
+    String [] canineTapeworm = {"Segments, larvae or eggs of tapeworms in the feces", "Diarrhea", "Nausea", "Abdominal pain and discomfort", "Inflammation around the abdominal area", "Weight loss", "Lethargy", "Weakness", "vomiting", "worms in vomit"};
+
+    String [] canineRabies = {"unusually scared of water", "Aggressiveness", "Dropped jaw", "Seizures", "Paralysis", "Pica", "Fever"};
+
+    String [] canineEarInfection = {"Odor in the ear", "Excessive itching", "ear discharge", "hair loss", "Loss of balance", "Abnormal eye movements", "Difficulty hearing"};
+
+    String [] canineSkinAllergies = {"Excessive itching", "Swelling", "Inflamed and irritated skin", "Vomiting", "Sneezing", "Diarrhea", "Altered behavior", "Hives"};
+
+    String [] canineDistemper = {"Swollen and painful eyes", "Loss of eyesight", "Dry cough", "Wet cough", "Vomiting", "Seizures", "Fever"};
+
+    String [] canineInfluenza = {"cough", "Difficulty breathing", "Nasal discharge", "Fever", "Sneezing", "Runny eyes"};
+
+    String [] canineParasites = {"Excessive itching", "Hair loss","Inflamed and irritated skin", "Scabs"};
+
+    String [] canineHeatstroke = {"Excessive panting", "Salivating", "Restlessness", "Accelerated heart rate", "Vomiting", "Diarrhea", "Red or pale gums", "blood in vomit", "bloody diarrhea"};
+
+    String [] canineLeptospirosis = {"Sore muscles", "Intolerance to exercise", "Fever", "Lethargy", "Decrease in appetite", "abnormal thirst", "excessive urination", "Shivering", "stiffness", "weakness"};
+
+    String [] canineHipDysplasia = {"Limited range of motion", "Decreased physical activity", "Lameness", "Narrow stance", "Grating in the joint when your dog moves", "Looseness in the joint", "lethargy"};
+
+    String [] canineAutoimmune = {"Lameness", "Joint pain", "Muscle pain", "Ulcers on feet", "Loss of pigment in the nose", "abnormal thirst", "excessive urination", "Fever", "Ulcers on face"};
+
+    String [] canineLuxatingPatella = {"Licking at the knee", "Crying", "Lameness", "Abnormal walking", "Bow-legged appearance"};
+
+
+    String [] felineUTD = {"Abnormal thirst", "Excessive urination", "Bloody urine", "Urinating in unusual places", "Crying when urinating", "Licking around the urinary area (often because of pain)", "Depression", "decrease in appetite", "Vomiting"};
+
+    String [] felineFleas = {"Flea dirt on its skin (they look like tiny black dots)", "Excessive itching", "Excessive licking", "inflamed or irritated skin", "Hair loss", "Skin infections"};
+
+    String [] felineTapeworm = {"weight loss", "Segments, larvae or eggs of tapeworms in the feces", "Vomiting", "Diarrhea", "decrease in appetite"};
+
+    String [] felineEyeDiseases = {"An inflamed third eyelid that is covering a part of the infected eye", "respiratory distress", "Red eyes", "Excessive winking", "Rubbing eyes", "Clear, green or yellow discharge coming from the eyes", "sneezing", "nasal discharge"};
+
+    String [] felineCancer = {"Abnormal lumps or masses", "Wounds that don’t heal", "Change in bowel or bladder habits", "Difficulty eating or swallowing", "Difficulty urinating", "Unexplained bleeding or discharge from body", "Loss of appetite", "weight loss", "difficulty breathing", "Stiffness", "Oral odor", "Ravenous hunger", "coughing", "Difficulty defecating"};
+
+    String [] felineDiabetes = {"Excessive Urination", "weight loss", "Inability to Jump", "Decrease in appetite", "Vomiting", "Lethargy", "weakness in hind legs ", "Abnormal thirst"};
+
+    String [] FIV = {"Enlarged lymph nodes", "Fever", "Weight loss", "Disheveled coat", "Decrease in appetite", "Diarrhea", "Abnormal appearance or inflammation of the eye", "Inflammation of the gums", "Inflammation of the mouth", "Dental disease", "Skin redness", "Wounds that don’t heal", "Sneezing", "Clear, green or yellow discharge coming from the eyes", "urinating outside of litter box", "Altered behavior", "hair loss", "Excessive urination", "Difficulty urinating", "nasal discharge"};
+
+    String [] FeIV = {"weight loss", "Pale or inflamed gums", "Disheveled coat", "Abscesses", "Fever", "Lackluster coat and skin", "Diarrhea", "Seizures", "Altered behavior", "Vision problems", "Enlarged lymph nodes", "vomiting", "Respiratory distress", "Lethargy", "decrease in appetite"};
+
+    String [] felineHeartworm = {"coughing", "Difficulty breathing", "Vomiting", "Lethargy", "Anorexia", "Weight loss", "vomiting", "respiratory distress"};
+
+    String [] felineRabies = {"altered behaviour", "Increased vocalization", "Decrease in appetite", "Weakness", "Disorientation", "Paralysis", "Seizures", "restlessness", "lethargy"};
+
+    String [] felineRingworm = {"Skin lesions", "hair loss", "dandruff", "Skin redness"};
+
+    String [] felineUpperRespiratoryInfection = {"Sneezing", "Congestion", "Runny nose", "Cough", "nasal discharge", "Gagging", "Fever", "decreased appetite", "Rapid breathing", "Nasal and oral ulcers", "Squinting", "Open-mouth breathing", "Depression", "Skin redness", "rubbing eyes"};
+
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,20 +139,11 @@ public class SymptomLogger extends AppCompatActivity {
 
         back_button=(ImageButton)findViewById(R.id.back_button);
         settings_button=(ImageButton)findViewById(R.id.settings_button);
+        searchDisease = (Button)findViewById(R.id.searchDisease);
         symptomListView = (ListView) findViewById(R.id.symptomListView);
+        diagnosis = (TextView)findViewById(R.id.diagnosis);
 
         addSymptoms();
-
-//        try{
-//            addSymptoms();
-//
-//
-//        }
-//        catch (IOException e) {
-//            System.out.println("Aaaaaaaaaaaaaaaaaaaaaaaa");
-//            e.printStackTrace();
-//        }
-
 
 
         symptomListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
@@ -68,6 +153,74 @@ public class SymptomLogger extends AppCompatActivity {
         symptomListView.setAdapter(adapter);
 
 
+        canineDiseases.put("Cancer", canineCancer);
+        canineDiseases.put("Diabetes", canineDiabetes);
+        canineDiseases.put("CPV", CPV);
+        canineDiseases.put("HeartWorm", canineHeartWorm);
+        canineDiseases.put("KennelCough", kennelCough);
+        canineDiseases.put("Tapeworm", canineTapeworm);
+        canineDiseases.put("Rabies", canineRabies);
+        canineDiseases.put("EarInfections", canineEarInfection);
+        canineDiseases.put("SkinAllergies", canineSkinAllergies);
+        canineDiseases.put("CanineDistemper", canineDistemper);
+        canineDiseases.put("Influenza", canineInfluenza);
+        canineDiseases.put("Parasites", canineParasites);
+        canineDiseases.put("Heatstroke", canineHeatstroke);
+        canineDiseases.put("Leptospirosis", canineLeptospirosis);
+        canineDiseases.put("HipDysplasia", canineHipDysplasia);
+        canineDiseases.put("AutoimmuneIssues", canineAutoimmune);
+        canineDiseases.put("LuxatingPatella", canineLuxatingPatella);
+
+        felineDiseases.put("UTD", felineUTD);
+        felineDiseases.put("Fleas", felineFleas);
+        felineDiseases.put("Tapeworms", felineTapeworm);
+        felineDiseases.put("EyeDiseases", felineEyeDiseases);
+        felineDiseases.put("Cancer", felineCancer);
+        felineDiseases.put("Diabetes", felineDiabetes);
+        felineDiseases.put("FIV", FIV);
+        felineDiseases.put("FeIV", FeIV);
+        felineDiseases.put("Rabies", felineRabies);
+        felineDiseases.put("Ringworm", felineRingworm);
+        felineDiseases.put("UpperRespiratoryInfections", felineUpperRespiratoryInfection);
+
+        fAuth = FirebaseAuth.getInstance();
+        fStore = FirebaseFirestore.getInstance();
+        userid = fAuth.getCurrentUser().getUid();
+
+
+
+//        DocumentReference documentReference = fStore.collection("Users").document(userid).collection("Pets")
+//                .document(petId);
+//        documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+//            @Override
+//            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
+//                petType = (documentSnapshot.getString("Pet Type"));
+//                System.out.println(petType);
+//            }
+//        });
+
+
+        //on press search button
+        searchDisease.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ArrayList userSym = new ArrayList();
+                int len = symptomListView.getCount();
+                SparseBooleanArray sp=symptomListView.getCheckedItemPositions();
+                for(int i=0;i<len;i++)
+                {
+                    if(sp.get(i)){
+                        String sym = symptoms.get(i).toString();
+                        userSym.add(sym);
+
+                    }
+                }
+
+//                for(int i =0; i<userSym.size(); i++){
+//                    System.out.println(userSym.get(i));
+//                }
+            }
+        });
 
 
         //on press settings button
@@ -88,27 +241,13 @@ public class SymptomLogger extends AppCompatActivity {
             }
         });
 
-
+        storage = FirebaseStorage.getInstance();
+        storageReference= storage.getReference();
 
 
 
     }
 
-
-
-//    void addSymptoms() throws IOException {
-//        Scanner s = new Scanner (new File("D:\\321\\symptoms"));
-//        //System.out.println(line);
-//        while(s.hasNext()){
-//            symptoms.add(s.next());
-//
-//        }
-//        s.close();
-//
-//        for(int i=0; i<symptoms.size(); i++){
-//            System.out.println(symptoms.get(i));
-//        }
-//    }
 
     void addSymptoms(){
         symptoms.add("Abscesses");
