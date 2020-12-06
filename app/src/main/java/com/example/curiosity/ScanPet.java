@@ -121,21 +121,30 @@ public class ScanPet extends AppCompatActivity {
 
                 DocumentReference documentReference = fStore.collection("Users").document(userid).collection("Pets")
                         .document(id);
-            System.out.println(documentReference);
-                documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
-//                        petname.setText(documentSnapshot.getString("name"));
-//                        pettype.setText(documentSnapshot.getString("Pet Type"));
-//                        petbreed.setText(documentSnapshot.getString("Pet Breed"));
-//
-//                        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
-//                        String strDate = dateFormat.format(documentSnapshot.getDate("DOB"));
-//                        petdob.setText(strDate);
-                        System.out.println(documentSnapshot.getString("Pet Name"));
+            documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            //System.out.println(document.getString("Pet Name"));
+
+                            Intent prof = new Intent (ScanPet.this, PetDetails.class);
+//                            String scanned;
+//                            Bundle extras = getIntent().getExtras();
+//                            scanned = extras.getString("petid");
+//                            prof.putExtra("petid", scanned);
+                            startActivity(prof);
+
+
+                        } else {
+                            System.out.println("who?");
+                        }
+                    } else {
 
                     }
-                });
+                }
+            });
 
 
 ////////////////////////////////////////////////////////////////

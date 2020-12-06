@@ -52,6 +52,7 @@ public class PetDetails extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         petid= extras.getString("petid");
 
+
         userid = fAuth.getCurrentUser().getUid();
         DocumentReference documentReference = fStore.collection("Users").document(userid);
 
@@ -64,6 +65,7 @@ public class PetDetails extends AppCompatActivity {
                 if(TextUtils.isEmpty(phoneExists)){}else{ownerphone.setText(documentSnapshot.getString("Phone")); }
             }
         });
+
 
         DocumentReference documentReference1 = fStore.collection("Users").document(userid).collection("Pets").document("" + petid);
         //pulling data from db
