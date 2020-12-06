@@ -43,6 +43,7 @@ public class PetProfile extends AppCompatActivity {
     Button markPetAsLost;
     Button transferPet;
     Button deletePet;
+    Button viewDetails;
 
     Intent intent;
 
@@ -58,7 +59,7 @@ public class PetProfile extends AppCompatActivity {
         status = findViewById(R.id.status);
         transferPet = findViewById(R.id.transferOwnership);
         deletePet = findViewById(R.id.deletepet);
-
+        viewDetails = findViewById(R.id.ViewPetDetailsButton);
         String petName, petId;
         Bundle extras = getIntent().getExtras();
         petName = extras.getString("petname");
@@ -84,6 +85,7 @@ public class PetProfile extends AppCompatActivity {
 
             }
         });
+
 
         markPetAsLost.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -169,6 +171,20 @@ public class PetProfile extends AppCompatActivity {
 
             }
         });
+
+        viewDetails.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(PetProfile.this,PetDetails.class);
+
+                String petid;
+                Bundle extras = getIntent().getExtras();
+                petid = extras.getString("petid");
+                intent.putExtra("petid", petid);
+                startActivity(intent);
+            }
+        });
+
 
         //on press settings button
         settings_button.setOnClickListener(new View.OnClickListener() {

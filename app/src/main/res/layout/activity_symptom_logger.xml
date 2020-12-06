@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".BloodTests"
+    tools:context=".SymptomLogger"
     android:background="#00c2cb">
 
 
@@ -20,10 +20,12 @@
         android:background="#FFFFFF"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
-        app:layout_constraintBottom_toTopOf="@+id/vacc_rec_button"
+        app:layout_constraintBottom_toTopOf="@+id/searchDisease"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.511"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/textView"
@@ -74,6 +76,56 @@
         app:layout_constraintVertical_bias="0.022"
         app:srcCompat="@drawable/ic_setting"
         tools:ignore="VectorDrawableCompat" />
+
+    <Button
+        android:id="@+id/searchDisease"
+        android:layout_width="252dp"
+        android:layout_height="60dp"
+        android:background="@drawable/round_aqua_rect"
+        android:fontFamily="@font/montserrat"
+        android:text="Search"
+        android:textAllCaps="false"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textView"
+        app:layout_constraintVertical_bias="0.993" />
+
+    <ListView
+        android:id="@+id/symptomListView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="44dp"
+        android:background="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/diagnosis"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintVertical_bias="0.293" />
+
+    <TextView
+        android:id="@+id/diagnosis"
+        android:layout_width="412dp"
+        android:layout_height="58dp"
+        android:layout_marginTop="488dp"
+        android:background="#00000000"
+        android:gravity="center_horizontal"
+        android:text="diagnosis here"
+        android:textAlignment="center"
+        android:textAllCaps="true"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:drawableTint="#00FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/searchDisease"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintVertical_bias="0.636" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

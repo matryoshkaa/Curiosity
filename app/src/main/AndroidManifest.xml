@@ -22,7 +22,11 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/map_key" />
 
-        <activity android:name=".UpcomingVaccinations" />
+        <activity android:name=".UpcomingVaccinations"/>
+        <activity android:name=".PetDetails"/>
+
+<!--        <activity android:name=".UpcomingVaccinations" />-->
+
         <activity android:name=".PastVaccination" />
         <activity android:name=".UpcomingCheckupRecords" />
         <activity android:name=".PastCheckupRecords" />
@@ -56,7 +60,7 @@
         </activity>
         <activity android:name=".RegisterUser" />
         <activity android:name=".Dashboard"></activity>
-        <activity android:name=".BloodTests" />
+        <activity android:name=".SymptomLogger" />
         <activity android:name=".MedicalHistory" />
         <activity android:name=".TrackWeight" />
         <activity android:name=".HealthWeight" />

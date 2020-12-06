@@ -4,11 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddPet"
+    tools:context=".PetDetails"
     android:background="#00c2cb">
 
 
-
+    <TextView
+        android:id="@+id/textType11"
+        android:layout_width="166dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_weight="1"
+        android:fontFamily="@font/roboto_slab_bold"
+        android:text="Owner Name"
+        android:textColor="#FBFBFB"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/ownernameTextField"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -37,15 +49,15 @@
         android:layout_marginEnd="181dp"
         android:layout_marginRight="181dp"
         android:fontFamily="@font/montserrat"
-        android:text="Add Pet"
+        android:text="Pet Details"
         android:textColor="#000000"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.315"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.021" />
+        app:layout_constraintVertical_bias="0.023" />
 
     <ImageButton
         android:id="@+id/back_button"
@@ -83,8 +95,92 @@
         app:srcCompat="@drawable/ic_setting"
         tools:ignore="VectorDrawableCompat" />
 
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="107dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_weight="1"
+        android:fontFamily="@font/roboto_slab_bold"
+        android:text="Scanned ID"
+        android:textColor="#FBFBFB"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/scannedidTextField"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="107dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_weight="1"
+        android:fontFamily="@font/roboto_slab_bold"
+        android:text="Pet Breed"
+        android:textColor="#FBFBFB"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/petbreedTextField"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="107dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_weight="1"
+        android:fontFamily="@font/roboto_slab_bold"
+        android:text="Pet DOB"
+        android:textColor="#FBFBFB"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/petdobTextField"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textType9"
+        android:layout_width="107dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_weight="1"
+        android:fontFamily="@font/roboto_slab_bold"
+        android:text="Pet Name"
+        android:textColor="#FBFBFB"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/petnameTextField"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textType10"
+        android:layout_width="107dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_weight="1"
+        android:fontFamily="@font/roboto_slab_bold"
+        android:text="Pet Type"
+        android:textColor="#FBFBFB"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/pettypeTextField"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textType12"
+        android:layout_width="229dp"
+        android:layout_height="29dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_weight="1"
+        android:fontFamily="@font/roboto_slab_bold"
+        android:text="Owner Phone Number"
+        android:textColor="#FBFBFB"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/ownerphoneTextField"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/petnameTextField"
+        android:id="@+id/scannedidTextField"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -92,18 +188,68 @@
         android:layout_marginTop="100dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:hint="Pet Name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/petName"
+            android:id="@+id/scannedID"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="41dp"
             android:inputType="text"
+            android:paddingTop="0px"
+            android:paddingBottom="0px"
             android:text="" />
+
     </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/petbreedTextField"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="180dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/petBreed"
+            android:layout_width="match_parent"
+            android:layout_height="41dp"
+            android:inputType="text"
+            android:paddingTop="0px"
+            android:paddingBottom="0px"
+            android:text="" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+    android:id="@+id/petdobTextField"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="8dp"
+    android:layout_marginLeft="8dp"
+    android:layout_marginTop="260dp"
+    android:layout_marginEnd="8dp"
+    android:layout_marginRight="8dp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/petDOB"
+        android:layout_width="match_parent"
+        android:layout_height="41dp"
+        android:inputType="text"
+        android:paddingTop="0px"
+        android:paddingBottom="0px"
+        android:text="" />
+
+</com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/pettypeTextField"
@@ -111,133 +257,94 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="340dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:hint="Pet Type"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/petnameTextField">
-
+        app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/petType"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="41dp"
             android:inputType="text"
-            android:text=""
-
-            />
-
+            android:paddingTop="0px"
+            android:paddingBottom="0px"
+            android:text="" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/petBreedTextField"
+        android:id="@+id/petnameTextField"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="420dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:hint="Pet Breed"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pettypeTextField">
+        app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/petBreed"
+            android:id="@+id/petName"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="41dp"
             android:inputType="text"
+            android:paddingTop="0px"
+            android:paddingBottom="0px"
             android:text="" />
+
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/petdobTextField"
+        android:id="@+id/ownernameTextField"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="520dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:hint="Pet DOB"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/petBreedTextField">
+        app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/petDOB"
+            android:id="@+id/ownerName"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
+            android:layout_height="41dp"
             android:inputType="text"
+            android:paddingTop="0px"
+            android:paddingBottom="0px"
             android:text="" />
+
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/trackernoTextField"
+        android:id="@+id/ownerphoneTextField"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="600dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:hint="Tracker Number"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/petdobTextField">
+        app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/trackerNumber"
+            android:id="@+id/ownerPhone"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
+            android:layout_height="41dp"
             android:inputType="text"
+            android:paddingTop="0px"
+            android:paddingBottom="0px"
             android:text="" />
+
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/straystatusTextField"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:hint="Stray or Pet"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/trackernoTextField">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/straystatus"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:inputType="text"
-            android:text="" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <Button
-        android:id="@+id/addpetButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="157dp"
-        android:layout_marginLeft="157dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="157dp"
-        android:layout_marginRight="157dp"
-        android:text="Add Pet"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/straystatusTextField" />
 </androidx.constraintlayout.widget.ConstraintLayout>
