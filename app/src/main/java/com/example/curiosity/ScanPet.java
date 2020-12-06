@@ -115,22 +115,24 @@ public class ScanPet extends AppCompatActivity {
             Intent intent = getIntent();
             String id = getNdefMessages(intent);
             //if
-            System.out.println(id);
+            //System.out.println(id);
             petId = (TextView) findViewById(R.id.ScannedID);
             petId.setText(id);
 
                 DocumentReference documentReference = fStore.collection("Users").document(userid).collection("Pets")
                         .document(id);
+            System.out.println(documentReference);
                 documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
                     @Override
                     public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
-                        petname.setText(documentSnapshot.getString("name"));
-                        pettype.setText(documentSnapshot.getString("Pet Type"));
-                        petbreed.setText(documentSnapshot.getString("Pet Breed"));
-
-                        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
-                        String strDate = dateFormat.format(documentSnapshot.getDate("DOB"));
-                        petdob.setText(strDate);
+//                        petname.setText(documentSnapshot.getString("name"));
+//                        pettype.setText(documentSnapshot.getString("Pet Type"));
+//                        petbreed.setText(documentSnapshot.getString("Pet Breed"));
+//
+//                        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+//                        String strDate = dateFormat.format(documentSnapshot.getDate("DOB"));
+//                        petdob.setText(strDate);
+                        System.out.println(documentSnapshot.getString("Pet Name"));
 
                     }
                 });

@@ -167,13 +167,13 @@
 
     <TextView
         android:id="@+id/textType12"
-        android:layout_width="107dp"
-        android:layout_height="wrap_content"
+        android:layout_width="229dp"
+        android:layout_height="29dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_weight="1"
         android:fontFamily="@font/roboto_slab_bold"
-        android:text="Owner ID"
+        android:text="Owner Phone Number"
         android:textColor="#FBFBFB"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/ownerphoneTextField"

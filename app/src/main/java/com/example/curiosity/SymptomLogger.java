@@ -1,9 +1,12 @@
 package com.example.curiosity;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.res.AssetManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.SparseBooleanArray;
@@ -19,6 +22,8 @@ import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.annotations.Nullable;
 import com.google.firebase.firestore.DocumentReference;
@@ -26,6 +31,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -38,9 +45,12 @@ import java.io.InputStreamReader;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.function.Predicate;
 
 public class SymptomLogger extends AppCompatActivity {
 
@@ -187,23 +197,28 @@ public class SymptomLogger extends AppCompatActivity {
         fStore = FirebaseFirestore.getInstance();
         userid = fAuth.getCurrentUser().getUid();
 
+/*
+        petId=getIntent().getStringExtra("REF");
+
+        DocumentReference documentReference = fStore.collection("Users").document(userid).collection("Pets")
+                .document(petId);
+        documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
+                petType = (documentSnapshot.getString("Pet Type"));
+            }
+        });
+on press search button
+*/
 
 
-//        DocumentReference documentReference = fStore.collection("Users").document(userid).collection("Pets")
-//                .document(petId);
-//        documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
-//            @Override
-//            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
-//                petType = (documentSnapshot.getString("Pet Type"));
-//                System.out.println(petType);
-//            }
-//        });
-
-
-        //on press search button
         searchDisease.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View view) {
+
+                HashMap<String, Integer> predict = new HashMap<String, Integer>();
+
                 ArrayList userSym = new ArrayList();
                 int len = symptomListView.getCount();
                 SparseBooleanArray sp=symptomListView.getCheckedItemPositions();
@@ -216,9 +231,46 @@ public class SymptomLogger extends AppCompatActivity {
                     }
                 }
 
-//                for(int i =0; i<userSym.size(); i++){
-//                    System.out.println(userSym.get(i));
+
+                for(int i =0; i<userSym.size(); i++){
+                    for(Map.Entry d : felineDiseases.entrySet()){
+                        String [] temp = (String[]) d.getValue();
+                        List<String> temp2 = Arrays.asList(temp);
+                        for(int j=0; j<temp.length; j++){
+                            if(temp2.contains(userSym.get(i))){
+                                if(predict.containsKey(userSym.get(i))){
+                                    predict.put(d.toString(), predict.get(d)+1);
+                                }
+                                else{
+                                    predict.put(d.toString(), 1);
+                                }
+                            }
+
+                        }
+
+                    }
+                }
+                predict.entrySet().forEach(entry->{
+                    System.out.println(entry.getKey().toString() + " " + entry.getValue());
+                });
+
+
+
+//                for(Map.Entry d : felineDiseases.entrySet()){
+//                    for(int i =0; i<userSym.size(); i++){
+//                        String [] temp = (String[]) d.getValue();
+//                        List<String> temp2 = Arrays.asList(temp);
+//                        for(int j=0; j<temp.length; j++){
+//                            //System.out.println();
+//                            if(temp2.contains(userSym.get(i))){
+//                                System.out.println(userSym.get(i));
+//                            }
+//
+//                        }
+//                    }
 //                }
+
+
             }
         });
 

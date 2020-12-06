@@ -82,6 +82,8 @@ public class HealthWeight extends AppCompatActivity {
             @Override
             public void onClick(View v){
                 Intent intent=new Intent(HealthWeight.this, SymptomLogger.class);
+                intent.putExtra("REF",pet);
+                intent.putExtra("USERID",userId);
                 startActivity(intent);
             }
         });
