@@ -148,17 +148,16 @@
         android:layout_marginStart="10dp"
         android:layout_marginLeft="10dp"
         android:ems="10"
-        android:fontFamily="@font/montserrat"
         android:gravity="center"
+        android:fontFamily="@font/montserrat"
         android:inputType="number"
         android:textColor="#FFFFFF"
-        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.83"
+        app:layout_constraintHorizontal_bias="0.792"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/scale"
-        app:layout_constraintVertical_bias="0.427" />
+        app:layout_constraintVertical_bias="0.445" />
 
     <TextView
         android:id="@+id/current"
@@ -170,15 +169,15 @@
         android:layout_marginEnd="14dp"
         android:layout_marginRight="14dp"
         android:fontFamily="@font/montserrat"
-        android:text="Today's Weight(kgs):"
+        android:text="Today's Weight:"
         android:textColor="#FFFFFF"
-        android:textSize="20sp"
+        android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/weight"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scale"
-        app:layout_constraintVertical_bias="0.026" />
+        app:layout_constraintVertical_bias="0.0" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
