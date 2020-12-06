@@ -59,6 +59,7 @@ public class AnalyseWeight extends AppCompatActivity {
 
     String user;
     String currentPet;
+
     String idealWeight;
     String latestWeight;
 
@@ -73,6 +74,7 @@ public class AnalyseWeight extends AppCompatActivity {
 
     TextView analysis;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,12 +86,14 @@ public class AnalyseWeight extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
 
-        //get selected pet ID and ideal weight
+        //get selected pet ID
         currentPet = getIntent().getStringExtra("REF");
+
         idealWeight = getIntent().getStringExtra("WEIGHT");
         latestWeight = getIntent().getStringExtra("LATESTWEIGHT");
 
         System.out.println("ID AND WEIGHT "+currentPet +" "+idealWeight);
+
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = mFirebaseAuth.getCurrentUser();
@@ -158,6 +162,23 @@ public class AnalyseWeight extends AppCompatActivity {
                 analysis.setText(R.string.tooUnderweight);
             else if(latestPetWeight>overweight)
                 analysis.setText(R.string.tooOverweight);
+
+        db.collection("Users")
+                .document(userId)
+                .collection("Pets")
+                .document(currentPet)
+                .collection("Weight").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    if(task.getResult().size()==0)
+                        Toast.makeText(AnalyseWeight.this, "No information to display", Toast.LENGTH_SHORT).show();
+                } else {
+                    Log.d(TAG, "Error getting documents: ", task.getException());
+                }
+            }
+        });
+
 
             }
         else
