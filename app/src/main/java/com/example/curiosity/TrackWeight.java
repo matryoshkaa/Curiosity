@@ -61,6 +61,7 @@ public class TrackWeight extends AppCompatActivity {
     String username;
     String user;
     String pet;
+    String petWeight;
 
 
     @Override
@@ -96,8 +97,6 @@ public class TrackWeight extends AppCompatActivity {
 
 
         db= FirebaseFirestore.getInstance();
-
-
 
         //firebase authentication
         mFirebaseAuth = FirebaseAuth.getInstance();
@@ -206,9 +205,30 @@ public class TrackWeight extends AppCompatActivity {
         weight_analytic.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
+
+
+                if (pet!= null && !pet.equals("")) {
+
+                    db.collection("Users").document(userId).collection("Pets").document(pet).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                            if (documentSnapshot.exists())
+                                petWeight = documentSnapshot.getString("Ideal Weight");
+
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.d(TAG, "FAILURE " + e.getMessage());
+                        }
+                    });
+
+                }
+
                 if(pet!=null && !pet.equals("")){
                     Intent intent=new Intent(TrackWeight.this,AnalyseWeight.class);
                     intent.putExtra("REF", pet);
+                    intent.putExtra("IDEAL_WEIGHT", petWeight);
                     startActivity(intent);
             }
                 else
