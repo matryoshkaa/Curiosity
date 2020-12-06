@@ -59,7 +59,6 @@ public class AnalyseWeight extends AppCompatActivity {
 
     String user;
     String currentPet;
-
     String idealWeight;
     String latestWeight;
 
@@ -74,7 +73,6 @@ public class AnalyseWeight extends AppCompatActivity {
 
     TextView analysis;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,12 +86,10 @@ public class AnalyseWeight extends AppCompatActivity {
 
         //get selected pet ID
         currentPet = getIntent().getStringExtra("REF");
-
         idealWeight = getIntent().getStringExtra("WEIGHT");
         latestWeight = getIntent().getStringExtra("LATESTWEIGHT");
 
         System.out.println("ID AND WEIGHT "+currentPet +" "+idealWeight);
-
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = mFirebaseAuth.getCurrentUser();
@@ -138,51 +134,50 @@ public class AnalyseWeight extends AppCompatActivity {
         if(idealWeight!=null && !idealWeight.equals(""))
             if(latestWeight!=null && !latestWeight.equals("")){
 
-            idealPetWeight=Double.parseDouble(idealWeight);
-            latestPetWeight=Double.parseDouble(latestWeight);
+                idealPetWeight=Double.parseDouble(idealWeight);
+                latestPetWeight=Double.parseDouble(latestWeight);
 
-            System.out.println("PET CURRENT WEIGHT "+latestPetWeight);
+                System.out.println("PET CURRENT WEIGHT "+latestPetWeight);
 
-            underweight=(idealPetWeight/2);
-            slightlyUnderweight=(underweight*1.5);
-            slightlyOverweight=(underweight*2.5);
-            overweight=(underweight*3.5);
+                underweight=(idealPetWeight/2);
+                slightlyUnderweight=(underweight*1.5);
+                slightlyOverweight=(underweight*2.5);
+                overweight=(underweight*3.5);
 
-            if(latestPetWeight==idealPetWeight)
-                analysis.setText(R.string.ideal);
-            else if(latestPetWeight>underweight&&latestPetWeight<slightlyUnderweight)
-                analysis.setText(R.string.underweight);
-            else if(latestPetWeight>slightlyUnderweight&&latestPetWeight<idealPetWeight)
-                analysis.setText(R.string.slightUnderweight);
-            else if(latestPetWeight>idealPetWeight&&latestPetWeight<slightlyOverweight)
-                analysis.setText(R.string.slightOverweight);
-            else if(latestPetWeight>slightlyOverweight&&latestPetWeight<overweight)
-               analysis.setText(R.string.overweight);
-            else if(latestPetWeight<underweight)
-                analysis.setText(R.string.tooUnderweight);
-            else if(latestPetWeight>overweight)
-                analysis.setText(R.string.tooOverweight);
+                if(latestPetWeight==idealPetWeight)
+                    analysis.setText(R.string.ideal);
+                else if(latestPetWeight>underweight&&latestPetWeight<slightlyUnderweight)
+                    analysis.setText(R.string.underweight);
+                else if(latestPetWeight>slightlyUnderweight&&latestPetWeight<idealPetWeight)
+                    analysis.setText(R.string.slightUnderweight);
+                else if(latestPetWeight>idealPetWeight&&latestPetWeight<slightlyOverweight)
+                    analysis.setText(R.string.slightOverweight);
+                else if(latestPetWeight>slightlyOverweight&&latestPetWeight<overweight)
+                    analysis.setText(R.string.overweight);
+                else if(latestPetWeight<underweight)
+                    analysis.setText(R.string.tooUnderweight);
+                else if(latestPetWeight>overweight)
+                    analysis.setText(R.string.tooOverweight);
+                db.collection("Users")
+                        .document(userId)
+                        .collection("Pets")
+                        .document(currentPet)
+                        .collection("Weight").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            if(task.getResult().size()==0)
+                                Toast.makeText(AnalyseWeight.this, "No information to display", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
 
-        db.collection("Users")
-                .document(userId)
-                .collection("Pets")
-                .document(currentPet)
-                .collection("Weight").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    if(task.getResult().size()==0)
-                        Toast.makeText(AnalyseWeight.this, "No information to display", Toast.LENGTH_SHORT).show();
-                } else {
-                    Log.d(TAG, "Error getting documents: ", task.getException());
-                }
+
             }
-        });
-
-
-            }
-        else
-            Toast.makeText(AnalyseWeight.this, "Do not have enough weight information to conduct analysis", Toast.LENGTH_SHORT).show();
+            else
+                Toast.makeText(AnalyseWeight.this, "Do not have enough weight information to conduct analysis", Toast.LENGTH_SHORT).show();
 
         //on press settings button
         settings_button.setOnClickListener(new View.OnClickListener(){
