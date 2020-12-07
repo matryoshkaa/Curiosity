@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.res.AssetManager;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -42,15 +43,23 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Array;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class SymptomLogger extends AppCompatActivity {
 
@@ -79,64 +88,64 @@ public class SymptomLogger extends AppCompatActivity {
 
     List symptoms = new ArrayList();
 
-    String [] canineCancer = {"abnormal lumps or masses", "weight loss", "abnormal odor", "Decrease in appetite", "Intolerance to exercise", "Difficulty breathing", "abnormal thirst", "lethargy"};
+    String [] canineCancer = {"Abnormal lumps or masses", "Weight loss", "Abnormal odor", "Decrease in appetite", "Intolerance to exercise", "Difficulty breathing", "Abnormal thirst", "Lethargy"};
 
-    String [] canineDiabetes = {"Abnormal thirst", "weight loss", "Excessive urination", "Increase in appetite", "Cloudy eyes", "Deteriorated vision", "Lackluster coat and skint"};
+    String [] canineDiabetes = {"Abnormal thirst", "Weight loss", "Excessive urination", "Increase in appetite", "Cloudy eyes", "Deteriorated vision", "Lackluster coat and skin"};
 
-    String[] CPV = {"intolerance to exercise", "Bloody diarrhea", "fever", "weight loss", "general discomfort", "Vomiting", "lethargy", "blood in vomit"};
+    String[] CPV = {"Intolerance to exercise", "Bloody diarrhea", "Fever", "Weight loss", "General discomfort", "Vomiting", "Lethargy", "Blood in vomit"};
 
-    String[] canineHeartWorm = {"intolerance to exercise", "weight loss", "cough", "Decrease in appetite", "Abnormal fatigue"};
+    String[] canineHeartWorm = {"Intolerance to exercise", "Weight loss", "Cough", "Decrease in appetite", "Abnormal fatigue"};
 
-    String [] kennelCough = {"Strong cough with a honking sound", "Frequent sneezing", "Runny nose", "decrease in appetite", "Lethargy", "abnormal fatigue" ,"fever"};
+    String [] kennelCough = {"Strong cough with a honking sound", "Frequent sneezing", "Runny nose", "Decrease in appetite", "Lethargy", "Abnormal fatigue" ,"Fever"};
 
-    String [] canineTapeworm = {"Segments, larvae or eggs of tapeworms in the feces", "Diarrhea", "Nausea", "Abdominal pain and discomfort", "Inflammation around the abdominal area", "Weight loss", "Lethargy", "Weakness", "vomiting", "worms in vomit"};
+    String [] canineTapeworm = {"Segments, larvae or eggs of tapeworms in the feces", "Diarrhea", "Nausea", "Abdominal pain and discomfort", "Inflammation around the abdominal area", "Weight loss", "Lethargy", "Weakness", "Vomiting", "Worms in vomit"};
 
-    String [] canineRabies = {"unusually scared of water", "Aggressiveness", "Dropped jaw", "Seizures", "Paralysis", "Pica", "Fever"};
+    String [] canineRabies = {"Unusually scared of water", "Aggressiveness", "Dropped jaw", "Seizures", "Paralysis", "Pica", "Fever"};
 
-    String [] canineEarInfection = {"Odor in the ear", "Excessive itching", "ear discharge", "hair loss", "Loss of balance", "Abnormal eye movements", "Difficulty hearing"};
+    String [] canineEarInfection = {"Odor in the ear", "Excessive itching", "Ear discharge", "Hair loss", "Loss of balance", "Abnormal eye movements", "Difficulty hearing"};
 
     String [] canineSkinAllergies = {"Excessive itching", "Swelling", "Inflamed and irritated skin", "Vomiting", "Sneezing", "Diarrhea", "Altered behavior", "Hives"};
 
     String [] canineDistemper = {"Swollen and painful eyes", "Loss of eyesight", "Dry cough", "Wet cough", "Vomiting", "Seizures", "Fever"};
 
-    String [] canineInfluenza = {"cough", "Difficulty breathing", "Nasal discharge", "Fever", "Sneezing", "Runny eyes"};
+    String [] canineInfluenza = {"Cough", "Difficulty breathing", "Nasal discharge", "Fever", "Sneezing", "Runny eyes"};
 
     String [] canineParasites = {"Excessive itching", "Hair loss","Inflamed and irritated skin", "Scabs"};
 
-    String [] canineHeatstroke = {"Excessive panting", "Salivating", "Restlessness", "Accelerated heart rate", "Vomiting", "Diarrhea", "Red or pale gums", "blood in vomit", "bloody diarrhea"};
+    String [] canineHeatstroke = {"Excessive panting", "Salivating", "Restlessness", "Accelerated heart rate", "Vomiting", "Diarrhea", "Red or pale gums", "Blood in vomit", "Bloody diarrhea"};
 
-    String [] canineLeptospirosis = {"Sore muscles", "Intolerance to exercise", "Fever", "Lethargy", "Decrease in appetite", "abnormal thirst", "excessive urination", "Shivering", "stiffness", "weakness"};
+    String [] canineLeptospirosis = {"Sore muscles", "Intolerance to exercise", "Fever", "Lethargy", "Decrease in appetite", "Abnormal thirst", "Excessive urination", "Shivering", "Stiffness", "Weakness"};
 
-    String [] canineHipDysplasia = {"Limited range of motion", "Decreased physical activity", "Lameness", "Narrow stance", "Grating in the joint when your dog moves", "Looseness in the joint", "lethargy"};
+    String [] canineHipDysplasia = {"Limited range of motion", "Decreased physical activity", "Lameness", "Narrow stance", "Grating in the joint when your dog moves", "Looseness in the joint", "Lethargy"};
 
-    String [] canineAutoimmune = {"Lameness", "Joint pain", "Muscle pain", "Ulcers on feet", "Loss of pigment in the nose", "abnormal thirst", "excessive urination", "Fever", "Ulcers on face"};
+    String [] canineAutoimmune = {"Lameness", "Joint pain", "Muscle pain", "Ulcers on feet", "Loss of pigment in the nose", "Abnormal thirst", "Excessive urination", "Fever", "Ulcers on face"};
 
     String [] canineLuxatingPatella = {"Licking at the knee", "Crying", "Lameness", "Abnormal walking", "Bow-legged appearance"};
 
 
-    String [] felineUTD = {"Abnormal thirst", "Excessive urination", "Bloody urine", "Urinating in unusual places", "Crying when urinating", "Licking around the urinary area (often because of pain)", "Depression", "decrease in appetite", "Vomiting"};
+    String [] felineUTD = {"Abnormal thirst", "Excessive urination", "Bloody urine", "Urinating in unusual places", "Crying when urinating", "Licking around the urinary area (often because of pain)", "Depression", "Decrease in appetite", "Vomiting"};
 
-    String [] felineFleas = {"Flea dirt on its skin (they look like tiny black dots)", "Excessive itching", "Excessive licking", "inflamed or irritated skin", "Hair loss", "Skin infections"};
+    String [] felineFleas = {"Flea dirt on skin (they look like tiny black dots)", "Excessive itching", "Excessive licking", "Inflamed and irritated skin", "Hair loss", "Skin infections"};
 
-    String [] felineTapeworm = {"weight loss", "Segments, larvae or eggs of tapeworms in the feces", "Vomiting", "Diarrhea", "decrease in appetite"};
+    String [] felineTapeworm = {"Weight loss", "Segments, larvae or eggs of tapeworms in the feces", "Vomiting", "Diarrhea", "Decrease in appetite"};
 
-    String [] felineEyeDiseases = {"An inflamed third eyelid that is covering a part of the infected eye", "respiratory distress", "Red eyes", "Excessive winking", "Rubbing eyes", "Clear, green or yellow discharge coming from the eyes", "sneezing", "nasal discharge"};
+    String [] felineEyeDiseases = {"An inflamed third eyelid that is covering a part of the infected eye", "Respiratory distress", "Red eyes", "Excessive winking", "Rubbing eyes", "Clear, green or yellow discharge coming from the eyes", "Sneezing", "Nasal discharge"};
 
-    String [] felineCancer = {"Abnormal lumps or masses", "Wounds that don’t heal", "Change in bowel or bladder habits", "Difficulty eating or swallowing", "Difficulty urinating", "Unexplained bleeding or discharge from body", "Loss of appetite", "weight loss", "difficulty breathing", "Stiffness", "Oral odor", "Ravenous hunger", "coughing", "Difficulty defecating"};
+    String [] felineCancer = {"Abnormal lumps or masses", "Wounds that don’t heal", "Change in bowel or bladder habits", "Difficulty eating or swallowing", "Difficulty urinating", "Unexplained bleeding or discharge from body", "Decrease in appetite", "Weight loss", "Difficulty breathing", "Stiffness", "Oral odor", "Ravenous hunger", "Cough", "Difficulty defecating"};
 
-    String [] felineDiabetes = {"Excessive Urination", "weight loss", "Inability to Jump", "Decrease in appetite", "Vomiting", "Lethargy", "weakness in hind legs ", "Abnormal thirst"};
+    String [] felineDiabetes = {"Excessive urination", "Weight loss", "Inability to Jump", "Decrease in appetite", "Vomiting", "Lethargy", "Weakness in hind legs", "Abnormal thirst"};
 
-    String [] FIV = {"Enlarged lymph nodes", "Fever", "Weight loss", "Disheveled coat", "Decrease in appetite", "Diarrhea", "Abnormal appearance or inflammation of the eye", "Inflammation of the gums", "Inflammation of the mouth", "Dental disease", "Skin redness", "Wounds that don’t heal", "Sneezing", "Clear, green or yellow discharge coming from the eyes", "urinating outside of litter box", "Altered behavior", "hair loss", "Excessive urination", "Difficulty urinating", "nasal discharge"};
+    String [] FIV = {"Enlarged lymph nodes", "Fever", "Weight loss", "Disheveled coat", "Decrease in appetite", "Diarrhea", "Abnormal appearance or inflammation of the eye", "Inflammation of the gums", "Inflammation of the mouth", "Dental disease", "Skin redness", "Wounds that don’t heal", "Sneezing", "Clear, green or yellow discharge coming from the eyes", "Urinating outside of litter box", "Altered behavior", "Hair loss", "Excessive urination", "Difficulty urinating", "Nasal discharge"};
 
-    String [] FeIV = {"weight loss", "Pale or inflamed gums", "Disheveled coat", "Abscesses", "Fever", "Lackluster coat and skin", "Diarrhea", "Seizures", "Altered behavior", "Vision problems", "Enlarged lymph nodes", "vomiting", "Respiratory distress", "Lethargy", "decrease in appetite"};
+    String [] FeIV = {"Weight loss", "Pale or inflamed gums", "Disheveled coat", "Abscesses", "Fever", "Lackluster coat and skin", "Diarrhea", "Seizures", "Altered behavior", "Vision problems", "Enlarged lymph nodes", "Vomiting", "Respiratory distress", "Lethargy", "Decrease in appetite"};
 
-    String [] felineHeartworm = {"coughing", "Difficulty breathing", "Vomiting", "Lethargy", "Anorexia", "Weight loss", "vomiting", "respiratory distress"};
+    String [] felineHeartworm = {"Cough", "Difficulty breathing", "Vomiting", "Lethargy", "Anorexia", "Weight loss", "Vomiting", "Respiratory distress"};
 
-    String [] felineRabies = {"altered behaviour", "Increased vocalization", "Decrease in appetite", "Weakness", "Disorientation", "Paralysis", "Seizures", "restlessness", "lethargy"};
+    String [] felineRabies = {"Altered behavior", "Increased vocalization", "Decrease in appetite", "Weakness", "Disorientation", "Paralysis", "Seizures", "Restlessness", "Lethargy"};
 
-    String [] felineRingworm = {"Skin lesions", "hair loss", "dandruff", "Skin redness"};
+    String [] felineRingworm = {"Skin lesions", "Hair loss", "Dandruff", "Skin redness"};
 
-    String [] felineUpperRespiratoryInfection = {"Sneezing", "Congestion", "Runny nose", "Cough", "nasal discharge", "Gagging", "Fever", "decreased appetite", "Rapid breathing", "Nasal and oral ulcers", "Squinting", "Open-mouth breathing", "Depression", "Skin redness", "rubbing eyes"};
+    String [] felineUpperRespiratoryInfection = {"Sneezing", "Congestion", "Runny nose", "Cough", "Nasal discharge", "Gagging", "Fever", "Decrease in appetite", "Rapid breathing", "Nasal and oral ulcers", "Squinting", "Open-mouth breathing", "Depression", "Skin redness", "Rubbing eyes"};
 
 
 
@@ -166,50 +175,59 @@ public class SymptomLogger extends AppCompatActivity {
         canineDiseases.put("Cancer", canineCancer);
         canineDiseases.put("Diabetes", canineDiabetes);
         canineDiseases.put("CPV", CPV);
-        canineDiseases.put("HeartWorm", canineHeartWorm);
-        canineDiseases.put("KennelCough", kennelCough);
+        canineDiseases.put("Heart Worm", canineHeartWorm);
+        canineDiseases.put("Kennel Cough", kennelCough);
         canineDiseases.put("Tapeworm", canineTapeworm);
         canineDiseases.put("Rabies", canineRabies);
-        canineDiseases.put("EarInfections", canineEarInfection);
-        canineDiseases.put("SkinAllergies", canineSkinAllergies);
-        canineDiseases.put("CanineDistemper", canineDistemper);
+        canineDiseases.put("Ear Infections", canineEarInfection);
+        canineDiseases.put("Skin Allergies", canineSkinAllergies);
+        canineDiseases.put("Canine Distemper", canineDistemper);
         canineDiseases.put("Influenza", canineInfluenza);
         canineDiseases.put("Parasites", canineParasites);
         canineDiseases.put("Heatstroke", canineHeatstroke);
         canineDiseases.put("Leptospirosis", canineLeptospirosis);
-        canineDiseases.put("HipDysplasia", canineHipDysplasia);
-        canineDiseases.put("AutoimmuneIssues", canineAutoimmune);
-        canineDiseases.put("LuxatingPatella", canineLuxatingPatella);
+        canineDiseases.put("Hip Dysplasia", canineHipDysplasia);
+        canineDiseases.put("Autoimmune Issues", canineAutoimmune);
+        canineDiseases.put("Luxating Patella", canineLuxatingPatella);
 
         felineDiseases.put("UTD", felineUTD);
         felineDiseases.put("Fleas", felineFleas);
         felineDiseases.put("Tapeworms", felineTapeworm);
-        felineDiseases.put("EyeDiseases", felineEyeDiseases);
+        felineDiseases.put("Eye Diseases", felineEyeDiseases);
         felineDiseases.put("Cancer", felineCancer);
         felineDiseases.put("Diabetes", felineDiabetes);
         felineDiseases.put("FIV", FIV);
         felineDiseases.put("FeIV", FeIV);
         felineDiseases.put("Rabies", felineRabies);
         felineDiseases.put("Ringworm", felineRingworm);
-        felineDiseases.put("UpperRespiratoryInfections", felineUpperRespiratoryInfection);
+        felineDiseases.put("Heartworm", felineHeartworm);
+        felineDiseases.put("Upper Respiratory Infections", felineUpperRespiratoryInfection);
 
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
         userid = fAuth.getCurrentUser().getUid();
 
-/*
-        petId=getIntent().getStringExtra("REF");
 
+        petId=getIntent().getStringExtra("REF");
         DocumentReference documentReference = fStore.collection("Users").document(userid).collection("Pets")
                 .document(petId);
-        documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
-            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
-                petType = (documentSnapshot.getString("Pet Type"));
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        petType = document.getString("Pet Type");
+                        System.out.println(petType);
+                    } else {
+                        diagnosis.setText("no pet found");
+                    }
+                } else {
+                    diagnosis.setText("unknown error occured");
+                }
             }
         });
-on press search button
-*/
+
 
 
         searchDisease.setOnClickListener(new View.OnClickListener() {
@@ -217,59 +235,62 @@ on press search button
             @Override
             public void onClick(View view) {
 
-                HashMap<String, Integer> predict = new HashMap<String, Integer>();
+                ArrayList<String> predict = new ArrayList<String>();
 
                 ArrayList userSym = new ArrayList();
                 int len = symptomListView.getCount();
-                SparseBooleanArray sp=symptomListView.getCheckedItemPositions();
-                for(int i=0;i<len;i++)
-                {
-                    if(sp.get(i)){
-                        String sym = symptoms.get(i).toString();
-                        userSym.add(sym);
+                System.out.println(len);
 
-                    }
-                }
-
-
-                for(int i =0; i<userSym.size(); i++){
-                    for(Map.Entry d : felineDiseases.entrySet()){
-                        String [] temp = (String[]) d.getValue();
-                        List<String> temp2 = Arrays.asList(temp);
-                        for(int j=0; j<temp.length; j++){
-                            if(temp2.contains(userSym.get(i))){
-                                if(predict.containsKey(userSym.get(i))){
-                                    predict.put(d.toString(), predict.get(d)+1);
-                                }
-                                else{
-                                    predict.put(d.toString(), 1);
-                                }
-                            }
+                    SparseBooleanArray sp=symptomListView.getCheckedItemPositions();
+                if(sp.size()>0){
+                    for(int i=0;i<len;i++)
+                    {
+                        if(sp.get(i)){
+                            String sym = symptoms.get(i).toString();
+                            userSym.add(sym);
 
                         }
-
                     }
+
+
+                    if(petType.equals("cat") || petType.equals("Cat")){
+                        System.out.println("kitty");
+                        for(Map.Entry d : felineDiseases.entrySet()){
+                            String [] temp = (String[]) d.getValue();
+                            List<String> temp2 = Arrays.asList(temp);
+                            for(int i =0; i<userSym.size(); i++){
+                                if(temp2.contains(userSym.get(i))){
+                                    predict.add(d.toString());
+                                }
+                            }
+                        }
+                    }
+                    else{
+                        System.out.println("puppy");
+                        for(Map.Entry d : canineDiseases.entrySet()){
+                            String [] temp = (String[]) d.getValue();
+                            List<String> temp2 = Arrays.asList(temp);
+                            for(int i =0; i<userSym.size(); i++){
+                                if(temp2.contains(userSym.get(i))){
+                                    predict.add(d.toString());
+                                }
+                            }
+                        }
+                    }
+
+                    predict.sort(Comparator.comparing(i -> Collections.frequency(predict, i)).reversed());
+                    List<String> listWithoutDuplicates = predict.stream().distinct().collect(Collectors.toList());
+                    List<String> subItems = new ArrayList<String>(listWithoutDuplicates.subList(0, 3));
+
+                    String top = subItems.get(0).split("=",2)[0];
+                    String sec = subItems.get(1).split("=",2)[0];
+                    String third = subItems.get(2).split("=",2)[0];
+                    diagnosis.setText("Most probable disease: "+top+"\n"+"It could also be: "+sec+" or "+third);
+
                 }
-                predict.entrySet().forEach(entry->{
-                    System.out.println(entry.getKey().toString() + " " + entry.getValue());
-                });
-
-
-
-//                for(Map.Entry d : felineDiseases.entrySet()){
-//                    for(int i =0; i<userSym.size(); i++){
-//                        String [] temp = (String[]) d.getValue();
-//                        List<String> temp2 = Arrays.asList(temp);
-//                        for(int j=0; j<temp.length; j++){
-//                            //System.out.println();
-//                            if(temp2.contains(userSym.get(i))){
-//                                System.out.println(userSym.get(i));
-//                            }
-//
-//                        }
-//                    }
-//                }
-
+                else{
+                    diagnosis.setText("PLEASE SELECT SYMPTOMS FIRST!");
+                }
 
             }
         });
