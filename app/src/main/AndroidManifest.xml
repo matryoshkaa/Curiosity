@@ -61,6 +61,7 @@
         <activity android:name=".RegisterUser" />
         <activity android:name=".Dashboard"></activity>
         <activity android:name=".SymptomLogger" />
+        <activity android:name=".Diagnosis" />
         <activity android:name=".MedicalHistory" />
         <activity android:name=".TrackWeight" />
         <activity android:name=".HealthWeight" />

@@ -209,6 +209,7 @@ public class SymptomLogger extends AppCompatActivity {
 
 
         petId=getIntent().getStringExtra("REF");
+        System.out.println(petId);
         DocumentReference documentReference = fStore.collection("Users").document(userid).collection("Pets")
                 .document(petId);
         documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -285,7 +286,12 @@ public class SymptomLogger extends AppCompatActivity {
                     String top = subItems.get(0).split("=",2)[0];
                     String sec = subItems.get(1).split("=",2)[0];
                     String third = subItems.get(2).split("=",2)[0];
-                    diagnosis.setText("Most probable disease: "+top+"\n"+"It could also be: "+sec+" or "+third);
+                    //diagnosis.setText("Most probable disease: "+top+"\n"+"It could also be: "+sec+" or "+third);
+                    Intent intent=new Intent(SymptomLogger.this, Diagnosis.class);
+                    intent.putExtra("TOP",top);
+                    intent.putExtra("SEC",sec);
+                    intent.putExtra("THIRD",third);
+                    startActivity(intent);
 
                 }
                 else{
