@@ -130,15 +130,14 @@ public class ScanPet extends AppCompatActivity {
                             //System.out.println(document.getString("Pet Name"));
 
                             Intent prof = new Intent (ScanPet.this, PetDetails.class);
-//                            String scanned;
-//                            Bundle extras = getIntent().getExtras();
-//                            scanned = extras.getString("petid");
-//                            prof.putExtra("petid", scanned);
+                            prof.putExtra("petID", id);
                             startActivity(prof);
 
 
                         } else {
-                            System.out.println("who?");
+                            Intent adding=new Intent(ScanPet.this, AddPet.class);
+                            adding.putExtra("petID",id);
+                            startActivity(adding);
                         }
                     } else {
 

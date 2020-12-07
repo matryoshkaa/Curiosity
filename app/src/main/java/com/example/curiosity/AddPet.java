@@ -62,6 +62,8 @@ public class AddPet extends AppCompatActivity {
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
 
+
+        String ScannedID = getIntent().getStringExtra("petID");
         //getting docreference
         userid = fAuth.getCurrentUser().getUid();
         DocumentReference documentReference = fStore.collection("Users").document(userid);
@@ -108,7 +110,7 @@ public class AddPet extends AppCompatActivity {
                 //add to pet collection
                 Map<String, String> petMap =new HashMap<>();
                 String uniqueId = UUID.randomUUID().toString();
-                petMap.put("Pet ID",uniqueId);
+                petMap.put("Pet ID",ScannedID);
                 petMap.put("Pet Name",petname.getText().toString());
                 petMap.put("Pet Type",pettype.getText().toString());
                 petMap.put("Pet Breed",petbreed.getText().toString());
@@ -120,7 +122,7 @@ public class AddPet extends AppCompatActivity {
                 documentReference = fStore.collection("Users")
                                 .document(userid)
                                 .collection("Pets")
-                                .document(""+uniqueId);
+                                .document(""+ScannedID);
                 documentReference.set(petMap, SetOptions.merge());
 
                 //updating petdocnames
@@ -129,7 +131,7 @@ public class AddPet extends AppCompatActivity {
                         .collection("Pets")
                         .document("PetDocNames");
                 Map<String, String> petDocName =new HashMap<>();
-                petDocName.put("PetDocName"+nop,uniqueId);
+                petDocName.put("PetDocName"+nop,ScannedID);
                 documentReference.set(petDocName, SetOptions.merge());
 
                 Intent intent=new Intent(AddPet.this,Pet.class);
