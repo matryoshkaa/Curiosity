@@ -22,6 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -160,7 +161,8 @@ public class SymptomLogger extends AppCompatActivity {
         settings_button=(ImageButton)findViewById(R.id.settings_button);
         searchDisease = (Button)findViewById(R.id.searchDisease);
         symptomListView = (ListView) findViewById(R.id.symptomListView);
-        diagnosis = (TextView)findViewById(R.id.diagnosis);
+
+
 
         addSymptoms();
 
@@ -210,8 +212,7 @@ public class SymptomLogger extends AppCompatActivity {
 
         petId=getIntent().getStringExtra("REF");
         System.out.println(petId);
-        DocumentReference documentReference = fStore.collection("Users").document(userid).collection("Pets")
-                .document(petId);
+        DocumentReference documentReference = fStore.collection("Users").document(userid).collection("Pets").document(petId);
         documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -281,17 +282,23 @@ public class SymptomLogger extends AppCompatActivity {
 
                     predict.sort(Comparator.comparing(i -> Collections.frequency(predict, i)).reversed());
                     List<String> listWithoutDuplicates = predict.stream().distinct().collect(Collectors.toList());
-                    List<String> subItems = new ArrayList<String>(listWithoutDuplicates.subList(0, 3));
 
-                    String top = subItems.get(0).split("=",2)[0];
-                    String sec = subItems.get(1).split("=",2)[0];
-                    String third = subItems.get(2).split("=",2)[0];
-                    //diagnosis.setText("Most probable disease: "+top+"\n"+"It could also be: "+sec+" or "+third);
-                    Intent intent=new Intent(SymptomLogger.this, Diagnosis.class);
-                    intent.putExtra("TOP",top);
-                    intent.putExtra("SEC",sec);
-                    intent.putExtra("THIRD",third);
-                    startActivity(intent);
+                    try {
+                        List<String> subItems = new ArrayList<String>(listWithoutDuplicates.subList(0, 3));
+
+                        String top = subItems.get(0).split("=", 2)[0];
+                        String sec = subItems.get(1).split("=", 2)[0];
+                        String third = subItems.get(2).split("=", 2)[0];
+
+                        Intent intent = new Intent(SymptomLogger.this, Diagnosis.class);
+                        intent.putExtra("TOP", top);
+                        intent.putExtra("SEC", sec);
+                        intent.putExtra("THIRD", third);
+                        startActivity(intent);
+                    }
+                    catch(Exception e){
+                        Toast.makeText(SymptomLogger.this, "You must check more than three symptoms to achieve a diagnosis!", Toast.LENGTH_SHORT).show();
+                    }
 
                 }
                 else{

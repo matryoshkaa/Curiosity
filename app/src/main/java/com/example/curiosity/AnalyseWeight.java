@@ -158,6 +158,7 @@ public class AnalyseWeight extends AppCompatActivity {
                     analysis.setText(R.string.tooUnderweight);
                 else if(latestPetWeight>overweight)
                     analysis.setText(R.string.tooOverweight);
+
                 db.collection("Users")
                         .document(userId)
                         .collection("Pets")

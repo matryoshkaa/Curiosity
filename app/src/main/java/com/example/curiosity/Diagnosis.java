@@ -47,8 +47,7 @@ public class Diagnosis extends AppCompatActivity {
         back_button.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Intent intent=new Intent(Diagnosis.this,SymptomLogger.class);
-                startActivity(intent);
+                finish();
             }
         });
 
