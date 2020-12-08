@@ -158,7 +158,7 @@ public class ScanPet extends AppCompatActivity {
                                             });
                                 }
                             } else {
-                                Log.d(TAG, "Error getting documents: ", task.getException());
+                                System.out.println("error");
                             }
                         }
                     });
