@@ -115,25 +115,36 @@ public class ScanPet extends AppCompatActivity {
             Intent intent = getIntent();
             String id = getNdefMessages(intent);
             //if
-            System.out.println(id);
+            //System.out.println(id);
             petId = (TextView) findViewById(R.id.ScannedID);
             petId.setText(id);
 
+
                 DocumentReference documentReference = fStore.collection("Users").document(userid).collection("Pets")
                         .document(id);
-                documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
-                        petname.setText(documentSnapshot.getString("name"));
-                        pettype.setText(documentSnapshot.getString("Pet Type"));
-                        petbreed.setText(documentSnapshot.getString("Pet Breed"));
+            documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            Intent prof = new Intent (ScanPet.this, PetDetails.class);
+                            String source = "scanpet";
+                            prof.putExtra("petid", id);
+                            prof.putExtra("source", source);
+                            startActivity(prof);
 
-                        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
-                        String strDate = dateFormat.format(documentSnapshot.getDate("DOB"));
-                        petdob.setText(strDate);
+
+                        } else {
+                            Intent adding=new Intent(ScanPet.this, AddPet.class);
+                            adding.putExtra("petID",id);
+                            startActivity(adding);
+                        }
+                    } else {
 
                     }
-                });
+                }
+            });
 
 
 ////////////////////////////////////////////////////////////////

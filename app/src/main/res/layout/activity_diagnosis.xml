@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AnalyseWeight"
-    android:background="#00c2cb">
+    android:background="#00C2CB">
+
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -34,47 +34,50 @@
         android:layout_marginEnd="181dp"
         android:layout_marginRight="181dp"
         android:fontFamily="@font/montserrat"
-        android:text="@string/analyse_weight"
+        android:text="Diagnosis"
         android:textColor="#000000"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.468"
+        app:layout_constraintHorizontal_bias="0.214"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.021" />
+        app:layout_constraintVertical_bias="0.018" />
+
 
     <ImageButton
         android:id="@+id/back_button"
         android:layout_width="37dp"
         android:layout_height="39dp"
         android:background="#00FFFFFF"
+        android:contentDescription="@string/todo"
         android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/textView"
-        app:layout_constraintHorizontal_bias="0.125"
+        app:layout_constraintHorizontal_bias="0.13"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.023"
+        app:layout_constraintVertical_bias="0.018"
         app:srcCompat="@drawable/ic_back"
-        tools:ignore="VectorDrawableCompat"
-        android:contentDescription="@string/todo" />
+        tools:ignore="VectorDrawableCompat" />
 
     <ImageButton
         android:id="@+id/settings_button"
         android:layout_width="63dp"
         android:layout_height="34dp"
         android:background="#00FFFFFF"
-        android:scaleType="fitCenter"
         android:contentDescription="@string/todo"
+        android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/toolbar"
-        app:layout_constraintHorizontal_bias="0.59"
+        app:layout_constraintHorizontal_bias="0.776"
         app:layout_constraintStart_toEndOf="@+id/textView"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.022"
+        app:layout_constraintVertical_bias="0.018"
         app:srcCompat="@drawable/ic_setting"
         tools:ignore="VectorDrawableCompat" />
+
+
 
     <LinearLayout
         android:id="@+id/linearTextBox"
@@ -89,14 +92,15 @@
 
         <TextView
             android:layout_width="match_parent"
+            android:id="@+id/finalDiagnosis"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
-            android:fontFamily="@font/montserrat"
+            android:fontFamily="@font/montserrat_bold"
             android:gravity="center"
             android:padding="15dp"
-            android:text="@string/it_is_important_to_keep_your_pet_s_weight_in_check_to_ensure_a_longer_and_a_healthier_life"
             android:textColor="#FFFFFF"
             android:textSize="20dp" />
+
 
     </LinearLayout>
 
@@ -114,9 +118,9 @@
         <ImageView
             android:id="@+id/imageView4"
             android:layout_width="0dp"
-            android:layout_height="250dp"
+            android:layout_height="230dp"
             android:layout_weight="1"
-            app:srcCompat="@drawable/kennel"
+            app:srcCompat="@drawable/diagnose"
             android:contentDescription="@string/todo"/>
 
     </LinearLayout>
@@ -125,23 +129,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/kennelLayout"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintVertical_bias="0.35000002">
 
         <TextView
+            android:id="@+id/analysis"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/analysis"
-            android:textColor="#FFFFFF"
-            android:textSize="20dp"
             android:fontFamily="@font/montserrat"
             android:gravity="center"
-            android:padding="15dp"/>
+            android:padding="20dp"
+            android:text="Note: Our diagnosis may not be 100% accurate and we advise you to kindly contact your pet's veterinarian if your pet is sick or is consistenly displaying worrying symptoms"
+            android:textColor="#FFFFFF"
+            android:textSize="18dp" />
 
 
     </LinearLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
