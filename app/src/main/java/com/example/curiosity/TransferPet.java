@@ -151,6 +151,7 @@ public class TransferPet extends AppCompatActivity {
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
 
+
                                 //increase their number of pets by 1
                                 int tnop_ = Integer.parseInt(document.getData().get("Number of Pets").toString());
                                 String updated_tnop = Integer.toString(tnop_+1);

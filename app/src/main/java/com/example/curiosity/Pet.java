@@ -2,16 +2,24 @@
 package com.example.curiosity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -19,6 +27,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 
 public class Pet extends AppCompatActivity {
@@ -42,6 +52,9 @@ public class Pet extends AppCompatActivity {
     String numberofpets;
     Intent intent;
     String [] petIdArray = {"","","","","",""};
+
+    private FirebaseStorage storage;
+    private StorageReference storageReference;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,6 +118,52 @@ public class Pet extends AppCompatActivity {
                     petIconArray[i].setVisibility(View.VISIBLE);
                     petNameArray[i].setVisibility(View.VISIBLE);
                     SetPetNames(i);
+
+                    storage = FirebaseStorage.getInstance();
+                    storageReference= storage.getReference();
+
+
+
+
+                    DocumentReference docRef = fStore.collection("Users").document(userid).collection("Pets").document("PetDocNames");
+                    int finalI1 = i;
+                    docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot document = task.getResult();
+                                if (document.exists()) {
+
+                                    //increase their number of pets by 1
+                                    String m = document.getData().get("PetDocName"+(finalI1 +1)).toString();
+                                    Log.d("boop", m);
+
+                                    storageReference.child("images/Pets/" +m +".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                        @Override
+                                        public void onSuccess(Uri uri) {
+                                            Uri downloadUrl = uri;
+
+                                            Log.d("boop", downloadUrl.toString());
+                                            getImage(downloadUrl.toString(), petIconArray[finalI1]);
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception exception) {
+                                            // File not found
+                                        }
+                                    });
+
+                                } else {
+//                                Log.d("TAG", "No such document");
+                                }
+                            } else {
+//                            Log.d("?TAG", "get failed with ", task.getException());
+                            }
+                        }
+                    });
+
+
+
                 }
 
             }
@@ -215,6 +274,15 @@ public class Pet extends AppCompatActivity {
         });
 
 
+    }
+
+
+    private void getImage(String ref, ImageView imageView) {
+        ImageView imgview = (ImageView) findViewById(R.id.imageView);
+
+        Glide.with(this)
+                .load(ref)
+                .into(imageView);
     }
 
 

@@ -106,6 +106,7 @@
         android:text="Scanned ID"
         android:textColor="#FBFBFB"
         android:textSize="18sp"
+        android:focusable="false"
         app:layout_constraintBottom_toTopOf="@+id/scannedidTextField"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -173,7 +174,11 @@
         android:layout_marginLeft="8dp"
         android:layout_weight="1"
         android:fontFamily="@font/roboto_slab_bold"
+
+        android:text="Owner Number"
+
         android:text="Owner Phone Number"
+
         android:textColor="#FBFBFB"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/ownerphoneTextField"
