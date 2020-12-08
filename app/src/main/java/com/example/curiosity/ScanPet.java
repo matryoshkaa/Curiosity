@@ -119,7 +119,6 @@ public class ScanPet extends AppCompatActivity {
             petId = (TextView) findViewById(R.id.ScannedID);
             petId.setText(id);
 
-
                 DocumentReference documentReference = fStore.collection("Users").document(userid).collection("Pets")
                         .document(id);
             documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -128,10 +127,10 @@ public class ScanPet extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         DocumentSnapshot document = task.getResult();
                         if (document.exists()) {
+                            //System.out.println(document.getString("Pet Name"));
+
                             Intent prof = new Intent (ScanPet.this, PetDetails.class);
-                            String source = "scanpet";
-                            prof.putExtra("petid", id);
-                            prof.putExtra("source", source);
+                            prof.putExtra("petID", id);
                             startActivity(prof);
 
 

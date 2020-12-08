@@ -242,11 +242,9 @@ public class PetProfile extends AppCompatActivity {
                 Intent intent=new Intent(PetProfile.this,PetDetails.class);
 
                 String petid;
-                String source = "petprofile";
                 Bundle extras = getIntent().getExtras();
                 petid = extras.getString("petid");
                 intent.putExtra("petid", petid);
-                intent.putExtra("source", source);
                 startActivity(intent);
             }
         });
