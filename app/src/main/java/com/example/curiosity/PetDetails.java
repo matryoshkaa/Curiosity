@@ -48,9 +48,7 @@ public class PetDetails extends AppCompatActivity {
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
 
-        String petid;
-        Bundle extras = getIntent().getExtras();
-        petid= extras.getString("petid");
+
 
 
         userid = fAuth.getCurrentUser().getUid();
@@ -67,19 +65,46 @@ public class PetDetails extends AppCompatActivity {
         });
 
 
-        DocumentReference documentReference1 = fStore.collection("Users").document(userid).collection("Pets").document("" + petid);
-        //pulling data from db
-        documentReference1.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
+        String petid;
+        Intent i = this.getIntent();
+        if(i!=null){
+            String strdata = i.getExtras().getString("source");
+            if(strdata.equals("petprofile")){
+                petid = i.getStringExtra("petid");
+                DocumentReference documentReference1 = fStore.collection("Users").document(userid).collection("Pets").document("" + petid);
+                //pulling data from db
+                documentReference1.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
 
-                scannedid.setText(documentSnapshot.getString("Pet ID"));;
-                petbreed.setText(documentSnapshot.getString("Pet Breed"));;
-                petdob.setText(documentSnapshot.getString("Pet DOB"));
-                pettype.setText(documentSnapshot.getString("Pet Type"));
-                petname.setText(documentSnapshot.getString("Pet Name"));;
-                }
-        });
+                        scannedid.setText(documentSnapshot.getString("Pet ID"));;
+                        petbreed.setText(documentSnapshot.getString("Pet Breed"));;
+                        petdob.setText(documentSnapshot.getString("Pet DOB"));
+                        pettype.setText(documentSnapshot.getString("Pet Type"));
+                        petname.setText(documentSnapshot.getString("Pet Name"));;
+                    }
+                });
+            }
+            if(strdata.equals("scanpet")){
+                petid = i.getStringExtra("petid");
+                DocumentReference documentReference1 = fStore.collection("Users").document(userid).collection("Pets").document("" + petid);
+                //pulling data from db
+                documentReference1.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
+
+                        scannedid.setText(documentSnapshot.getString("Pet ID"));;
+                        petbreed.setText(documentSnapshot.getString("Pet Breed"));;
+                        petdob.setText(documentSnapshot.getString("Pet DOB"));
+                        pettype.setText(documentSnapshot.getString("Pet Type"));
+                        petname.setText(documentSnapshot.getString("Pet Name"));;
+                    }
+                });
+            }
+        }
+
+
+
 
 
         //back button
