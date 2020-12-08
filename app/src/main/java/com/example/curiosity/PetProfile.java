@@ -1,5 +1,7 @@
 package com.example.curiosity;
 
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,6 +11,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,6 +22,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -28,11 +33,14 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 
 public class PetProfile extends AppCompatActivity {
@@ -59,7 +67,7 @@ public class PetProfile extends AppCompatActivity {
     public Uri imageUri;
     private FirebaseStorage storage;
     private StorageReference storageReference;
-
+    String petName, petId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,7 +83,7 @@ public class PetProfile extends AppCompatActivity {
         viewDetails = findViewById(R.id.ViewPetDetailsButton);
         petProfilePicture = findViewById(R.id.petProfilePicture);
 
-        String petName, petId;
+
         Bundle extras = getIntent().getExtras();
         petName = extras.getString("petname");
         petname.setText(petName);
@@ -169,6 +177,8 @@ public class PetProfile extends AppCompatActivity {
         transferPet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
                 String petid, petdocid, nop;
                 Bundle extras = getIntent().getExtras();
                 petid = extras.getString("petid");
@@ -184,22 +194,41 @@ public class PetProfile extends AppCompatActivity {
         deletePet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DocumentReference documentReference = fStore.collection("Users").document(userid);
-                documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            if (document.exists()) {
-                                int nop = Integer.parseInt(document.getData().get("Number of Pets").toString());
-                                DeletePet(petId, nop);
+                new MaterialAlertDialogBuilder(PetProfile.this)
+                        .setTitle("Pet Deletion")
+                        .setMessage("Are you sure you want to delete this pet?\nYou cannot undo this action.")
+                        .setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
 
-                                Intent intent=new Intent(PetProfile.this,Dashboard.class);
-                                startActivity(intent);
+                                DocumentReference documentReference = fStore.collection("Users").document(userid);
+                                documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                        if (task.isSuccessful()) {
+                                            DocumentSnapshot document = task.getResult();
+                                            if (document.exists()) {
+
+                                                int nop = Integer.parseInt(document.getData().get("Number of Pets").toString());
+                                                DeletePet(petId, nop);
+
+                                                Intent intent=new Intent(PetProfile.this,Dashboard.class);
+                                                startActivity(intent);
+                                            }
+                                        }
+                                    }
+                                });
                             }
-                        }
-                    }
-                });
+                        })
+                        .setNeutralButton("NO", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                            }
+                        })
+                        .show();
+
+
 
 
             }
@@ -234,6 +263,13 @@ public class PetProfile extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(PetProfile.this, Pet.class);
                 startActivity(intent);
+            }
+        });
+
+        petProfilePicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                choosePicture();
             }
         });
     }
@@ -319,5 +355,55 @@ public class PetProfile extends AppCompatActivity {
 
     }
 
+    private void choosePicture() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, 1);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==1 &&resultCode==RESULT_OK && data!=null && data.getData()!= null){
+            imageUri = data.getData();
+            petProfilePicture.setImageURI(imageUri);
+            uploadPicture();
+        }
+
+    }
+
+    private void uploadPicture() {
+        final ProgressDialog pd = new ProgressDialog(this);
+        pd.setTitle("Uploading Image...");
+        pd.show();
+
+        final String randomKey = UUID.randomUUID().toString();
+        StorageReference riversRef =  storageReference.child("images/Pets/" +petId +".jpg");
+
+        riversRef.putFile(imageUri)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        pd.dismiss();
+                        Snackbar.make(findViewById(android.R.id.content), "Image Uploaded.", Snackbar.LENGTH_LONG).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        pd.dismiss();
+                        Toast.makeText(getApplicationContext(), "Failed To Upload", Toast.LENGTH_LONG).show();
+                    }
+                })
+                .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onProgress(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
+                        double progressPercent = (100.00 * taskSnapshot.getBytesTransferred()/taskSnapshot.getTotalByteCount());
+                        pd.setMessage("Percentage: " + (int) progressPercent + "%");
+                    }
+                });
+
+    }
 
 }
