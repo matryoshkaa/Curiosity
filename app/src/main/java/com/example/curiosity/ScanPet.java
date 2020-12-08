@@ -122,29 +122,71 @@ public class ScanPet extends AppCompatActivity {
 
                 DocumentReference documentReference = fStore.collection("Users").document(userid).collection("Pets")
                         .document(id);
-            documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot document = task.getResult();
-                        if (document.exists()) {
-                            Intent prof = new Intent (ScanPet.this, PetDetails.class);
-                            String source = "scanpet";
-                            prof.putExtra("petid", id);
-                            prof.putExtra("source", source);
-                            startActivity(prof);
 
+            fStore.collection("Users")
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    String userId= document.getId();
 
-                        } else {
-                            Intent adding=new Intent(ScanPet.this, AddPet.class);
-                            adding.putExtra("petID",id);
-                            startActivity(adding);
+                                    //goes through all pets
+                                    db.collection("Users").document(userId).collection("Pets")
+                                            .whereEqualTo("Pet ID", id)
+                                            .get()
+                                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                    if (task.isSuccessful()) {
+                                                        for (QueryDocumentSnapshot document : task.getResult()) {
+
+                                                            Intent prof = new Intent (ScanPet.this, PetDetails.class);
+                                                            String source = "scanpet";
+                                                            prof.putExtra("petid", id);
+                                                            prof.putExtra("source", source);
+                                                            startActivity(prof);
+
+                                                        }
+                                                    } else {
+                                                        Intent adding=new Intent(ScanPet.this, AddPet.class);
+                                                        adding.putExtra("petID",id);
+                                                        startActivity(adding);
+                                                    }
+                                                }
+                                            });
+                                }
+                            } else {
+                                Log.d(TAG, "Error getting documents: ", task.getException());
+                            }
                         }
-                    } else {
-
-                    }
-                }
-            });
+                    });
+//            documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//                @Override
+//                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                    if (task.isSuccessful()) {
+//                        DocumentSnapshot document = task.getResult();
+//                        if (document.exists()) {
+//                            Intent prof = new Intent (ScanPet.this, PetDetails.class);
+//                            String source = "scanpet";
+//                            prof.putExtra("petid", id);
+//                            prof.putExtra("source", source);
+//                            startActivity(prof);
+//
+//
+//                        }else if(){}
+//
+//                        else {
+//                            Intent adding=new Intent(ScanPet.this, AddPet.class);
+//                            adding.putExtra("petID",id);
+//                            startActivity(adding);
+//                        }
+//                    } else {
+//
+//                    }
+//                }
+//            });
 
 
 ////////////////////////////////////////////////////////////////
