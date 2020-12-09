@@ -45,7 +45,9 @@
         <activity android:name=".TrackPet" />
         <activity android:name=".UserProfile" />
         <activity android:name=".Pet" />
-        <activity android:name=".AddPet" />
+        <activity android:name=".AddPet"
+            android:windowSoftInputMode="adjustPan"
+            />
         <activity android:name=".PetProfile" />
         <activity android:name=".TransferPet" />
         <activity android:name=".PetFromSettings" />
